@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100e10">
+  <meta name="description" content="SakeTora Space — 收集遊戲與生活中剛剛好的小工具。">
+  <title>SakeTora Space · 日常工具箱</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <aside class="sidebar">
+    <a class="brand" href="./" aria-label="SakeTora Space 首頁"><span class="brand-mark">S<span>✦</span></span><span>SakeTora<small>SPACE / 個人工具站</small></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <button id="navigation-toggle" class="secondary-button" aria-expanded="false" aria-controls="tool-navigation">工具選單 ☰</button>
+    <nav id="tool-navigation" aria-label="工具分類" class="navigation">
+      <div class="nav-group"><button class="nav-item" data-filter="all" aria-pressed="false"><span aria-hidden="true">▦</span>所有工具<span class="nav-count" id="all-tool-count">6</span></button></div>
+      <div class="nav-group"><button class="nav-item" data-filter="favorites" aria-pressed="false" aria-expanded="false" aria-controls="submenu-favorites"><span aria-hidden="true">☆</span>我的收藏<span class="nav-count" id="favorite-count">0</span><span class="nav-chevron" aria-hidden="true">›</span></button><ul id="submenu-favorites" class="nav-submenu" data-submenu="favorites" hidden></ul></div>
+      <div class="nav-group"><button class="nav-item" data-filter="ragnarok" aria-pressed="false" aria-expanded="false" aria-controls="submenu-ragnarok"><span aria-hidden="true">◇</span>仙境傳說<span class="nav-chevron" aria-hidden="true">›</span></button><ul id="submenu-ragnarok" class="nav-submenu" data-submenu="ragnarok" hidden></ul></div>
+      <div class="nav-group"><button class="nav-item" data-filter="ffxiv" aria-pressed="false" aria-expanded="false" aria-controls="submenu-ffxiv"><span aria-hidden="true">◇</span>FFXIV<span class="nav-chevron" aria-hidden="true">›</span></button><ul id="submenu-ffxiv" class="nav-submenu" data-submenu="ffxiv" hidden></ul></div>
+      <div class="nav-group"><button class="nav-item" data-filter="chronostory" aria-pressed="false" aria-expanded="false" aria-controls="submenu-chronostory"><span aria-hidden="true">◇</span>ChronoStory<span class="nav-chevron" aria-hidden="true">›</span></button><ul id="submenu-chronostory" class="nav-submenu" data-submenu="chronostory" hidden></ul></div>
+    </nav>
+    <div class="sidebar-bottom"><span class="status-dot"></span>小工具，慢慢累積。</div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span><span class="muted">我的空間</span><span class="breadcrumb">/</span>工具箱</span><span class="local-badge"><span class="status-dot"></span>在你的瀏覽器裡運作</span></header>
+    <main id="main">
+      <section id="toolbox" class="toolbox" aria-labelledby="tools-heading">
+        <div class="section-top"><div><div class="eyebrow muted">THE TOOL COLLECTION</div><h1 id="tools-heading">所有工具 <span id="result-count">6</span></h1></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜尋工具或關鍵字…" aria-label="搜尋工具"><kbd>/</kbd></label></div>
+        <div class="filter-row"><div class="filter-tabs" role="group" aria-label="篩選工具"><button data-filter="all" class="filter-tab active" aria-pressed="true">全部</button><button data-filter="favorites" class="filter-tab" aria-pressed="false">我的收藏</button><button data-filter="ragnarok" class="filter-tab" aria-pressed="false">仙境傳說</button><button data-filter="ffxiv" class="filter-tab" aria-pressed="false">FFXIV</button><button data-filter="chronostory" class="filter-tab" aria-pressed="false">ChronoStory</button></div><span class="filter-hint">剛剛好的功能，隨手就能用</span></div>
+        <div class="type-filters" role="group" aria-label="顯示類型">
+          <span>顯示類型</span>
+          <label for="show-tools"><input id="show-tools" type="checkbox" checked>工具</label>
+          <label for="show-links"><input id="show-links" type="checkbox" checked>連結</label>
+        </div>
+        <div id="tool-grid" class="tool-grid"></div>
+        <div id="empty-state" class="empty-state" hidden><span aria-hidden="true">⌕</span><h3 id="empty-title">找不到符合的工具</h3><p id="empty-description">換個關鍵字，或看看其他分類吧。</p><button class="secondary-button" id="clear-filters">顯示所有工具</button></div>
+        <noscript><p class="notice">請啟用 JavaScript，即可使用搜尋、收藏及所有小工具。</p></noscript>
+      </section>
+      <footer><span>© <span id="year">2026</span> SakeTora Space</span><span>為日常留一點餘裕 <span class="accent">✦</span></span></footer>
+    </main>
+  </div>
+  <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
