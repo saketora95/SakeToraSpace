@@ -2,12 +2,24 @@
 
 // Add a catalog entry and a matching renderer below to extend the toolbox.
 const tools = [
+  // RO Tool
   { id: "ragnarok-timer", title: "倒數計時", category: "ragnarok", icon: "◷", tone: "#ed9b9f", description: "一個簡單的倒數計時器，讓安排時間變得更方便。", keywords: "RO 仙境傳說 倒數 計時 timer" },
+  { id: "ragnarok-glacier-weapon", title: "冰晶武器價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "比較購買、升級與兌換成本，即時計算冰晶武器價格。", keywords: "RO 仙境傳說 glacier weapon 冰晶 武器 附魔 雪花 魔石 成本 計算" },
+
+  // RO Url
   { id: "ragnarok-tw", title: "twRO 官方網站", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 twRO 臺灣伺服器官方網站。", keywords: "RO 台灣 臺灣 TW 官網 官方網站", url: "https://ro.gnjoy.com.tw/" },
   { id: "ragnarok-website", title: "kRO 官方網站", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 kRO 韓國伺服器官方網站。", keywords: "RO 韓國 KR kRO 官網 官方網站", url: "https://ro.gnjoy.com/" },
   { id: "ragnarok-jp", title: "jRO 官方網站", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 jRO 日本伺服器官方網站。", keywords: "RO 日本 JP jRO 官網 官方網站", url: "https://ragnarokonline.gungho.jp/" },
   { id: "ragnarok-iro", title: "iRO 官方網站", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 iRO 國際伺服器官方網站。", keywords: "RO 國際 iRO 官網 官方網站", url: "https://renewal.playragnarok.com/" },
   { id: "ragnarok-th", title: "thRO 官方網站", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 thRO 泰國伺服器官方網站。", keywords: "RO 泰國 TH thRO 官網 官方網站", url: "https://ro.gnjoy.in.th/home/" },
+  { id: "ragnarok-divine-pride", title: "Divine Pride", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 Divine Pride 網站，瀏覽各國的資料與解檔資訊。", keywords: "RO 仙境傳說 DP Divine Pride divine-pride", url: "https://www.divine-pride.net/" },
+  { id: "ragnarok-calculator", title: "ROCalculator", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 Landgris 大大所製作的 ROCalculator，精準計算 RO 的傷害。", keywords: "RO 仙境傳說 ROCalculator Landgris 計算機 計算器", url: "https://landgris.github.io/ROCalculator/" },
+
+  // FFXIV Url
+  { id: "ffxiv-wiki", title: "灰機｜FFXIV 中文 Wiki", category: "ffxiv", icon: "↗", tone: "#ed9b9f", description: "前往 FF14 灰機 Wiki 首頁，查詢遊戲內各項資訊。", keywords: "FFXIV FF14 灰機 灰机 Wiki 百科 攻略", url: "https://ff14.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5" },
+  { id: "ffxiv-paissa", title: "Paissa｜FFXIV 住宅狀況", category: "ffxiv", icon: "↗", tone: "#ed9b9f", description: "前往 Paissa，確認所屬世界的住宅狀態。", keywords: "FFXIV FF14 Paissa 房屋 住宅 空地 查詢", url: "https://zhu.codes/paissa?world=50&sort=size:2" },
+  { id: "ffxiv-gearsets", title: "Eorzea Collection｜FFXIV 裝備外觀預覽", category: "ffxiv", icon: "↗", tone: "#ed9b9f", description: "前往 Eorzea Collection，預覽遊戲內各個套裝的外觀。", keywords: "FFXIV FF14 Eorzea Collection gearsets 裝備 套裝 幻化 外觀", url: "https://ffxiv.eorzeacollection.com/gearsets" },
+  { id: "ffxiv-worldstatus", title: "Lodestone｜伺服器狀態", category: "ffxiv", icon: "↗", tone: "#ed9b9f", description: "前往 Lodestone，查詢各個伺服器的角色創建狀態。", keywords: "FFXIV FF14 Lodestone world status 伺服器 狀態 維護", url: "https://jp.finalfantasyxiv.com/lodestone/worldstatus/" },
 ];
 const $ = (selector) => document.querySelector(selector);
 const categoryNames = { ragnarok: "仙境傳說", ffxiv: "FFXIV", chronostory: "ChronoStory" };
@@ -43,7 +55,7 @@ function renderNavigation() {
     list.hidden = !expandedMenus.has(filter);
     list.innerHTML = items.length
       ? items.map(tool => `<li>${toolAction(tool, "nav-tool", tool.title + (tool.url ? ' <span aria-hidden="true">↗</span>' : ''))}</li>`).join("")
-      : `<li class="nav-empty">${categoryItems.length ? "沒有符合所選類型的項目" : "該分類下沒有工具"}</li>`;
+      : `<li class="nav-empty">${categoryItems.length ? "沒有符合所選類型的項目" : "該分類下沒有工具或連結"}</li>`;
     const toggle = document.querySelector(`.navigation [data-filter="${filter}"]`);
     toggle.setAttribute("aria-expanded", String(!list.hidden));
   });
@@ -56,6 +68,14 @@ function toast(message) {
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => { $("#toast").hidden = true; }, 3500);
 }
+function renderCard(tool) {
+  return `
+    <article class="tool-card ${tool.url ? "card-link" : "card-tool"}" style="--tone:${tool.tone}">
+      <div class="card-top"><div class="card-identity"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="card-type">${tool.url ? "連結" : "工具"}</span></div><button class="favorite-button" data-favorite="${tool.id}" aria-label="${favorites.has(tool.id) ? "取消收藏" : "收藏"}${tool.title}" aria-pressed="${favorites.has(tool.id)}">${favorites.has(tool.id) ? "★" : "☆"}</button></div>
+      <h3>${tool.title}</h3><p>${tool.description}</p>
+      <div class="card-footer"><span class="category-label">${toolCategoryLabel(tool)}</span>${toolAction(tool, "open-tool", `${tool.url ? "前往網站" : "開啟工具"} <span aria-hidden="true">↗</span>`)}</div>
+    </article>`;
+}
 function renderTools() {
   renderNavigation();
   const query = $("#search").value.trim().toLocaleLowerCase();
@@ -64,12 +84,18 @@ function renderTools() {
     (activeFilter === "all" || (activeFilter === "favorites" ? favorites.has(tool.id) : tool.category === activeFilter)) &&
     [tool.title, tool.description, tool.keywords, toolCategoryLabel(tool)].join(" ").toLocaleLowerCase().includes(query)
   );
-  $("#tool-grid").innerHTML = visible.map(tool => `
-    <article class="tool-card" style="--tone:${tool.tone}">
-      <div class="card-top"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><button class="favorite-button" data-favorite="${tool.id}" aria-label="${favorites.has(tool.id) ? "取消收藏" : "收藏"}${tool.title}" aria-pressed="${favorites.has(tool.id)}">${favorites.has(tool.id) ? "★" : "☆"}</button></div>
-      <h3>${tool.title}</h3><p>${tool.description}</p>
-      <div class="card-footer"><span class="category-label">${toolCategoryLabel(tool)}</span>${toolAction(tool, "open-tool", `${tool.url ? "前往網站" : "開啟工具"} <span aria-hidden="true">↗</span>`)}</div>
-    </article>`).join("");
+  const collapsed = new Set([...$("#tool-grid").querySelectorAll("details:not([open])")].map(group => group.dataset.category));
+  const groups = [...Object.entries(categoryNames), ["general", "通用工具"]];
+  $("#tool-grid").innerHTML = groups.map(([category, label]) => {
+    const items = visible.filter(tool => (tool.category ?? "general") === category);
+    if (!items.length) return "";
+    const toolItems = items.filter(tool => !tool.url);
+    const linkItems = items.filter(tool => tool.url);
+    const renderRow = (entries, type, title) => entries.length
+      ? `<section class="card-section" aria-label="${label}的${title}"><h3 class="card-section-title">${title}<span>${entries.length}</span></h3><div class="tool-grid" data-card-type="${type}">${entries.map(renderCard).join("")}</div></section>`
+      : "";
+    return `<details class="category-group" data-category="${category}" ${collapsed.has(category) ? "" : "open"}><summary><h2>${label}</h2><span class="group-count">${items.length}</span></summary><div class="category-content">${renderRow(toolItems, "tools", "工具")}${renderRow(linkItems, "links", "連結")}</div></details>`;
+  }).join("");
   $("#tools-heading").firstChild.textContent = filterNames[activeFilter] + " ";
   $("#result-count").textContent = visible.length;
   $("#favorite-count").textContent = favorites.size;
@@ -145,17 +171,22 @@ document.addEventListener("keydown", event => {
 $("#year").textContent = new Date().getFullYear();
 
 const dialog = $("#tool-dialog");
-$("#close-dialog").addEventListener("click", () => {
+function closeTool() {
   stopTimer();
   dialog.close();
+}
+$("#close-dialog").addEventListener("click", closeTool);
+// Escape uses the same cleanup as the close button for every tool.
+dialog.addEventListener("cancel", event => {
+  event.preventDefault();
+  closeTool();
 });
-// Only the explicit close button dismisses this tool.
-dialog.addEventListener("cancel", event => event.preventDefault());
 function openTool(id) {
   const tool = tools.find(item => item.id === id);
   if (!tool || tool.url) return;
   $("#dialog-title").textContent = tool.title;
   $("#dialog-category").textContent = toolCategoryLabel(tool);
+  dialog.classList.toggle("dialog-wide", id === "ragnarok-glacier-weapon");
   renderers[id]();
   dialog.showModal();
 }
@@ -288,5 +319,5 @@ function renderTimer() {
 }
 window.addEventListener("pagehide", stopTimer);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) tickTimer(); });
-const renderers = { "ragnarok-timer": renderTimer };
+const renderers = { "ragnarok-timer": renderTimer, "ragnarok-glacier-weapon": renderGlacierWeapon };
 renderTools();
