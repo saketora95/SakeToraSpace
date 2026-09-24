@@ -67,6 +67,27 @@ dialog{width:min(520px,calc(100% - 32px));max-height:calc(100dvh - 40px);backgro
 dialog.dialog-wide{width:min(960px,calc(100% - 32px))}
 .glacier-help{margin:0;text-align:right}
 .glacier-actions{justify-content:flex-end}
+.reform-actions{justify-content:flex-end}
+.reform-prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(max-width:480px){.reform-prices{grid-template-columns:1fr}}
+.reform-help{margin:0}
+.reform-messages{display:grid;gap:6px}
+.reform-warning{color:var(--accent)}
+.reform-table-scroll{min-width:0;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.reform-table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.reform-table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}
+.reform-table th,.reform-table td{padding:12px;text-align:right;border-top:1px solid var(--line)}
+.reform-table th:first-child,.reform-table td:first-child{text-align:left}
+.reform-formula{display:block;white-space:normal;min-width:210px;max-width:280px;margin-top:5px;color:var(--muted);font-size:11px;font-weight:400}
+.reform-quick-table th:nth-child(2),.reform-quick-table td:nth-child(2){text-align:center}
+.reform-quick-table .field{justify-items:center}
+.reform-table thead{background:#241b20;color:var(--muted)}
+.reform-table tbody th{font-weight:400}
+.reform-table tbody tr:nth-child(even){background:#ffffff03}
+.reform-table input{min-width:90px;width:110px;text-align:right}
+.reform-table output{color:var(--accent);font-variant-numeric:tabular-nums}
+.reform-table input[aria-invalid="true"],.reform-prices input[aria-invalid="true"]{border-color:var(--accent)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .glacier-prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .glacier-table-scroll{min-width:0;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
 .glacier-table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}

@@ -7,9 +7,10 @@
   <meta name="description" content="SakeTora Space — 收集遊戲與生活中剛剛好的小工具。">
   <title>SakeTora Space · 日常工具箱</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./glacier-weapon.js" defer></script>
-  <script src="./app.js" defer></script>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <script src="./assets/js/tools/ragnarok/glacier-weapon.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/reform-material.js" defer></script>
+  <script src="./assets/js/app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -18,7 +19,7 @@
     <div class="nav-label">WORKSPACE</div>
     <button id="navigation-toggle" class="secondary-button" aria-expanded="false" aria-controls="tool-navigation">工具選單 ☰</button>
     <nav id="tool-navigation" aria-label="工具分類" class="navigation">
-      <div class="nav-group"><button class="nav-item" data-filter="all" aria-pressed="false"><span aria-hidden="true">▦</span>所有工具<span class="nav-count" id="all-tool-count">13</span></button></div>
+      <div class="nav-group"><button class="nav-item" data-filter="all" aria-pressed="false"><span aria-hidden="true">▦</span>所有工具<span class="nav-count" id="all-tool-count">14</span></button></div>
       <div class="nav-group"><button class="nav-item" data-filter="favorites" aria-pressed="false" aria-expanded="false" aria-controls="submenu-favorites"><span aria-hidden="true">☆</span>我的收藏<span class="nav-count" id="favorite-count">0</span><span class="nav-chevron" aria-hidden="true">›</span></button><ul id="submenu-favorites" class="nav-submenu" data-submenu="favorites" hidden></ul></div>
       <div class="nav-group"><button class="nav-item" data-filter="ragnarok" aria-pressed="false" aria-expanded="false" aria-controls="submenu-ragnarok"><span aria-hidden="true">◇</span>仙境傳說<span class="nav-chevron" aria-hidden="true">›</span></button><ul id="submenu-ragnarok" class="nav-submenu" data-submenu="ragnarok" hidden></ul></div>
       <div class="nav-group"><button class="nav-item" data-filter="ffxiv" aria-pressed="false" aria-expanded="false" aria-controls="submenu-ffxiv"><span aria-hidden="true">◇</span>FFXIV<span class="nav-chevron" aria-hidden="true">›</span></button><ul id="submenu-ffxiv" class="nav-submenu" data-submenu="ffxiv" hidden></ul></div>
@@ -30,7 +31,7 @@
     <header class="topbar"><span><span class="muted">我的空間</span><span class="breadcrumb">/</span>工具箱</span><span class="local-badge"><span class="status-dot"></span>在你的瀏覽器裡運作</span></header>
     <main id="main">
       <section id="toolbox" class="toolbox" aria-labelledby="tools-heading">
-        <div class="section-top"><div><div class="eyebrow muted">THE TOOL COLLECTION</div><h1 id="tools-heading">所有工具 <span id="result-count">13</span></h1></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜尋工具或關鍵字…" aria-label="搜尋工具"><kbd>/</kbd></label></div>
+        <div class="section-top"><div><div class="eyebrow muted">THE TOOL COLLECTION</div><h1 id="tools-heading">所有工具 <span id="result-count">14</span></h1></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜尋工具或關鍵字…" aria-label="搜尋工具"><kbd>/</kbd></label></div>
         <div class="filter-row"><div class="filter-tabs" role="group" aria-label="篩選工具"><button data-filter="all" class="filter-tab active" aria-pressed="true">全部</button><button data-filter="favorites" class="filter-tab" aria-pressed="false">我的收藏</button><button data-filter="ragnarok" class="filter-tab" aria-pressed="false">仙境傳說</button><button data-filter="ffxiv" class="filter-tab" aria-pressed="false">FFXIV</button><button data-filter="chronostory" class="filter-tab" aria-pressed="false">ChronoStory</button></div><span class="filter-hint">剛剛好的功能，隨手就能用</span></div>
         <div class="type-filters" role="group" aria-label="顯示類型">
           <span>顯示類型</span>
