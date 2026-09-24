@@ -6,6 +6,7 @@ const tools = [
   { id: "ragnarok-timer", title: "倒數計時", category: "ragnarok", icon: "◷", tone: "#ed9b9f", description: "一個簡單的倒數計時器，讓安排時間變得更方便。", keywords: "RO 仙境傳說 倒數 計時 timer" },
   { id: "ragnarok-glacier-weapon", title: "冰晶武器價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "比較購買、升級與兌換成本，即時計算冰晶武器價格。", keywords: "RO 仙境傳說 glacier weapon 冰晶 武器 附魔 雪花 魔石 成本 計算" },
   { id: "ragnarok-reform-material", title: "改造素材價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "依影子神秘金屬單價，換算強化石成本與所需素材數量。", keywords: "RO 仙境傳說 reform 改造 素材 強化石 強化原石 影子神秘金屬 成本 計算" },
+  { id: "ragnarok-grade-material", title: "升階素材價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "依乙太星塵單價與商人折扣，即時計算五種升階素材成本。", keywords: "RO 仙境傳說 grade 升階 素材 乙太 星塵 魔石 天藍寶石 黃寶石 紫寶石 琥珀 低價買入 成本 計算" },
 
   // RO Url
   { id: "ragnarok-tw", title: "twRO 官方網站", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 twRO 臺灣伺服器官方網站。", keywords: "RO 台灣 臺灣 TW 官網 官方網站", url: "https://ro.gnjoy.com.tw/" },
@@ -174,6 +175,7 @@ $("#year").textContent = new Date().getFullYear();
 const dialog = $("#tool-dialog");
 function closeTool() {
   stopTimer();
+  stopLaboratoryTimers();
   dialog.close();
 }
 $("#close-dialog").addEventListener("click", closeTool);
@@ -185,9 +187,10 @@ dialog.addEventListener("cancel", event => {
 function openTool(id) {
   const tool = tools.find(item => item.id === id);
   if (!tool || tool.url) return;
+  stopLaboratoryTimers();
   $("#dialog-title").textContent = tool.title;
   $("#dialog-category").textContent = toolCategoryLabel(tool);
-  dialog.classList.toggle("dialog-wide", ["ragnarok-glacier-weapon", "ragnarok-reform-material"].includes(id));
+  dialog.classList.toggle("dialog-wide", ["ragnarok-glacier-weapon", "ragnarok-reform-material", "ragnarok-grade-material"].includes(id));
   renderers[id]();
   dialog.showModal();
 }
@@ -207,8 +210,10 @@ const timer = { duration: initialDuration, remaining: initialDuration, state: "i
 // A looping two-beep buffer is prepared during the Start gesture. Keep its
 // gain at zero until expiry, so audio does not depend on a later user gesture.
 const alarm = { context: null, source: null, gain: null, generation: 0 };
-async function prepareAlarm() {
-  stopAlarm();
+async function prepareAlarm(targetTimer = timer, targetAlarm = alarm) {
+  const timer = targetTimer;
+  const alarm = targetAlarm;
+  stopAlarm(alarm);
   const generation = alarm.generation;
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -238,7 +243,8 @@ async function prepareAlarm() {
     if (generation === alarm.generation) toast("無法啟用音效，請留意畫面倒數。");
   }
 }
-function stopAlarm() {
+function stopAlarm(targetAlarm = alarm) {
+  const alarm = targetAlarm;
   alarm.generation++;
   if (alarm.source) {
     alarm.source.stop();
@@ -316,9 +322,11 @@ function renderTimer() {
     updateTimerView();
   });
   $("#timer-stop").addEventListener("click", stopTimer);
+  renderLaboratoryTimers();
   updateTimerView();
 }
 window.addEventListener("pagehide", stopTimer);
+window.addEventListener("pagehide", stopLaboratoryTimers);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) tickTimer(); });
-const renderers = { "ragnarok-timer": renderTimer, "ragnarok-glacier-weapon": renderGlacierWeapon, "ragnarok-reform-material": renderReformMaterial };
+const renderers = { "ragnarok-timer": renderTimer, "ragnarok-glacier-weapon": renderGlacierWeapon, "ragnarok-reform-material": renderReformMaterial, "ragnarok-grade-material": renderGradeMaterial };
 renderTools();
