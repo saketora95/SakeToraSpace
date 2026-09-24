@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100e10">
+  <meta name="description" content="仙境傳說簡易取代器，依詞彙、技能與句型規則批次取代文字。">
+  <title>簡易取代器 · SakeTora Space</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/simple-replacer.css">
+  <script src="./assets/js/tools/ragnarok/replacer-data/replaceList.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/replacer-data/replaceRegexList.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/replacer-engine.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/simple-replacer.js" defer></script>
+</head>
+<body class="replacer-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="replacer-header"><a href="./index.html">← 返回工具箱</a><span class="muted">SakeTora Space / 仙境傳說</span></header>
+  <main id="main">
+    <div class="replacer-heading"><div><span class="eyebrow muted">SIMPLE REPLACER</span><h1>簡易取代器</h1></div>
+      <p class="muted">依據設計好的規則，將部分句型與遊戲用詞，取代為中文玩家較容易理解的文字。</p>
+      <p class="muted">此工具並不是一個翻譯工具，僅是一個取代工具，因此對文字的精準度要求更高，而且規則也尚未完全覆蓋所有遊戲用詞，容易出現疏漏，敬請多加留意。</p>
+    </div>
+    <section aria-label="文字取代" class="replacer-panel">
+      <div class="actions"><button id="replace-run" class="primary-button" type="button">執行取代</button><button id="replace-clear" class="secondary-button" type="button">清空文字</button><button id="replace-copy" class="secondary-button" type="button" disabled>複製結果</button></div>
+      <div class="replacer-editors">
+        <label class="field" for="replace-input">輸入原文<textarea id="replace-input" maxlength="200000" spellcheck="false" aria-describedby="replace-count" placeholder="貼上道具說明、技能名稱或更新內容…"></textarea><small id="replace-count">0／200,000 字元</small></label>
+        <label class="field" for="replace-output">取代結果<textarea id="replace-output" readonly spellcheck="false" aria-describedby="replace-stale" placeholder="取代結果會顯示於此"></textarea><small id="replace-stale" role="status" hidden>輸入原文已經變更，目前為舊的取代結果，請重新執行取代。</small></label>
+      </div>
+    </section>
+    <details class="replacer-panel" id="replace-rules">
+      <summary>取代規則清單 <span id="rule-total" class="muted"></span></summary>
+      <div class="replacer-filters"><label class="field" for="rule-type">規則類型<select id="rule-type"><option value="words">詞彙與技能</option><option value="regex">句型規則</option></select></label><label class="field" for="rule-search">搜尋規則<input id="rule-search" type="search" placeholder="搜尋原文或取代文字"></label></div>
+      <div class="replacer-rule-scroll" tabindex="0" role="region" aria-label="規則清單，可捲動"><table><thead><tr><th scope="col">原文／句型</th><th scope="col">取代文字</th></tr></thead><tbody id="rule-rows"></tbody></table></div>
+      <div class="replacer-pagination"><button id="rule-prev" type="button" class="secondary-button">上一頁</button><span id="rule-page" role="status"></span><button id="rule-next" type="button" class="secondary-button">下一頁</button></div>
+    </details>
+    <noscript><p>請啟用 JavaScript 以使用取代功能。</p></noscript>
+    <p class="replacer-copyright">仙境傳說 Ragnarok Online © GRAVITY CO., Ltd. &amp; Lee MyoungJin(studio DTDS). ALL Rights Reserved.</p>
+  </main>
+</body>
+</html>

@@ -38,7 +38,7 @@ function renderGradeMaterial() {
       <label class="field" for="grade-price">乙太星塵
         <input id="grade-price" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="10" required value="${gradeState.price}" aria-describedby="grade-status">
       </label>
-      <label class="grade-merchant" for="grade-merchant"><input id="grade-merchant" type="checkbox" ${gradeState.merchant ? "checked" : ""}>以「低價買入」購入寶石素材</label>
+      <label class="grade-merchant" for="grade-merchant"><input id="grade-merchant" type="checkbox" ${gradeState.merchant ? "checked" : ""}>以「低價買進」購入寶石素材</label>
       <div class="actions reform-actions"><button id="grade-reset" type="button" class="secondary-button">重設為預設值</button></div>
       <div class="reform-table-scroll" tabindex="0" role="region" aria-label="升階素材價格，可左右捲動">
         <table class="reform-table grade-table" aria-label="升階素材單價與升階花費期望值">

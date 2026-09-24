@@ -1,0 +1,17 @@
+.replacer-header{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px max(24px,calc((100% - 1280px)/2));border-bottom:1px solid var(--line)}
+.replacer-header a{color:var(--accent)}
+.replacer-page main{max-width:1328px;padding:28px 24px 40px}
+.replacer-heading{margin-bottom:22px}.replacer-heading h1{margin:4px 0;font-size:30px}.replacer-heading p{margin:8px 0}
+.replacer-panel{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:20px}
+.replacer-editors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;margin-top:16px}
+.replacer-editors textarea{height:clamp(280px,48vh,600px);font-size:14px;line-height:1.8;resize:vertical}
+.replacer-panel summary{cursor:pointer;font-size:16px}.replacer-panel summary span{font-size:12px;margin-left:8px}
+.replacer-filters{display:grid;grid-template-columns:180px 1fr;gap:16px;margin:20px 0 14px}
+.replacer-filters select{font:inherit;color:var(--text);background:#141013;border:1px solid #59424c;padding:10px;border-radius:6px}
+.replacer-rule-scroll{overflow:auto;max-height:480px;border:1px solid var(--line);border-radius:6px}
+.replacer-rule-scroll table{border-collapse:collapse;width:100%;font-size:12px;table-layout:fixed}
+.replacer-rule-scroll th,.replacer-rule-scroll td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere;white-space:pre-wrap}
+.replacer-rule-scroll th{position:sticky;top:0;background:#241b20}.replacer-rule-scroll td:nth-child(2){color:var(--accent)}
+.replacer-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;font-size:12px}
+.replacer-copyright{margin:24px 0 0;color:var(--muted);font-size:12px}
+@media(max-width:700px){.replacer-editors{grid-template-columns:1fr}.replacer-filters{grid-template-columns:1fr}.replacer-page main{padding:20px 16px}.replacer-panel{padding:14px}.replacer-editors textarea{height:300px}.replacer-header{font-size:12px;padding:16px}.replacer-editors textarea,.replacer-filters input,.replacer-filters select{font-size:16px}}

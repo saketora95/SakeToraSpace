@@ -4,9 +4,10 @@
 const tools = [
   // RO Tool
   { id: "ragnarok-timer", title: "倒數計時", category: "ragnarok", icon: "◷", tone: "#ed9b9f", description: "一個簡單的倒數計時器，讓安排時間變得更方便。", keywords: "RO 仙境傳說 倒數 計時 timer" },
+  { id: "ragnarok-simple-replacer", title: "韓文裝備簡易取代器", category: "ragnarok", icon: "⇄", tone: "#ed9b9f", description: "依詞彙、技能名稱與句型規則批次取代文字，於獨立頁面操作。", keywords: "RO 仙境傳說 simple replacer 翻譯 取代 韓文 技能", page: "./simple-replacer.html" },
   { id: "ragnarok-glacier-weapon", title: "冰晶武器價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "比較購買、升級與兌換成本，即時計算冰晶武器價格。", keywords: "RO 仙境傳說 glacier weapon 冰晶 武器 附魔 雪花 魔石 成本 計算" },
   { id: "ragnarok-reform-material", title: "改造素材價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "依影子神秘金屬單價，換算強化石成本與所需素材數量。", keywords: "RO 仙境傳說 reform 改造 素材 強化石 強化原石 影子神秘金屬 成本 計算" },
-  { id: "ragnarok-grade-material", title: "升階素材價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "依乙太星塵單價與商人折扣，即時計算五種升階素材成本。", keywords: "RO 仙境傳說 grade 升階 素材 乙太 星塵 魔石 天藍寶石 黃寶石 紫寶石 琥珀 低價買入 成本 計算" },
+  { id: "ragnarok-grade-material", title: "升階素材價格", category: "ragnarok", icon: "◇", tone: "#ed9b9f", description: "依乙太星塵單價與商人折扣，即時計算五種升階素材成本。", keywords: "RO 仙境傳說 grade 升階 素材 乙太 星塵 魔石 天藍寶石 黃寶石 紫寶石 琥珀 低價買進 成本 計算" },
 
   // RO Url
   { id: "ragnarok-tw", title: "twRO 官方網站", category: "ragnarok", icon: "↗", tone: "#ed9b9f", description: "前往 twRO 臺灣伺服器官方網站。", keywords: "RO 台灣 臺灣 TW 官網 官方網站", url: "https://ro.gnjoy.com.tw/" },
@@ -45,6 +46,7 @@ function matchesType(tool) {
   return $(tool.url ? "#show-links" : "#show-tools").checked;
 }
 function toolAction(tool, className, label) {
+  if (tool.page) return `<a class="${className}" href="${tool.page}" aria-label="開啟${tool.title}">${label}</a>`;
   return tool.url
     ? `<a class="${className}" href="${tool.url}" target="_blank" rel="noopener noreferrer" aria-label="${tool.title}（另開分頁）">${label}</a>`
     : `<button class="${className}" data-open="${tool.id}" aria-label="開啟${tool.title}">${label}</button>`;
