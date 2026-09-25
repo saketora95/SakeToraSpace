@@ -6,18 +6,19 @@
   <meta name="theme-color" content="#202427">
   <meta name="description" content="SakeTora Space — 收集遊戲與生活中剛剛好的小工具。">
   <title>SakeTora Space · 日常工具箱</title>
-  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
   <link rel="stylesheet" href="./assets/css/styles.css">
   <script src="./assets/js/tools/ragnarok/glacier-weapon.js" defer></script>
   <script src="./assets/js/tools/ragnarok/reform-material.js" defer></script>
   <script src="./assets/js/tools/ragnarok/grade-material.js" defer></script>
   <script src="./assets/js/tools/ragnarok/laboratory-timer.js" defer></script>
   <script src="./assets/js/app.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
   <aside class="sidebar">
-    <a class="brand" href="./" aria-label="SakeTora Space 首頁"><span class="brand-mark">S<span>✦</span></span><span>SakeTora<small>SPACE / 個人工具站</small></span></a>
+    <a class="brand" href="./" aria-label="SakeTora Space 首頁"><img class="brand-avatar" src="./assets/favicon.png" alt="" width="44" height="44"><span>SakeTora<small>SPACE / 個人工具站</small></span></a>
     <div class="nav-label">WORKSPACE</div>
     <button id="navigation-toggle" class="secondary-button" aria-expanded="false" aria-controls="tool-navigation">工具選單 ☰</button>
     <nav id="tool-navigation" aria-label="工具分類" class="navigation">
@@ -33,8 +34,18 @@
     <header class="topbar"><span><span class="muted">我的空間</span><span class="breadcrumb">/</span>工具箱</span><span class="local-badge"><span class="status-dot"></span>在你的瀏覽器裡運作</span></header>
     <main id="main">
       <section id="toolbox" class="toolbox" aria-labelledby="tools-heading">
+        <section id="welcome-panel" class="welcome-panel" aria-labelledby="welcome-heading" hidden>
+          <button id="welcome-close" class="welcome-close secondary-button" type="button" aria-label="關閉自我介紹">關閉 ×</button>
+          <img class="welcome-portrait" src="./assets/welcome.png" alt="酒虎舉杯歡迎你" width="1254" height="1254">
+          <div class="welcome-copy">
+            <h2 id="welcome-heading">歡迎你來到這裡，我是酒虎。</h2>
+            <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
+            <p>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。<br>使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
+            <p class="welcome-version">最後更新：2026-09-25 ‧ <span id="welcome-version">v0.01</span></p>
+          </div>
+        </section>
         <div class="section-top"><div><div class="eyebrow muted">THE TOOL COLLECTION</div><h1 id="tools-heading">所有工具 <span id="result-count">14</span></h1></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜尋工具或關鍵字…" aria-label="搜尋工具"><kbd>/</kbd></label></div>
-        <div class="filter-row"><div class="filter-tabs" role="group" aria-label="篩選工具"><button data-filter="all" class="filter-tab active" aria-pressed="true">全部</button><button data-filter="favorites" class="filter-tab" aria-pressed="false">我的收藏</button><button data-filter="ragnarok" class="filter-tab" aria-pressed="false">仙境傳說</button><button data-filter="ffxiv" class="filter-tab" aria-pressed="false">FFXIV</button><button data-filter="chronostory" class="filter-tab" aria-pressed="false">ChronoStory</button></div><span class="filter-hint">剛剛好的功能，隨手就能用</span></div>
+        <div class="filter-row"><div class="filter-tabs" role="group" aria-label="篩選工具"><button data-filter="all" class="filter-tab active" aria-pressed="true">全部</button><button data-filter="favorites" class="filter-tab" aria-pressed="false">我的收藏</button><button data-filter="ragnarok" class="filter-tab" aria-pressed="false">仙境傳說</button><button data-filter="ffxiv" class="filter-tab" aria-pressed="false">FFXIV</button><button data-filter="chronostory" class="filter-tab" aria-pressed="false">ChronoStory</button></div></div>
         <div class="type-filters" role="group" aria-label="顯示類型">
           <span>顯示類型</span>
           <label for="show-tools"><input id="show-tools" type="checkbox" checked>工具</label>
@@ -44,7 +55,10 @@
         <div id="empty-state" class="empty-state" hidden><span aria-hidden="true">⌕</span><h3 id="empty-title">找不到符合的工具</h3><p id="empty-description">換個關鍵字，或看看其他分類吧。</p><button class="secondary-button" id="clear-filters">顯示所有工具</button></div>
         <noscript><p class="notice">請啟用 JavaScript，即可使用搜尋、收藏及所有小工具。</p></noscript>
       </section>
-      <footer><span>© <span id="year">2026</span> SakeTora Space</span><span>為日常留一點餘裕 <span class="accent">✦</span></span></footer>
+      <footer>
+        <div class="footer-info"><span id="site-version" aria-label="網站版本"></span><span>© <span id="year">2026</span> SakeTora Space</span></div>
+        <div class="footer-actions"><button id="welcome-restore" class="secondary-button" type="button" aria-controls="welcome-panel">重新顯示歡迎訊息</button><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></div>
+      </footer>
     </main>
   </div>
   <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>

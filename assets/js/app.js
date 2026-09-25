@@ -27,8 +27,7 @@ const tools = [
   { id: "ffxiv-worldstatus", title: "Lodestone｜伺服器狀態", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 Lodestone，查詢 FFXIV 各個伺服器的角色創建狀態。", keywords: "FFXIV FF14 Lodestone world status 伺服器 狀態 維護", url: "https://jp.finalfantasyxiv.com/lodestone/worldstatus/" },
 
   // ChronoStory Tool
-  { id: "chronostory-drop-search", title: "道具與魔物查詢", category: "chronostory", icon: "⌕", tone: "var(--accent)", description: "依名稱搜尋道具或魔物，查看裝備效果、掉落來源與掉落率，於獨立頁面操作。", keywords: "ChronoStory 魔物 怪物 道具 掉落 裝備 卷軸 查詢 drop item monster", page: "./chronostory-drops.html#items" },
-  { id: "chronostory-monster-drops", title: "魔物掉落查詢", category: "chronostory", icon: "⌕", tone: "var(--accent)", description: "先選擇地區，再選擇魔物，查看掉落道具、裝備效果與掉落率。", keywords: "ChronoStory 魔物 怪物 地區 掉落 清單 region monster drops", page: "./chronostory-drops.html#regions" },
+  { id: "chronostory-drop-search", title: "魔物掉落道具查詢", category: "chronostory", icon: "⌕", tone: "var(--accent)", description: "依名稱搜尋道具或魔物，查看裝備效果、掉落來源與掉落率，於獨立頁面操作。", keywords: "ChronoStory 魔物 怪物 道具 掉落 裝備 卷軸 查詢 drop item monster", page: "./chronostory-drops.html#regions" },
   { id: "chronostory-job-info", title: "轉職資訊", category: "chronostory", icon: "◇", tone: "var(--accent)", description: "查詢一至四轉條件、轉職流程與地點，以及三轉考試題庫與四轉道具取得方式。", keywords: "ChronoStory 轉職 職業 一轉 二轉 三轉 四轉 劍士 法師 弓箭手 盜賊 海盜 job advancement" },
 
   // ChronoStory Url
@@ -42,6 +41,27 @@ const storage = {
   read(key, fallback) { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } },
   write(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } },
 };
+function initializeWelcomePanel() {
+  const panel = $("#welcome-panel");
+  const version = $("#welcome-version").textContent.trim();
+  $("#site-version").textContent = version;
+  const storageKey = "saketora.welcome.dismissedVersion";
+  panel.hidden = storage.read(storageKey, "") === version;
+  $("#welcome-close").addEventListener("click", () => {
+    storage.write(storageKey, version);
+    panel.hidden = true;
+    $("#search").focus({ preventScroll: true });
+  });
+  $("#welcome-restore").addEventListener("click", () => {
+    storage.write(storageKey, "");
+    panel.hidden = false;
+    $("#welcome-close").focus({ preventScroll: true });
+    panel.scrollIntoView({ block: "start" });
+  });
+}
+initializeWelcomePanel();
+
+
 let favorites = new Set();
 try {
   const saved = JSON.parse(storage.read("saketora.favorites", "[]"));
@@ -353,10 +373,26 @@ function renderChronostoryJobInfo() {
   const firstInstructorLocations = renderLocations(firstJobs.map(job => job.location));
   const secondInstructorLocations = renderLocations(["西部岩山 IV", "魔法森林北部", "迷宮通道", "北方工地", "鯨魚號（上層右側）"]);
   const dimensionDoorLocations = renderLocations(["螞蟻礦坑", "巫婆森林 II", "森林迷宮 V", "猴子沼澤 II", "火獨眼獸洞穴 II"]);
-  const locationStep = (label, locations) => `<details class="job-location-details"><summary>${label} <span class="job-location-toggle"><span class="job-location-show">展開地點</span><span class="job-location-hide">收合地點</span></span></summary>${locations}</details>`;
+  const jobTranslations = [
+    ["劍士 Warrior", "狂戰士 Fighter", "十字軍 Crusader", "英雄 Hero"],
+    ["劍士 Warrior", "見習騎士 Page", "騎士 White Knight", "聖騎士 Paladin"],
+    ["劍士 Warrior", "槍騎兵 Spearman", "龍騎士 Dragon Knight", "黑騎士 Dark Knight"],
+    ["法師 Magician", "火毒巫師 Wizard (Fire, Poison)", "火毒魔導士 Mage (Fire, Poison)", "火毒大魔導 Archmage (Fire, Poison)"],
+    ["法師 Magician", "冰雷巫師 Wizard (Ice, Lightning)", "冰雷魔導士 Mage (Ice, Lightning)", "冰雷大魔導 Archmage (Ice, Lightning)"],
+    ["法師 Magician", "僧侶 Cleric", "祭司 Priest", "主教 Bishop"],
+    ["弓箭手 Bowman", "獵人 Hunter", "遊俠 Ranger", "箭神 Bowmaster"],
+    ["弓箭手 Bowman", "弩弓手 Crossbowman", "狙擊手 Sniper", "神射手 Marksman"],
+    ["盜賊 Thief", "刺客 Assassin", "暗殺者 Hermit", "夜使者 Night Lord"],
+    ["盜賊 Thief", "俠盜 Bandit", "神偷 Chief Bandit", "暗影神偷 Shadower"],
+    ["海盜 Pirate", "打手 Brawler", "格鬥家 Marauder", "拳霸 Buccaneer"],
+    ["海盜 Pirate", "槍手 Gunslinger", "神槍手 Outlaw", "槍神 Corsair"],
+  ];
+  const locationStep = (label, locations, expanded = false) => `<details class="job-location-details"${expanded ? " open" : ""}><summary>${label} <span class="job-location-toggle"><span class="job-location-show">展開地點</span><span class="job-location-hide">收合地點</span></span></summary>${locations}</details>`;
   $("#tool-content").innerHTML = `<div class="job-info">
-    <details>
-      <summary>一轉（等級 10；法師等級 8）</summary>
+    <p class="job-stage-placeholder">請選擇左側轉職階段，查看條件與步驟。</p>
+    <details name="job-stage" class="job-stage">
+      <summary id="job-stage-1">一轉</summary>
+      <div class="job-stage-content" role="region" aria-labelledby="job-stage-1" tabindex="0">
       <div class="job-table-scroll" role="region" aria-label="一轉條件與轉職地點" tabindex="0">
         <table class="job-table">
           <caption class="sr-only">一轉條件與轉職地點</caption>
@@ -364,23 +400,43 @@ function renderChronostoryJobInfo() {
           <tbody>${firstJobs.map(job => `<tr><th scope="row">${job.name}</th><td>${job.level}</td><td>${job.stat} ${job.requirement}</td><td>${job.location}</td></tr>`).join("")}</tbody>
         </table>
       </div>
+      </div>
     </details>
-    <details>
-      <summary>二轉（等級 30）</summary>
+    <details name="job-stage" class="job-stage">
+      <summary id="job-stage-2">二轉</summary>
+      <div class="job-stage-content" role="region" aria-labelledby="job-stage-2" tabindex="0">
+      <p class="job-level">等級需求：30</p>
       <ol class="job-steps">
         <li>${locationStep("找尋一轉轉職教官", firstInstructorLocations)}</li>
-        <li>${locationStep("找尋二轉轉職教官", secondInstructorLocations)}</li>
+        <li>${locationStep("找尋二轉轉職教官", secondInstructorLocations, true)}</li>
         <li>打倒轉職地圖的魔物，蒐集黑珠 <strong>30 顆</strong>。</li>
         <li>交付黑珠給二轉轉職教官，取得英雄的證明。</li>
         <li>找尋一轉轉職教官，交付英雄的證明並進行二轉。</li>
       </ol>
+      <div class="job-table-scroll" role="region" aria-label="職業名稱翻譯清單" tabindex="0">
+        <table class="job-table job-translation-table">
+          <caption>職業名稱翻譯清單</caption>
+          <thead><tr><th scope="col">一轉</th><th scope="col">二轉</th><th scope="col">三轉</th><th scope="col">四轉</th></tr></thead>
+          ${[...new Set(jobTranslations.map(jobs => jobs[0]))].map(firstJob => {
+            const paths = jobTranslations.filter(jobs => jobs[0] === firstJob);
+            const formatJob = job => {
+              const separator = job.indexOf(" ");
+              return `${job.slice(0, separator)}<br><span class="muted" lang="en">${job.slice(separator + 1)}</span>`;
+            };
+            return `<tbody>${paths.map((jobs, index) => `<tr>${index === 0 ? `<th scope="rowgroup" rowspan="${paths.length}">${formatJob(firstJob)}</th>` : ""}${jobs.slice(1).map(job => `<td>${formatJob(job)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+          }).join("")}
+        </table>
+      </div>
+      </div>
     </details>
-    <details>
-      <summary>三轉（等級 70）</summary>
+    <details name="job-stage" class="job-stage">
+      <summary id="job-stage-3">三轉</summary>
+      <div class="job-stage-content" role="region" aria-labelledby="job-stage-3" tabindex="0">
+      <p class="job-level">等級需求：70</p>
       <ol class="job-steps">
         <li>準備至少 <strong>1 顆黑暗水晶</strong>，用於後續雪原聖地的考試。</li>
         <li>${locationStep("找尋一轉轉職教官", firstInstructorLocations)}</li>
-        <li>${locationStep("找尋次元之門", dimensionDoorLocations)}</li>
+        <li>${locationStep("找尋次元之門", dimensionDoorLocations, true)}</li>
         <li>進入次元之門，打倒一轉轉職教官分身並取得黑符。</li>
         <li>找尋一轉轉職教官，交付黑符並取得力量項鍊。</li>
         <li>找尋三轉轉職教官。</li>
@@ -390,9 +446,12 @@ function renderChronostoryJobInfo() {
         </li>
         <li>找尋三轉轉職教官，交付力量項鍊與智慧項鍊並進行三轉。</li>
       </ol>
+      </div>
     </details>
-    <details>
-      <summary>四轉（等級 120）</summary>
+    <details name="job-stage" class="job-stage">
+      <summary id="job-stage-4">四轉</summary>
+      <div class="job-stage-content" role="region" aria-labelledby="job-stage-4" tabindex="0">
+      <p class="job-level">等級需求：120</p>
       <ol class="job-steps">
         <li>前往冰原雪域，找尋三轉轉職教官。</li>
         <li>前往神木村的賢者之森，找尋四轉轉職教官。</li>
@@ -416,6 +475,7 @@ function renderChronostoryJobInfo() {
         </li>
         <li>找尋四轉轉職教官，交付英雄五角勳章與英雄星型墜飾並進行四轉。</li>
       </ol>
+      </div>
     </details>
   </div>`;
 }

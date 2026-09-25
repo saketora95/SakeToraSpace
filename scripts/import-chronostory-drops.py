@@ -18,8 +18,16 @@ from zipfile import ZipFile
 SOURCE_URL = "https://docs.google.com/spreadsheets/d/1Wj4P9_RNcUoW8xgC0yZy5WGqFDurZLZjNzknTdODA1U/edit"
 NS = {"s": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-EXCLUDED = {"注意事項", "四轉流程"}
-EQUIPMENT_SHEETS = {"劍士", "法師 (四速)", "法師 (五速)", "弓箭手", "盜賊 (力幸)", "盜賊 (敏幸)", "海盜"}
+EXCLUDED = {"注意事項", "四轉流程", "法師 (四速)"}
+EQUIPMENT_SHEETS = {"劍士", "法師 (五速)", "弓箭手", "盜賊 (力幸)", "盜賊 (敏幸)", "海盜"}
+SHEET_LABELS = {"法師 (五速)": "法師"}
+CATEGORY_REFERENCE_SHEETS = {"法師 (四速)"}
+EXCLUDED_ITEMS = {
+    "魔靈之翼", "2nd 不速之客法師盾牌", "紅神聖之冠", "藍神聖之冠",
+    "藍天上之衣(男)", "紅天上之衣(男)", "褐天上之衣(男)", "黑天上之衣(男)",
+    "藍天上之衣(女)", "紅天上之衣(女)", "褐天上之衣(女)", "黑天上之衣(女)",
+    "黑戰魂手套", "藍水晶涼鞋", "紅水晶涼鞋", "褐水晶涼鞋", "金水晶涼鞋",
+}
 SCROLL_SHEETS = {"武器卷軸", "防具卷軸"}
 
 
@@ -85,6 +93,21 @@ def format_stats(value):
     return "、".join(parts)
 
 
+def parse_elements(value):
+    effects = []
+    for token in clean(value).split():
+        match = re.fullmatch(r"(.*?)(弱|抗)([火冰雷毒聖]+)", token)
+        if not match:
+            raise ValueError(f"Unrecognized element effect: {token}")
+        qualifier, effect, elements = match.groups()
+        for element in elements:
+            record = {"element": element, "damageEffect": "increase" if effect == "弱" else "decrease"}
+            if qualifier:
+                record["qualifier"] = qualifier
+            append_unique(effects, record)
+    return effects
+
+
 def read_workbook(path):
     """Read cached cell values, expanding only vertical merges (category labels)."""
     sheets = {}
@@ -98,9 +121,9 @@ def read_workbook(path):
         workbook = ET.fromstring(archive.read("xl/workbook.xml"))
         for sheet in workbook.findall("s:sheets/s:sheet", NS):
             name = sheet.get("name")
-            if name in EXCLUDED:
+            if name in EXCLUDED and name not in CATEGORY_REFERENCE_SHEETS:
                 continue
-            if name not in EQUIPMENT_SHEETS | SCROLL_SHEETS | {"後期簡表"}:
+            if name not in EQUIPMENT_SHEETS | SCROLL_SHEETS | CATEGORY_REFERENCE_SHEETS | {"後期簡表"}:
                 raise ValueError(f"Unexpected sheet: {name}; review its layout before importing")
             target = relationships[sheet.get(f"{{{REL_NS}}}id")]
             member = target.lstrip("/") if target.startswith("/") else posixpath.normpath("xl/" + target)
@@ -122,13 +145,25 @@ def read_workbook(path):
                     for row in range(int(start) + 1, int(end) + 1):
                         cells[f"{col}{row}"] = cells[first]
             sheets[name] = cells
-    expected = EQUIPMENT_SHEETS | SCROLL_SHEETS | {"後期簡表"}
+    expected = EQUIPMENT_SHEETS | SCROLL_SHEETS | CATEGORY_REFERENCE_SHEETS | {"後期簡表"}
     if set(sheets) != expected:
         raise ValueError(f"Missing sheets: {expected - set(sheets)}")
     return sheets
 
 
 def compile_data(sheets, imported_on, source_hash):
+    # Excluded builds may supply category labels only, never stats or drops.
+    category_lookup = {}
+    def category_key(name, job):
+        return (job, re.sub(r"\([男女]\)$", "", clean(name)))
+    for sheet, cells in sheets.items():
+        if sheet not in EQUIPMENT_SHEETS | CATEGORY_REFERENCE_SHEETS:
+            continue
+        job = sheet.split(" (")[0]
+        for coord, name in cells.items():
+            if re.fullmatch(r"D\d+", coord) and cells.get("C" + coord[1:]):
+                category_lookup.setdefault(category_key(name, job), set()).add(clean(cells["C" + coord[1:]]))
+    sheets = {SHEET_LABELS.get(name, name): cells for name, cells in sheets.items() if name not in EXCLUDED}
     items, monsters, drops = {}, {}, {}
 
     def item_record(name, kind, category, job):
@@ -153,7 +188,7 @@ def compile_data(sheets, imported_on, source_hash):
         name = re.sub(r"^B\s+", "", name)
         key = identifier("monster", name)
         monster = monsters.setdefault(key, {"id": key, "name": name, "boss": False,
-                                           "regions": [], "elements": []})
+                                           "regions": [], "summaryRegions": [], "elements": []})
         monster["boss"] |= boss
         append_unique(monster["regions"], region)
         return monster
@@ -191,7 +226,7 @@ def compile_data(sheets, imported_on, source_hash):
                 variant["successPercent"] = int(match[1])
             else:
                 variant.update({"job": job, "build": expand_build(sheet),
-                                "requirement": {"type": "luk" if sheet == "法師 (四速)" else "level",
+                                "requirement": {"type": "level",
                                                 "value": number(cells.get(f"E{row}", ""))},
                                 "totalMaxStats": expand_build(display_number(cells.get(f"F{row}", "")))})
             append_unique(item["variants"], variant)
@@ -212,6 +247,7 @@ def compile_data(sheets, imported_on, source_hash):
     # Keep supplemental game values, without spreadsheet coordinates or raw cells.
     sheet = "後期簡表"
     cells = sheets[sheet]
+    summary = []
     jobs = dict(zip("EFGHI", ["劍士", "法師", "弓箭手", "盜賊", "海盜"]))
     rows = sorted(int(c[1:]) for c in cells if re.fullmatch(r"C\d+", c))
     for row in rows:
@@ -220,8 +256,11 @@ def compile_data(sheets, imported_on, source_hash):
             continue
         region = clean(cells[f"B{row}"])
         monster = monster_record(name, region)
+        append_unique(monster["summaryRegions"], region)
+        append_unique(summary, {"region": region, "monsterId": monster["id"]})
         if cells.get(f"D{row}"):
-            append_unique(monster["elements"], {"text": clean(cells[f"D{row}"])})
+            for effect in parse_elements(cells[f"D{row}"]):
+                append_unique(monster["elements"], effect)
         for col in "EFGHIJK":
             coord = f"{col}{row}"
             for line in cells.get(coord, "").splitlines():
@@ -249,14 +288,26 @@ def compile_data(sheets, imported_on, source_hash):
                         append_unique(item["summaryNotes"], {"stats": format_stats(match[2])})
                 add_drop(item, monster, region, None)
 
-    return {"schemaVersion": 2,
+    for key, item in list(items.items()):
+        if item["kind"] != "equipment":
+            continue
+        if item["name"] in EXCLUDED_ITEMS:
+            del items[key]
+            continue
+        if not item["categories"]:
+            categories = set().union(*(category_lookup.get(category_key(item["name"], job), set()) for job in item["jobs"]))
+            if len(categories) == 1:
+                item["categories"] = sorted(categories)
+    drops = {key: drop for key, drop in drops.items() if drop["itemId"] in items}
+
+    return {"schemaVersion": 3,
             "source": {"url": SOURCE_URL, "importedOn": imported_on, "sha256": source_hash,
                        "sheets": list(sheets), "excludedSheets": sorted(EXCLUDED),
                        "notes": ["僅收錄原試算表整理的裝備、卷軸與掉落，並非完整遊戲資料庫。",
                                  "空白掉落欄位表示原表未記載來源，不代表不會掉落。",
                                  "防具卷軸分頁註明：除了飾品卷軸，不列入 Boss 掉落。",
-                                 "等級、屬性、地區與機率差異保留於各筆資料，不推測修正。",
-                                 "法師 (四速) 的需求欄為幸運需求，不是裝備等級。"]},
+                                 "等級、屬性、地區與機率差異保留於各筆資料，不推測修正。"]},
+            "summary": summary,
             "items": list(items.values()), "monsters": list(monsters.values()), "drops": list(drops.values())}
 
 
@@ -265,7 +316,7 @@ def write_data(data, output):
     encode = lambda value: json.dumps(value, ensure_ascii=False, separators=(",", ":"))
     lines = ['"use strict";', '// Generated by scripts/import-chronostory-drops.py; edit the importer to regenerate.',
              'window.chronoStoryDropData = {', f'  "schemaVersion": {data["schemaVersion"]},', f'  "source": {encode(data["source"])},']
-    for key in ("items", "monsters", "drops"):
+    for key in ("summary", "items", "monsters", "drops"):
         lines.append(f'  "{key}": [')
         lines.append(",\n".join("    " + encode(record) for record in data[key]))
         lines.append("  ]" + ("," if key != "drops" else ""))
