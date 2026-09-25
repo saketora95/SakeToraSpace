@@ -4,25 +4,27 @@
 const tools = [
   // RO Tool
   { id: "ragnarok-timer", title: "倒數計時", category: "ragnarok", icon: "◷", tone: "var(--accent)", description: "一個簡單的倒數計時器，讓安排時間變得更方便。", keywords: "RO 仙境傳說 倒數 計時 timer" },
-  { id: "ragnarok-simple-replacer", title: "韓文裝備簡易取代器", category: "ragnarok", icon: "⇄", tone: "var(--accent)", description: "依詞彙、技能名稱與句型規則批次取代文字，於獨立頁面操作。", keywords: "RO 仙境傳說 simple replacer 翻譯 取代 韓文 技能", page: "./simple-replacer.html" },
-  { id: "ragnarok-glacier-weapon", title: "冰晶武器價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "比較購買、升級與兌換成本，即時計算冰晶武器價格。", keywords: "RO 仙境傳說 glacier weapon 冰晶 武器 附魔 雪花 魔石 成本 計算" },
-  { id: "ragnarok-reform-material", title: "改造素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依影子神秘金屬單價，換算強化石成本與所需素材數量。", keywords: "RO 仙境傳說 reform 改造 素材 強化石 強化原石 影子神秘金屬 成本 計算" },
-  { id: "ragnarok-grade-material", title: "升階素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依乙太星塵單價與商人折扣，即時計算五種升階素材成本。", keywords: "RO 仙境傳說 grade 升階 素材 乙太 星塵 魔石 天藍寶石 黃寶石 紫寶石 琥珀 低價買進 成本 計算" },
+  { id: "ragnarok-simple-replacer", title: "韓文裝備簡易取代器", category: "ragnarok", icon: "⇄", tone: "var(--accent)", description: "依詞彙、技能名稱與句型規則，批次取代韓文的裝備或卡片到距說明。", keywords: "RO 仙境傳說 simple replacer 翻譯 取代 韓文 技能", page: "./simple-replacer.html" },
+  { id: "ragnarok-glacier-weapon", title: "冰晶武器價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依各項素材的單價，比較購買、升級與兌換成本，即時計算冰晶武器價格。", keywords: "RO 仙境傳說 glacier weapon 冰晶 武器 附魔 雪花 魔石 成本 計算" },
+  { id: "ragnarok-reform-material", title: "改造素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依影子神秘金屬的單價，換算強化石成本與所需素材數量。", keywords: "RO 仙境傳說 reform 改造 素材 強化石 強化原石 影子神秘金屬 成本 計算" },
+  { id: "ragnarok-grade-material", title: "升階素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依乙太星塵單價與低價買進折扣，計算階級提升的成本。", keywords: "RO 仙境傳說 grade 升階 素材 乙太 星塵 魔石 天藍寶石 黃寶石 紫寶石 琥珀 低價買進 成本 計算" },
 
   // RO Url
-  { id: "ragnarok-tw", title: "twRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 twRO 臺灣伺服器官方網站。", keywords: "RO 台灣 臺灣 TW 官網 官方網站", url: "https://ro.gnjoy.com.tw/" },
+  { id: "ragnarok-twro", title: "twRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 twRO 臺灣伺服器官方網站。", keywords: "RO 台灣 臺灣 TW 官網 官方網站", url: "https://ro.gnjoy.com.tw/" },
+  { id: "ragnarok-shop-search", title: "twRO 露天商店查詢平台", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 twRO 官方露天商店查詢平台，查詢販售、收購與歷史成交紀錄。", keywords: "RO 仙境傳說 twRO 露天 商店 販售 收購 成交 紀錄 價格 查詢", url: "https://event.gnjoy.com.tw/Ro/RoShopSearch" },
+  { id: "ragnarok-item-search", title: "twRO 裝備道具查詢平台", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 twRO 官方裝備道具查詢平台，查詢道具說明與裝備資訊。", keywords: "RO 仙境傳說 twRO 裝備 道具 物品 說明 查詢", url: "https://event.gnjoy.com.tw/Ro/RoItemSearch" },
   { id: "ragnarok-website", title: "kRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 kRO 韓國伺服器官方網站。", keywords: "RO 韓國 KR kRO 官網 官方網站", url: "https://ro.gnjoy.com/" },
-  { id: "ragnarok-jp", title: "jRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 jRO 日本伺服器官方網站。", keywords: "RO 日本 JP jRO 官網 官方網站", url: "https://ragnarokonline.gungho.jp/" },
+  { id: "ragnarok-jpro", title: "jRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 jRO 日本伺服器官方網站。", keywords: "RO 日本 JP jRO 官網 官方網站", url: "https://ragnarokonline.gungho.jp/" },
   { id: "ragnarok-iro", title: "iRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 iRO 國際伺服器官方網站。", keywords: "RO 國際 iRO 官網 官方網站", url: "https://renewal.playragnarok.com/" },
-  { id: "ragnarok-th", title: "thRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 thRO 泰國伺服器官方網站。", keywords: "RO 泰國 TH thRO 官網 官方網站", url: "https://ro.gnjoy.in.th/home/" },
+  { id: "ragnarok-thro", title: "thRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 thRO 泰國伺服器官方網站。", keywords: "RO 泰國 TH thRO 官網 官方網站", url: "https://ro.gnjoy.in.th/home/" },
   { id: "ragnarok-divine-pride", title: "Divine Pride", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 Divine Pride 網站，瀏覽各國的資料與解檔資訊。", keywords: "RO 仙境傳說 DP Divine Pride divine-pride", url: "https://www.divine-pride.net/" },
   { id: "ragnarok-calculator", title: "ROCalculator", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 Landgris 大大所製作的 ROCalculator，精準計算 RO 的傷害。", keywords: "RO 仙境傳說 ROCalculator Landgris 計算機 計算器", url: "https://landgris.github.io/ROCalculator/" },
 
   // FFXIV Url
-  { id: "ffxiv-wiki", title: "灰機｜FFXIV 中文 Wiki", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 FF14 灰機 Wiki 首頁，查詢遊戲內各項資訊。", keywords: "FFXIV FF14 灰機 灰机 Wiki 百科 攻略", url: "https://ff14.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5" },
-  { id: "ffxiv-paissa", title: "Paissa｜FFXIV 住宅狀況", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 Paissa，確認所屬世界的住宅狀態。", keywords: "FFXIV FF14 Paissa 房屋 住宅 空地 查詢", url: "https://zhu.codes/paissa?world=50&sort=size:2" },
+  { id: "ffxiv-wiki", title: "灰機｜FFXIV 中文 Wiki", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 FFXIV 灰機 Wiki 首頁，查詢遊戲內各項資訊。", keywords: "FFXIV FF14 灰機 灰机 Wiki 百科 攻略", url: "https://ff14.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5" },
+  { id: "ffxiv-paissa", title: "Paissa｜FFXIV 住宅狀況", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 Paissa，查詢 FFXIV 所屬世界的住宅狀態。", keywords: "FFXIV FF14 Paissa 房屋 住宅 空地 查詢", url: "https://zhu.codes/paissa?world=50&sort=size:2" },
   { id: "ffxiv-gearsets", title: "Eorzea Collection｜FFXIV 裝備外觀預覽", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 Eorzea Collection，預覽遊戲內各個套裝的外觀。", keywords: "FFXIV FF14 Eorzea Collection gearsets 裝備 套裝 幻化 外觀", url: "https://ffxiv.eorzeacollection.com/gearsets" },
-  { id: "ffxiv-worldstatus", title: "Lodestone｜伺服器狀態", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 Lodestone，查詢各個伺服器的角色創建狀態。", keywords: "FFXIV FF14 Lodestone world status 伺服器 狀態 維護", url: "https://jp.finalfantasyxiv.com/lodestone/worldstatus/" },
+  { id: "ffxiv-worldstatus", title: "Lodestone｜伺服器狀態", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 Lodestone，查詢 FFXIV 各個伺服器的角色創建狀態。", keywords: "FFXIV FF14 Lodestone world status 伺服器 狀態 維護", url: "https://jp.finalfantasyxiv.com/lodestone/worldstatus/" },
 
   // ChronoStory Tool
   { id: "chronostory-drop-search", title: "道具與魔物查詢", category: "chronostory", icon: "⌕", tone: "var(--accent)", description: "依名稱搜尋道具或魔物，查看裝備效果、掉落來源與掉落率，於獨立頁面操作。", keywords: "ChronoStory 魔物 怪物 道具 掉落 裝備 卷軸 查詢 drop item monster", page: "./chronostory-drops.html#items" },
