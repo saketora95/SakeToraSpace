@@ -16,6 +16,8 @@
 .drop-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,2fr);gap:12px;align-items:end}
 .drop-region-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .drop-controls.drop-filters-only{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:16px}
+.drop-job-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px;align-items:end}
+.drop-controls.drop-job-name{grid-template-columns:minmax(0,1fr)}
 .drop-search .field{min-width:0}
 .drop-search select{width:100%;min-width:0;border:1px solid var(--control-line);border-radius:6px;background:var(--panel);padding:10px;color:var(--text);font:inherit}
 .drop-search select:disabled{opacity:.5}

@@ -14,7 +14,7 @@ function node(selector) {
   });
   return nodes.get(selector);
 }
-const modes = ['regions', 'items'].map(mode => Object.assign(node(mode), { dataset: { mode } }));
+const modes = ['regions', 'items', 'jobs'].map(mode => Object.assign(node(mode), { dataset: { mode } }));
 const root = { innerHTML: '', querySelector: node, querySelectorAll: selector => selector === '[data-mode]' ? modes : [] };
 const location = { hash: '' };
 const windowListeners = {};
@@ -155,7 +155,20 @@ assert(compare(scroll70, scroll10) < 0);
 assert.equal(context.chronoStoryItemColumns(scroll70)[3], '—');
 const sameRate = makeItem('單手斧', '', 999, '力量 + 999', 'scroll');
 sameRate.variants[0].successPercent = 70;
-assert.equal(compare(scroll70, sameRate), 0);
+assert.notEqual(compare(scroll70, sameRate), 0);
+const groupedScrolls = [
+  ['單手劍攻擊卷軸10%', 10], ['單手斧攻擊卷軸60%', 60],
+  ['單手劍攻擊詛咒卷軸70%', 70], ['單手斧攻擊卷軸10%', 10],
+  ['單手劍攻擊卷軸60%', 60],
+].map(([name, successPercent]) => {
+  const item = makeItem(name, '', 0, '', 'scroll');
+  item.variants[0].successPercent = successPercent;
+  return item;
+}).sort(compare);
+const swordPositions = groupedScrolls.map((item, i) => item.name.startsWith('單手劍') ? i : -1).filter(i => i >= 0);
+assert.equal(swordPositions[2] - swordPositions[0], 2);
+assert.deepEqual(groupedScrolls.filter(item => item.name.startsWith('單手劍')).map(item => item.variants[0].successPercent), [70, 60, 10]);
+assert.deepEqual(groupedScrolls.filter(item => item.name.startsWith('單手斧')).map(item => item.variants[0].successPercent), [60, 10]);
 const totalLow = makeItem('武器');
 totalLow.variants[0].totalMaxStats = '3';
 const totalHigh = makeItem('武器', '劍士', 80, '力量 + 1');
