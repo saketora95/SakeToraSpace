@@ -20,4 +20,26 @@
 
 ## ChronoStory
 
-尚未新增工具或連結。
+- **道具與魔物查詢**：於 [ChronoStory 獨立查詢頁](chronostory-drops.html#items) 搜尋道具掉落來源或魔物掉落品；支援部分名稱、多關鍵字、裝備職業與道具類型篩選，可點選名稱互相查詢。
+- **魔物掉落查詢**：直接進入同一頁的[地區查詢模式](chronostory-drops.html#regions)，先選地區、再選魔物，查看掉落道具、效果與掉落率。切換地區時會清除上一隻魔物，避免混用結果。
+- **轉職資訊**：提供一至四轉等級與流程、可展開的各職業地點、三轉考試題庫，以及四轉正攻法與秘咒法說明；四個項目均預設收合。
+- **[ChronoDEX](https://chronostorydex.com/)**：前往 ChronoDEX 網站。
+
+### 掉落資料與更新
+
+資料來自[原始 Google 試算表](https://docs.google.com/spreadsheets/d/1Wj4P9_RNcUoW8xgC0yZy5WGqFDurZLZjNzknTdODA1U/edit)，於 2026-09-24 匯入後期簡表、七個職業裝備分頁、武器卷軸與防具卷軸；排除「注意事項」與「四轉流程」。目前有 381 種道具、190 種魔物及 762 筆掉落關聯，查詢使用本地快照，不需連線至 Google。
+
+- `assets/js/tools/chronostory/drop-data.js`：可直接載入的資料，包含 `items`、`monsters`、`drops` 與來源資訊；道具及魔物以名稱產生穩定 ID，掉落關聯使用 `itemId` / `monsterId`。
+- 掉落率使用百分比數值，例如 `0.24` 代表 `0.24%`；未記載的機率顯示「未記載」，異常或不一致的機率標示「待確認」。
+- 卷軸成功率與掉落率分開顯示；裝備提供等級／幸運需求、最高屬性與最高屬性總和。效果統一使用完整能力名稱與「能力值 + 數值」，例如「力量 + 2」；「71+100 防」拆成「物理防禦 + 71、魔法防禦 + 100」。
+- `stats`、配裝名稱與屬性總和的文字在匯入時完成格式轉換，直接寫入 `drop-data.js`，客戶端僅顯示資料。資料格式版本為 2，不包含逐筆分頁、儲存格位置及原始儲存格文字。
+- 查詢頁提供遊戲資料與簡要的來源連結、更新日期，省略試算表欄位對照及逐筆紀錄。
+
+更新時將試算表下載為 `.xlsx`，執行以下指令（Python 3.10 以上，僅用標準函式庫）：
+
+```powershell
+python scripts/import-chronostory-drops.py path/to/source.xlsx --date YYYY-MM-DD
+python scripts/test-chronostory-drops.py
+```
+
+匯入器會跳過排除的分頁、處理合併儲存格、統一卷軸簡稱並合併重複關聯；遇到未知分頁或無法解析的掉落資料會停止，避免靜默漏資料。更新後請同步修改上述匯入日期與筆數。
