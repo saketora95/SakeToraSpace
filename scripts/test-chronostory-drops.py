@@ -2,7 +2,10 @@
 import importlib.util
 import json
 from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
+import xml.etree.ElementTree as ET
+from zipfile import ZipFile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,6 +20,45 @@ def bundled_data():
 
 
 class ImportTests(unittest.TestCase):
+    def test_current_and_legacy_workbook_sheet_names(self):
+        current = IMPORTER.EQUIPMENT_SHEETS | IMPORTER.SCROLL_SHEETS | {"後期簡表"}
+        legacy = (current - {"法師"}) | {"法師 (五速)", "法師 (四速)"}
+        for names in (current, legacy, current - {"法師"}, current | {"法師 (五速)"}):
+            with self.subTest(names=names), TemporaryDirectory() as directory:
+                path = Path(directory) / "source.xlsx"
+                workbook = ET.Element("workbook", xmlns=IMPORTER.NS["s"])
+                sheets = ET.SubElement(workbook, "sheets")
+                relationships = ET.Element("Relationships")
+                for index, name in enumerate(sorted(names)):
+                    rid = f"rId{index}"
+                    ET.SubElement(sheets, "sheet", {"name": name, f"{{{IMPORTER.REL_NS}}}id": rid})
+                    ET.SubElement(relationships, "Relationship", Id=rid, Target="worksheets/empty.xml")
+                with ZipFile(path, "w") as archive:
+                    archive.writestr("xl/workbook.xml", ET.tostring(workbook))
+                    archive.writestr("xl/_rels/workbook.xml.rels", ET.tostring(relationships))
+                    archive.writestr("xl/worksheets/empty.xml", f'<worksheet xmlns="{IMPORTER.NS["s"]}"/>')
+                if names in (current, legacy):
+                    self.assertEqual(set(IMPORTER.read_workbook(path)), names)
+                else:
+                    with self.assertRaises(ValueError):
+                        IMPORTER.read_workbook(path)
+
+    def test_reordered_and_additional_region_columns_keep_all_drops(self):
+        for sheet, start, row, name_col in (("法師", "H", 3, "D"),
+                                            ("武器卷軸", "E", 3, "C"),
+                                            ("防具卷軸", "E", 5, "C")):
+            with self.subTest(sheet=sheet):
+                regions = ["童話村", "神木村", "水世界", "地球防衛", "玩具城", "天空之城", "維多利亞"]
+                columns = [chr(ord(start) + i) for i in range(len(regions))] + ["AA"]
+                regions.append("測試新增地區")
+                cells = {f"{col}{row}": region for col, region in zip(columns, regions)}
+                cells[f"{name_col}{row + 1}"] = "測試法杖" if sheet == "法師" else "測試卷軸60%"
+                cells.update({f"{col}{row + 1}": f"測試魔物{i}(0.21%)" for i, col in enumerate(columns)})
+                data = IMPORTER.compile_data({sheet: cells, "後期簡表": {}}, "2026-09-27", "test")
+                self.assertEqual([m["regions"] for m in data["monsters"]], [[r] for r in regions])
+                self.assertEqual(len(data["drops"]), len(regions))
+                self.assertEqual([d["observations"][0]["ratePercent"] for d in data["drops"]], [0.21] * len(regions))
+
     def test_all_retired_equipment_and_drops_are_excluded(self):
         summary = {"B1": "冰原雪域", "C1": "雪吉拉戰車",
                    "F1": "\n".join(f"70 {name} / 20" for name in IMPORTER.EXCLUDED_ITEMS)}
@@ -137,6 +179,47 @@ class ImportTests(unittest.TestCase):
 
 
 class BundledDataTests(unittest.TestCase):
+    def test_all_graecia_helmets_require_level_90(self):
+        from copy import deepcopy
+        data = bundled_data()
+        helmets = [item for item in data["items"] if item["name"].endswith("格萊西頭盔")]
+        self.assertEqual(len(helmets), 5)
+        for item in helmets:
+            self.assertTrue(all(v["requirement"] == {"type": "level", "value": 90} for v in item["variants"]))
+            self.assertTrue(all(note.get("level", 90) == 90 for note in item["summaryNotes"]))
+        original = deepcopy(data)
+        for item in helmets:
+            for variant in item["variants"]:
+                variant["requirement"]["value"] = 100
+            item["summaryNotes"].extend(dict(note, level=100) for note in list(item["summaryNotes"]))
+        IMPORTER.correct_graecia_helmet_levels(data)
+        self.assertEqual(data, original)
+        IMPORTER.correct_graecia_helmet_levels(data)
+        self.assertEqual(data, original)
+
+    def test_corrected_blue_hat_drops_and_stats(self):
+        from copy import deepcopy
+        data = bundled_data()
+        items = {item["name"]: item for item in data["items"]}
+        monsters = {monster["name"]: monster["id"] for monster in data["monsters"]}
+        pairs = {(drop["itemId"], drop["monsterId"]) for drop in data["drops"]}
+        red, blue = items["紅色阿爾納帽"], items["藍色阿爾納帽"]
+        self.assertIn((blue["id"], monsters["大爺鬼魂"]), pairs)
+        self.assertNotIn((red["id"], monsters["大爺鬼魂"]), pairs)
+        self.assertIn((red["id"], monsters["幼龍保護者"]), pairs)
+        self.assertEqual(blue["variants"][0]["stats"], "力量 + 9、敏捷 + 10、物理防禦 + 113")
+        self.assertEqual(blue["variants"][0]["totalMaxStats"], "19")
+        original = deepcopy(data)
+        data["items"].remove(blue)
+        red["variants"].append(deepcopy(blue["variants"][0]))
+        for drop in data["drops"]:
+            if drop["itemId"] == blue["id"]:
+                drop["itemId"] = red["id"]
+        IMPORTER.correct_arnah_hat(data)
+        self.assertEqual(data, original)
+        IMPORTER.correct_arnah_hat(data)
+        self.assertEqual(data, original)
+
     @classmethod
     def setUpClass(cls):
         cls.data = bundled_data()

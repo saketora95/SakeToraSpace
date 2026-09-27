@@ -43,18 +43,22 @@ const storage = {
 };
 function initializeWelcomePanel() {
   const panel = $("#welcome-panel");
+  const restoreButton = $("#welcome-restore");
   const version = $("#welcome-version").textContent.trim();
   $("#site-version").textContent = version;
   const storageKey = "saketora.welcome.dismissedVersion";
   panel.hidden = storage.read(storageKey, "") === version;
+  restoreButton.hidden = !panel.hidden;
   $("#welcome-close").addEventListener("click", () => {
     storage.write(storageKey, version);
     panel.hidden = true;
+    restoreButton.hidden = false;
     $("#search").focus({ preventScroll: true });
   });
-  $("#welcome-restore").addEventListener("click", () => {
+  restoreButton.addEventListener("click", () => {
     storage.write(storageKey, "");
     panel.hidden = false;
+    restoreButton.hidden = true;
     $("#welcome-close").focus({ preventScroll: true });
     panel.scrollIntoView({ block: "start" });
   });
@@ -195,9 +199,14 @@ $("#tool-grid").addEventListener("click", event => {
   const open = event.target.closest("[data-open]");
   if (open) openTool(open.dataset.open);
 });
+const releaseDialog = $("#release-dialog");
+document.querySelectorAll("[data-release-notes]").forEach(button => {
+  button.addEventListener("click", () => releaseDialog.showModal());
+});
+
 document.addEventListener("keydown", event => {
   if (event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey &&
-      !$("#tool-dialog").open && !event.target.closest("input, textarea, [contenteditable]")) {
+      !document.querySelector("dialog[open]") && !event.target.closest("input, textarea, [contenteditable]")) {
     event.preventDefault();
     $("#search").focus();
   }
@@ -289,6 +298,32 @@ function stopAlarm(targetAlarm = alarm) {
     alarm.gain = null;
   }
 }
+async function playTimerButtonSound(action, targetAlarm = alarm) {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    if (!targetAlarm.context || targetAlarm.context.state === "closed") targetAlarm.context = new AudioContextClass();
+    const context = targetAlarm.context;
+    await context.resume();
+    const notes = { start: [520, 780], pause: [440, 440], stop: [390, 260] }[action];
+    notes.forEach((frequency, index) => {
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      const start = context.currentTime + index * .09;
+      oscillator.type = "sine";
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(.09, start + .008);
+      gain.gain.exponentialRampToValueAtTime(.001, start + .075);
+      oscillator.connect(gain).connect(context.destination);
+      oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
+      oscillator.start(start);
+      oscillator.stop(start + .08);
+    });
+  } catch {
+    // Button feedback is optional; audio failures must not interrupt the timer.
+  }
+}
 function remainingSeconds() {
   return timer.state === "running" ? Math.max(0, Math.ceil((timer.deadline - Date.now()) / 1000)) : timer.remaining;
 }
@@ -299,6 +334,7 @@ function updateTimerView() {
   $("#timer-start").disabled = !["idle", "paused"].includes(timer.state) || !$("#timer-duration").validity.valid;
   $("#timer-pause").disabled = timer.state !== "running";
   $("#timer-stop").disabled = timer.state === "idle";
+  $("#timer-stop").classList.toggle("timer-stop-active", timer.state !== "idle");
   const message = { idle: "準備就緒", running: "計時中", paused: "已暫停", finished: "時間到！" }[timer.state];
   $("#timer-status").textContent = message;
 }
@@ -340,6 +376,7 @@ function renderTimer() {
     timer.state = "running";
     timer.deadline = Date.now() + timer.remaining * 1000;
     void prepareAlarm();
+    void playTimerButtonSound("start");
     timer.interval = setInterval(tickTimer, 100);
     tickTimer();
   });
@@ -352,9 +389,14 @@ function renderTimer() {
     clearInterval(timer.interval);
     timer.interval = null;
     stopAlarm();
+    void playTimerButtonSound("pause");
     updateTimerView();
   });
-  $("#timer-stop").addEventListener("click", stopTimer);
+  $("#timer-stop").addEventListener("click", () => {
+    if (timer.state === "idle") return;
+    stopTimer();
+    void playTimerButtonSound("stop");
+  });
   renderLaboratoryTimers();
   updateTimerView();
 }

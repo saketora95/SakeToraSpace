@@ -36,6 +36,7 @@ function updateLaboratoryTimers() {
     document.querySelector(`#laboratory-status-${index}`).textContent = { idle: "準備就緒", running: "計時中", finished: "時間到！" }[item.state];
     document.querySelector(`#laboratory-start-${index}`).disabled = item.state !== "idle";
     document.querySelector(`#laboratory-stop-${index}`).disabled = item.state === "idle";
+    document.querySelector(`#laboratory-stop-${index}`).classList.toggle("timer-stop-active", item.state !== "idle");
   });
 }
 function resetLaboratoryTimer(item) {
@@ -73,10 +74,13 @@ function renderLaboratoryTimers() {
       item.state = "running";
       item.deadline = Date.now() + item.duration * 1000;
       void prepareAlarm(item, item.alarm);
+      void playTimerButtonSound("start", item.alarm);
       updateLaboratoryTimers();
     });
     document.querySelector(`#laboratory-stop-${index}`).addEventListener("click", () => {
+      if (item.state === "idle") return;
       resetLaboratoryTimer(item);
+      void playTimerButtonSound("stop", item.alarm);
       updateLaboratoryTimers();
     });
   });

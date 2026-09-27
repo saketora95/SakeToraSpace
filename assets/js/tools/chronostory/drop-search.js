@@ -116,15 +116,56 @@ function createChronoStoryIndex(data) {
   return { items, monsters, itemDrops, monsterDrops };
 }
 
+function chronoStoryProfession(variant) {
+  return variant.job === "盜賊" ? variant.build : variant.job;
+}
+
+function chronoStoryEquipmentRecords(item) {
+  if (item.variants.length || item.kind !== "equipment") return item.variants;
+  return item.summaryNotes.flatMap(note => item.jobs.flatMap(job => item.categories.map(category => ({
+    ...note, job, category,
+    build: job === "盜賊" ? `盜賊 (${(note.totalMaxStats || "").match(/力量／幸運|敏捷／幸運/)?.[0] || "未記載"})` : job,
+    requirement: { type: "level", value: note.level },
+  }))));
+}
+
+function chronoStoryAbilityTotal(record) {
+  const stated = Number.parseFloat(record.totalMaxStats);
+  if (Number.isFinite(stated)) return stated;
+  const effects = [...(record.stats || "").matchAll(/([^、]+?)\s*([+-])\s*(\d+(?:\.\d+)?)/g)]
+    .filter(match => !/防禦|可升級次數/.test(match[1]));
+  return effects.length ? effects.reduce((sum, match) => sum + (match[2] === "-" ? -1 : 1) * Number(match[3]), 0) : null;
+}
+
+function createChronoStoryLeaders(data) {
+  const maxima = new Map();
+  const scores = (item, record) => {
+    if (item.kind !== "equipment") return [];
+    const job = chronoStoryProfession(record);
+    const part = record.category === "帽子" ? "頭盔" : record.category;
+    if (!job || !part) return [];
+    const total = chronoStoryAbilityTotal(record);
+    const weighted = record.job === "劍士" ? /\(([\d.]+)\)/.exec(record.totalMaxStats || "") : null;
+    return [total, weighted ? Number(weighted[1]) : null].flatMap((value, metric) =>
+      value === null ? [] : [{ key: `${job}|${part}|${metric}`, value,
+        label: `${job}・${part}${metric ? "（命中換算）" : ""}` }]);
+  };
+  for (const item of data.items) for (const record of chronoStoryEquipmentRecords(item)) for (const score of scores(item, record)) {
+    maxima.set(score.key, Math.max(maxima.get(score.key) ?? -Infinity, score.value));
+  }
+  return (item, records = item.kind ? chronoStoryEquipmentRecords(item) : []) => [...new Set(records.flatMap(record => scores(item, record)
+    .filter(score => score.value === maxima.get(score.key)).map(score => score.label)))];
+}
+
 function findChronoStoryJobEntries(data, state) {
+  const professions = state.professions ?? (state.job ? [state.job] : []);
+  const parts = state.parts ?? (state.part ? [state.part] : []);
   const tokens = state.query.normalize("NFKC").trim().split(/\s+/).map(normalizeChronoStoryQuery).filter(Boolean);
   return data.items.filter(item => item.kind === "equipment")
     .map(item => {
-      const variants = item.variants.filter(variant => variant.job === state.job
-        && (!state.build || variant.build === state.build)
-        && (!state.part || (variant.category === "帽子" ? "頭盔" : variant.category) === state.part)
-        && (!state.equipLevel || (variant.requirement?.type === "level" && variant.requirement.value === Number(state.equipLevel))));
-      return { ...item, variants, categories: [...new Set(variants.map(v => v.category).filter(Boolean))], jobs: [state.job], summaryNotes: [] };
+      const variants = chronoStoryEquipmentRecords(item).filter(variant => (!professions.length || professions.includes(chronoStoryProfession(variant)))
+        && (!parts.length || parts.includes(variant.category === "帽子" ? "頭盔" : variant.category)));
+      return { ...item, variants, categories: [...new Set(variants.map(v => v.category).filter(Boolean))], jobs: [...new Set(variants.map(v => v.job).filter(Boolean))], summaryNotes: [] };
     })
     .filter(item => item.variants.length && tokens.every(token => normalizeChronoStoryQuery(item.name).includes(token)))
     .sort(compareChronoStoryDrops);
@@ -163,10 +204,11 @@ async function renderChronostoryDropSearch() {
 
 function mountChronoStoryDropSearch(root, data) {
   const index = createChronoStoryIndex(data);
+  const leaders = createChronoStoryLeaders(data);
   const escape = value => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
   const unique = values => [...new Set(values)];
   const modeFromHash = () => ["items", "regions", "jobs"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "regions";
-  const state = { mode: modeFromHash(), query: "", kind: "", job: modeFromHash() === "jobs" ? "劍士" : "", region: "", build: "", part: "", equipLevel: "", selected: null, limit: 40 };
+  const state = { mode: modeFromHash(), query: "", kind: "", job: "", region: "", professions: [], parts: [], selected: null, limit: 40 };
   const history = [];
   let matches = [];
   const summaryRegions = unique(data.summary.map(entry => entry.region));
@@ -188,10 +230,8 @@ function mountChronoStoryDropSearch(root, data) {
       <label class="field" for="drop-monster">魔物<select id="drop-monster" disabled><option value="">請先選擇區域</option></select></label>
     </div>
     <div class="drop-job-controls" hidden>
-      <label class="field" for="drop-profession">職業<select id="drop-profession">${options(["劍士", "法師", "弓箭手", "盜賊", "海盜"])}</select></label>
-      <label class="field" id="drop-build-field" for="drop-build">配裝<select id="drop-build"><option value="">全部配裝</option><option value="盜賊 (力量／幸運)">力量＋幸運</option><option value="盜賊 (敏捷／幸運)">敏捷＋幸運</option></select></label>
-      <label class="field" for="drop-part">裝備部位<select id="drop-part"><option value="">全部部位</option></select></label>
-      <label class="field" for="drop-equip-level">等級需求<select id="drop-equip-level"><option value="">全部等級</option></select></label>
+      <fieldset class="drop-multi-field"><legend>職業（可複選）</legend><div id="drop-profession" class="drop-multi-options" tabindex="-1"></div></fieldset>
+      <fieldset class="drop-multi-field"><legend>裝備部位（可複選）</legend><div id="drop-part" class="drop-multi-options"></div></fieldset>
     </div>
     <div class="drop-controls">
       <label class="field" id="drop-kind-field" for="drop-kind">道具類型<select id="drop-kind"><option value="">全部類型</option value="equipment">裝備</option>${equipmentParts.map(part => `<option value="equipment:${part}">裝備・${part}</option>`).join("")}<option value="scroll">卷軸</option></select></label>
@@ -213,13 +253,16 @@ function mountChronoStoryDropSearch(root, data) {
   }
 
   function itemFacts(item) {
-    const records = item.variants.length ? item.variants : item.summaryNotes;
+    const equipmentRecords = chronoStoryEquipmentRecords(item);
+    const records = equipmentRecords.length ? equipmentRecords : item.summaryNotes;
     const facts = unique(records.map(v => {
       const fields = [v.build, v.category].filter(Boolean);
       if (v.requirement?.value !== null && v.requirement?.value !== undefined) fields.push(`${v.requirement.type === "luk" ? "幸運需求" : "裝備等級"} ${v.requirement.value}`);
       else if (v.level !== null && v.level !== undefined) fields.push(`裝備等級 ${v.level}`);
       if (v.successPercent !== undefined) fields.push(`卷軸成功率 ${v.successPercent}%`);
-      const total = v.totalMaxStats ? `<strong class="drop-fact-total">最高屬性總和 ${escape(v.totalMaxStats)}</strong>` : "";
+      const value = item.kind === "equipment" ? v.totalMaxStats || chronoStoryAbilityTotal(v) : null;
+      const best = leaders(item, [v]);
+      const total = value !== null ? `<strong class="drop-fact-total${best.length ? " drop-best-total" : ""}">最高能力值總和 ${escape(value)}${best.length ? `<span class="drop-best-label">★ ${escape(best.join("、"))}最高（含並列）</span>` : ""}</strong>` : "";
       const stats = v.stats ? `<span class="${item.kind === "scroll" ? "drop-fact-effect" : "drop-fact-stats"}">${item.kind === "scroll" ? "效果" : "最高屬性"}：${escape(v.stats)}</span>` : "";
       return `<li>${fields.map(value => `<span>${escape(value)}</span>`).join("")}${total}${stats}</li>`;
     }));
@@ -251,17 +294,17 @@ function mountChronoStoryDropSearch(root, data) {
       <div class="drop-tags">${unique(meta).map(label => `<span>${escape(label)}</span>`).join("")}</div>
       ${facts}
       <h4>${isItem ? "掉落來源" : "已收錄掉落品"}<span>${rows.length}</span></h4>
-      ${rows.length ? `<div class="drop-table-scroll" role="region" aria-label="掉落資料，可左右捲動" tabindex="0"><table class="drop-table${isItem ? "" : " drop-item-table"}"><thead><tr><th scope="col">${isItem ? "魔物 / 區域" : "道具"}</th>${isItem ? "" : ["道具類型", "裝備職業", "等級需求", "總屬性值"].map(label => `<th scope="col">${label}</th>`).join("")}<th scope="col">掉落率</th></tr></thead><tbody>${rows.map(drop => {
+      ${rows.length ? `<div class="drop-table-scroll" role="region" aria-label="掉落資料，可左右捲動" tabindex="0"><table class="drop-table${isItem ? "" : " drop-item-table"}"><thead><tr><th scope="col">${isItem ? "魔物 / 區域" : "道具"}</th>${isItem ? "" : ["道具類型", "裝備職業", "等級需求", "最高能力值總和"].map(label => `<th scope="col">${label}</th>`).join("")}<th scope="col">掉落率</th></tr></thead><tbody>${rows.map(drop => {
         const other = related(drop);
         const sub = isItem ? unique(drop.observations.map(o => o.region)).join("、") : "";
         const effects = isItem ? [] : unique((other.variants.length ? other.variants : other.summaryNotes)
           .map(variant => variant.stats || "").filter(Boolean));
-        return `<tr><th scope="row"><button type="button" class="drop-related" data-related="${escape(other.id)}">${escape(other.name)} <span aria-hidden="true">↗</span></button>${sub ? `<small>${escape(sub)}</small>` : ""}${effects.map(effect => `<small class="drop-effects">${escape(effect)}</small>`).join("")}</th>${isItem ? "" : chronoStoryItemColumns(other).map(value => `<td>${escape(value)}</td>`).join("")}<td>${rateMarkup(drop)}</td></tr>`;
+        return `<tr class="${!isItem && leaders(other).length ? "drop-best-row" : ""}"><th scope="row"><button type="button" class="drop-related" data-related="${escape(other.id)}">${escape(other.name)} <span aria-hidden="true">↗</span></button>${sub ? `<small>${escape(sub)}</small>` : ""}${effects.map(effect => `<small class="drop-effects">${escape(effect)}</small>`).join("")}</th>${isItem ? "" : chronoStoryItemColumns(other).map((value, column) => `<td>${escape(value)}${column === 3 && leaders(other).length ? `<span class="drop-best-label">★ ${escape(leaders(other).join("、"))}最高（含並列）</span>` : ""}</td>`).join("")}<td>${rateMarkup(drop)}</td></tr>`;
       }).join("")}</tbody></table></div>` : `<p class="drop-placeholder">${isItem ? "尚未收錄此道具的掉落來源。" : "沒有符合篩選條件的掉落道具。"}</p>`}`;
   }
 
   function renderList() {
-    $("#drop-result-list").innerHTML = matches.length ? matches.slice(0, state.limit).map(entry => `<button type="button" class="drop-result" data-entry="${escape(entry.id)}" aria-pressed="${entry.id === state.selected}"><span>${escape(entry.name)}</span><small>${state.mode !== "regions" ? `${kindName(entry)} · ${relationCount(entry)} 種魔物` : `${entry.boss ? "Boss · " : ""}${relationCount(entry)} 種道具`}</small></button>`).join("") : '<p class="drop-placeholder">找不到符合的資料。試試部分名稱，或清除篩選條件。</p>';
+    $("#drop-result-list").innerHTML = matches.length ? matches.slice(0, state.limit).map(entry => `<button type="button" class="drop-result${leaders(entry).length ? " drop-best-result" : ""}" data-entry="${escape(entry.id)}" aria-pressed="${entry.id === state.selected}"><span>${escape(entry.name)}</span><small>${state.mode !== "regions" ? `${kindName(entry)} · ${relationCount(entry)} 種魔物` : `${entry.boss ? "Boss · " : ""}${relationCount(entry)} 種道具`}</small>${entry.kind === "equipment" ? `<small>最高能力值總和 ${escape(chronoStoryItemColumns(entry)[3])}</small>` : ""}${leaders(entry).length ? `<span class="drop-best-label">★ ${escape(leaders(entry).join("、"))}最高（含並列）</span>` : ""}</button>`).join("") : '<p class="drop-placeholder">找不到符合的資料。試試部分名稱，或清除篩選條件。</p>';
     $("#drop-result-status").textContent = `找到 ${matches.length} ${state.mode !== "regions" ? "種道具" : "種魔物"}，顯示 ${Math.min(matches.length, state.limit)} 筆。`;
     $("#drop-more").hidden = state.limit >= matches.length;
   }
@@ -293,23 +336,18 @@ function mountChronoStoryDropSearch(root, data) {
     $("#drop-job-field").hidden = jobMode;
     $(".drop-controls").classList.toggle("drop-job-name", jobMode);
     if (jobMode) {
-      if (!jobs.includes(state.job)) state.job = "劍士";
-      if (state.job !== "盜賊") state.build = "";
+      state.professions ??= [];
+      state.professions = state.professions.flatMap(job => job === "盜賊"
+        ? ["盜賊 (力量／幸運)", "盜賊 (敏捷／幸運)"] : [job]);
+      state.parts ??= [];
       const variants = data.items.filter(item => item.kind === "equipment").flatMap(item => item.variants)
-        .filter(v => v.job === state.job && (!state.build || v.build === state.build));
+        .filter(v => !state.professions.length || state.professions.includes(chronoStoryProfession(v)));
       const parts = equipmentParts.filter(part => variants.some(v => (v.category === "帽子" ? "頭盔" : v.category) === part));
-      if (!parts.includes(state.part)) state.part = "";
-      const levels = unique(variants.filter(v => (!state.part || (v.category === "帽子" ? "頭盔" : v.category) === state.part)
-        && v.requirement?.type === "level" && Number.isFinite(v.requirement.value)).map(v => v.requirement.value))
-        .sort((a, b) => a - b).map(String);
-      if (!levels.includes(state.equipLevel)) state.equipLevel = "";
-      $("#drop-profession").value = state.job;
-      $("#drop-build-field").hidden = state.job !== "盜賊";
-      $("#drop-build").value = state.build;
-      $("#drop-part").innerHTML = `<option value="">全部部位</option>${options(parts)}`;
-      $("#drop-part").value = state.part;
-      $("#drop-equip-level").innerHTML = `<option value="">全部等級</option>${options(levels)}`;
-      $("#drop-equip-level").value = state.equipLevel;
+      state.parts = state.parts.filter(part => parts.includes(part));
+      const buttons = (values, selected, allLabel) => ["", ...values].map(value =>
+        `<button type="button" class="secondary-button" data-choice="${escape(value)}" aria-pressed="${value ? selected.includes(value) : !selected.length}">${escape(value || allLabel)}</button>`).join("");
+      $("#drop-profession").innerHTML = buttons(["劍士", "法師", "弓箭手", "盜賊 (力量／幸運)", "盜賊 (敏捷／幸運)", "海盜"], state.professions, "全部職業");
+      $("#drop-part").innerHTML = buttons(parts, state.parts, "全部部位");
     }
     root.querySelectorAll("[data-mode]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.mode === state.mode)));
     $(".drop-query").hidden = regionMode;
@@ -340,7 +378,8 @@ function mountChronoStoryDropSearch(root, data) {
   }
 
   function reset(mode = state.mode) {
-    Object.assign(state, { mode, query: "", kind: "", job: mode === "jobs" ? "劍士" : "", region: "", build: "", part: "", equipLevel: "", selected: null, limit: 40 });
+    Object.assign(state, { professions: [], parts: [] });
+    Object.assign(state, { mode, query: "", kind: "", job: "", region: "", selected: null, limit: 40 });
     history.length = 0;
     syncControls();
     $(state.mode === "regions" ? "#drop-area" : state.mode === "jobs" ? "#drop-profession" : "#drop-query").focus();
@@ -370,13 +409,18 @@ function mountChronoStoryDropSearch(root, data) {
     renderDetail();
   });
   $("#drop-reset").addEventListener("click", () => reset());
-  [["profession", "job"], ["build", "build"], ["part", "part"], ["equip-level", "equipLevel"]].forEach(([control, key]) => {
-    $("#drop-" + control).addEventListener("change", event => {
-      state[key] = event.target.value;
-      if (key === "job") Object.assign(state, { build: "", part: "", equipLevel: "" });
+  [["profession", "professions"], ["part", "parts"]].forEach(([control, key]) => {
+    $("#drop-" + control).addEventListener("click", event => {
+      const button = event.target.closest("[data-choice]");
+      if (!button) return;
+      const value = button.dataset.choice;
+      state[key] = !value ? [] : state[key].includes(value)
+        ? state[key].filter(choice => choice !== value) : [...state[key], value];
       state.selected = null;
       state.limit = 40;
       syncControls();
+      const choices = [...$("#drop-" + control).querySelectorAll("[data-choice]")];
+      (choices.find(choice => choice.dataset.choice === value) || choices[0])?.focus();
     });
   });
   $("#drop-query").addEventListener("input", event => {

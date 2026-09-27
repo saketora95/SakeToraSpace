@@ -51,6 +51,9 @@ dialog{width:min(520px,calc(100% - 32px));max-height:calc(100dvh - 40px);backgro
 
 .timer-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%}
 .timer-actions button{width:100%;min-width:0;padding:11px 8px}
+.secondary-button.timer-stop-active{background:#b42332;border-color:#b42332;color:#fff;font-weight:700;box-shadow:0 0 0 3px #b4233226}
+.secondary-button.timer-stop-active:hover{background:#921c29;border-color:#921c29}
+.secondary-button.timer-stop-active:active{background:#781722;box-shadow:none}
 
 /* Stretch the native button/link across its card, keeping favorites separate. */
 .tool-card .open-tool::after{content:"";position:absolute;inset:0;z-index:1;border-radius:10px;cursor:pointer}
@@ -236,6 +239,9 @@ footer{align-items:center;flex-wrap:wrap;gap:16px}
 .welcome-copy p{margin:0 0 16px;line-height:1.9}
 .welcome-copy .welcome-version{margin-bottom:0;padding-top:12px;border-top:1px solid #e7bf7b40;color:var(--muted);font-size:12px}
 .welcome-close{position:absolute;top:12px;right:12px;padding:6px 10px;min-height:36px}
+.welcome-release{margin-top:12px}
+.release-summary{margin:0;padding-left:22px;line-height:1.9}
+.release-summary li+li{margin-top:12px}
 @media(max-width:780px){
   .brand-avatar{width:36px;height:36px}
   .welcome-panel{grid-template-columns:minmax(0,1fr);gap:16px;padding:48px 20px 24px}

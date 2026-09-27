@@ -4,6 +4,7 @@ Usage: python scripts/import-chronostory-drops.py source.xlsx --date YYYY-MM-DD
 No formulas, macros, or external links in the workbook are executed.
 """
 import argparse
+from copy import deepcopy
 from datetime import date
 import hashlib
 import json
@@ -19,7 +20,7 @@ SOURCE_URL = "https://docs.google.com/spreadsheets/d/1Wj4P9_RNcUoW8xgC0yZy5WGqFD
 NS = {"s": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 EXCLUDED = {"注意事項", "四轉流程", "法師 (四速)"}
-EQUIPMENT_SHEETS = {"劍士", "法師 (五速)", "弓箭手", "盜賊 (力幸)", "盜賊 (敏幸)", "海盜"}
+EQUIPMENT_SHEETS = {"劍士", "法師", "弓箭手", "盜賊 (力幸)", "盜賊 (敏幸)", "海盜"}
 SHEET_LABELS = {"法師 (五速)": "法師"}
 CATEGORY_REFERENCE_SHEETS = {"法師 (四速)"}
 EXCLUDED_ITEMS = {
@@ -123,7 +124,7 @@ def read_workbook(path):
             name = sheet.get("name")
             if name in EXCLUDED and name not in CATEGORY_REFERENCE_SHEETS:
                 continue
-            if name not in EQUIPMENT_SHEETS | SCROLL_SHEETS | CATEGORY_REFERENCE_SHEETS | {"後期簡表"}:
+            if name not in EQUIPMENT_SHEETS | SHEET_LABELS.keys() | SCROLL_SHEETS | CATEGORY_REFERENCE_SHEETS | {"後期簡表"}:
                 raise ValueError(f"Unexpected sheet: {name}; review its layout before importing")
             target = relationships[sheet.get(f"{{{REL_NS}}}id")]
             member = target.lstrip("/") if target.startswith("/") else posixpath.normpath("xl/" + target)
@@ -145,9 +146,12 @@ def read_workbook(path):
                     for row in range(int(start) + 1, int(end) + 1):
                         cells[f"{col}{row}"] = cells[first]
             sheets[name] = cells
-    expected = EQUIPMENT_SHEETS | SCROLL_SHEETS | CATEGORY_REFERENCE_SHEETS | {"後期簡表"}
-    if set(sheets) != expected:
-        raise ValueError(f"Missing sheets: {expected - set(sheets)}")
+    expected = EQUIPMENT_SHEETS | SCROLL_SHEETS | {"後期簡表"}
+    actual = {SHEET_LABELS.get(name, name) for name in sheets} - CATEGORY_REFERENCE_SHEETS
+    if actual != expected:
+        raise ValueError(f"Missing sheets: {expected - actual}")
+    if len(actual) != len(set(sheets) - CATEGORY_REFERENCE_SHEETS):
+        raise ValueError("Duplicate equipment sheets after normalizing names")
     return sheets
 
 
@@ -157,7 +161,7 @@ def compile_data(sheets, imported_on, source_hash):
     def category_key(name, job):
         return (job, re.sub(r"\([男女]\)$", "", clean(name)))
     for sheet, cells in sheets.items():
-        if sheet not in EQUIPMENT_SHEETS | CATEGORY_REFERENCE_SHEETS:
+        if sheet not in EQUIPMENT_SHEETS | SHEET_LABELS.keys() | CATEGORY_REFERENCE_SHEETS:
             continue
         job = sheet.split(" (")[0]
         for coord, name in cells.items():
@@ -207,8 +211,15 @@ def compile_data(sheets, imported_on, source_hash):
             continue
         scroll = sheet in SCROLL_SHEETS
         name_col = "C" if scroll else "D"
-        region_cols = "EFGHIJ" if scroll else "HIJKLM"
         region_row = 5 if sheet == "防具卷軸" else 3
+        first_region_col = "E" if scroll else "H"
+        region_cols = [match[1] for coord in cells
+                       if (match := re.fullmatch(r"([A-Z]+)(\d+)", coord))
+                       and int(match[2]) == region_row
+                       and (len(match[1]), match[1]) >= (1, first_region_col)]
+        region_cols.sort(key=lambda col: (len(col), col))
+        if not region_cols:
+            raise ValueError(f"Missing region headers in {sheet}")
         regions = {col: clean(cells[f"{col}{region_row}"]) for col in region_cols}
         rows = sorted(int(c[len(name_col):]) for c in cells if re.fullmatch(name_col + r"\d+", c))
         for row in rows:
@@ -300,7 +311,7 @@ def compile_data(sheets, imported_on, source_hash):
                 item["categories"] = sorted(categories)
     drops = {key: drop for key, drop in drops.items() if drop["itemId"] in items}
 
-    return {"schemaVersion": 3,
+    data = {"schemaVersion": 3,
             "source": {"url": SOURCE_URL, "importedOn": imported_on, "sha256": source_hash,
                        "sheets": list(sheets), "excludedSheets": sorted(EXCLUDED),
                        "notes": ["僅收錄原試算表整理的裝備、卷軸與掉落，並非完整遊戲資料庫。",
@@ -309,6 +320,54 @@ def compile_data(sheets, imported_on, source_hash):
                                  "等級、屬性、地區與機率差異保留於各筆資料，不推測修正。"]},
             "summary": summary,
             "items": list(items.values()), "monsters": list(monsters.values()), "drops": list(drops.values())}
+    correct_arnah_hat(data)
+    correct_graecia_helmet_levels(data)
+    return data
+
+
+def correct_graecia_helmet_levels(data):
+    """All colors of Graecia helmets require level 90 (user confirmed)."""
+    for item in data["items"]:
+        if item["kind"] != "equipment" or not item["name"].endswith(("格萊西頭盔", "格萊希頭盔")):
+            continue
+        for variant in item["variants"]:
+            variant["requirement"] = {"type": "level", "value": 90}
+        notes = []
+        for note in item["summaryNotes"]:
+            if "level" in note:
+                note["level"] = 90
+            append_unique(notes, note)
+        item["summaryNotes"] = notes
+
+
+def correct_arnah_hat(data):
+    """User correction: Elder Wraith drops the blue hat; Nest Golem keeps red."""
+    red = next((item for item in data["items"] if item["name"] == "紅色阿爾納帽"), None)
+    ghost = next((monster for monster in data["monsters"] if monster["name"] == "大爺鬼魂"), None)
+    if not red or not ghost:
+        return
+    wrong = [drop for drop in data["drops"] if drop["itemId"] == red["id"] and drop["monsterId"] == ghost["id"]]
+    if not wrong:
+        return
+    stats = format_stats("9 力 10 敏 113 防")
+    blue = next((item for item in data["items"] if item["name"] == "藍色阿爾納帽"), None)
+    if blue is None:
+        blue = deepcopy(red)
+        blue.update(id=identifier("item", "equipment:藍色阿爾納帽"), name="藍色阿爾納帽")
+        template = next((v for v in red["variants"] if v["stats"] == stats), red["variants"][0])
+        blue["variants"] = [dict(deepcopy(template), stats=stats, totalMaxStats="19")]
+        blue["summaryNotes"] = [{"level": 100, "totalMaxStats": "19"}]
+        data["items"].append(blue)
+    red["variants"] = [v for v in red["variants"] if v["stats"] != stats]
+    existing = next((drop for drop in data["drops"] if drop["itemId"] == blue["id"] and drop["monsterId"] == ghost["id"]), None)
+    for drop in wrong:
+        if existing:
+            for observation in drop["observations"]:
+                append_unique(existing["observations"], observation)
+            data["drops"].remove(drop)
+        else:
+            drop["itemId"] = blue["id"]
+            existing = drop
 
 
 def write_data(data, output):

@@ -41,7 +41,8 @@
             <h2 id="welcome-heading">歡迎你來到這裡，我是酒虎。</h2>
             <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
             <p>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。<br>使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-            <p class="welcome-version">最後更新：2026-09-25 ‧ <span id="welcome-version">v0.02</span></p>
+            <p class="welcome-version">最後更新：2026-09-28 ‧ <span id="welcome-version">v0.04</span></p>
+            <button class="secondary-button welcome-release" type="button" data-release-notes aria-haspopup="dialog" aria-controls="release-dialog">改版資訊</button>
           </div>
         </section>
         <div class="section-top"><div><div class="eyebrow muted">THE TOOL COLLECTION</div><h1 id="tools-heading">所有工具 <span id="result-count">14</span></h1></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜尋工具或關鍵字…" aria-label="搜尋工具"><kbd>/</kbd></label></div>
@@ -57,11 +58,25 @@
       </section>
       <footer>
         <div class="footer-info"><span id="site-version" aria-label="網站版本"></span><span>© <span id="year">2026</span> SakeTora Space</span></div>
-        <div class="footer-actions"><button id="welcome-restore" class="secondary-button" type="button" aria-controls="welcome-panel">重新顯示歡迎訊息</button><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></div>
+        <div class="footer-actions"><button id="welcome-restore" class="secondary-button" type="button" aria-controls="welcome-panel" hidden>重新顯示歡迎訊息</button><button class="secondary-button" type="button" data-release-notes aria-haspopup="dialog" aria-controls="release-dialog">改版資訊</button><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></div>
       </footer>
     </main>
   </div>
   <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>
+  <dialog id="release-dialog" aria-labelledby="release-title">
+    <div class="dialog-header">
+      <div><span class="eyebrow muted"><time datetime="2026-09-28">2026-09-28</time></span><h2 id="release-title">v0.04 改版資訊</h2></div>
+      <form method="dialog"><button class="icon-button" type="submit" aria-label="關閉改版資訊" autofocus>×</button></form>
+    </div>
+    <ul class="release-summary">
+      <li>職業查詢改用可複選的職業與裝備部位按鈕，預設顯示所有職業；盜賊分為力量／幸運、敏捷／幸運兩種配裝，移除等級篩選。</li>
+      <li>查詢清單新增「最高能力值總和」，同職業、同部位的最高裝備會醒目顯示，道具明細同步標註，包含並列第一。</li>
+      <li>修正大爺鬼魂掉落為藍色阿爾納帽，能力值為力量 9、敏捷 10、物理防禦 113，總和 19；幼龍保護者仍掉落紅色版本。</li>
+      <li>確認所有顏色的格萊西頭盔均為 90 級，修正藍色與紅色版本摘要中誤記的 100 級資料。</li>
+      <li>完成裝備資料檢查，目前收錄 379 種道具、202 種魔物與 765 筆掉落關聯。</li>
+      <li>頁尾「重新顯示歡迎訊息」按鈕僅在歡迎訊息關閉後出現，重新開啟後自動隱藏。</li>
+    </ul>
+  </dialog>
   <div id="toast" class="toast" role="status" hidden></div>
 </body>
 </html>

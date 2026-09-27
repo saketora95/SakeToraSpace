@@ -10,7 +10,7 @@ function node(selector) {
     innerHTML: '', value: '', hidden: false, disabled: false,
     listeners: {}, classList: { toggle() {} },
     addEventListener(type, fn) { this.listeners[type] = fn; },
-    setAttribute() {}, focus() {}, scrollIntoView() {},
+    setAttribute() {}, focus() {}, scrollIntoView() {}, querySelectorAll() { return []; },
   });
   return nodes.get(selector);
 }
@@ -107,7 +107,7 @@ change('#drop-kind', `equipment:${testPart}`);
 const weaponIds = Array.from(data.drops.filter(drop => drop.monsterId === next.monsterId
   && data.items.some(item => item.id === drop.itemId && item.kind === 'equipment' && context.chronoStoryEquipmentParts(item).includes(testPart))), drop => drop.itemId).sort();
 assert.deepEqual(displayedIds(), weaponIds);
-for (const label of ['道具類型', '裝備職業', '等級需求', '總屬性值']) {
+for (const label of ['道具類型', '裝備職業', '等級需求', '最高能力值總和']) {
   assert(node('#drop-detail-body').innerHTML.includes(`<th scope="col">${label}</th>`));
 }
 assert(weaponIds.length > 0);
@@ -178,3 +178,49 @@ node('#drop-reset').listeners.click();
 assert.equal(node('#drop-detail-body').innerHTML, '');
 assert.equal(node('#drop-kind').value, '');
 console.log('Passed: summary order, retained details, selection, filters, elements, reset, default mode.');
+
+const strength = '盜賊 (力量／幸運)', dexterity = '盜賊 (敏捷／幸運)';
+const equipment = (id, build, category, total) => ({ id, name: id, kind: 'equipment', categories: [category],
+  jobs: ['盜賊'], summaryNotes: [], variants: [{ job: '盜賊', build, category, totalMaxStats: String(total) }] });
+const fixture = { items: [equipment('a', strength, '帽子', 20), equipment('b', strength, '帽子', 20),
+  equipment('c', strength, '帽子', 19), equipment('d', dexterity, '帽子', 18), equipment('e', strength, '鞋子', 10)] };
+const stateForJobs = { query: '', professions: [], parts: [] };
+const find = state => context.findChronoStoryJobEntries(fixture, { ...stateForJobs, ...state });
+assert.equal(find({}).length, 5);
+assert.equal(find({ professions: [strength], parts: ['頭盔'] }).length, 3);
+assert.equal(find({ professions: [dexterity] })[0].id, 'd');
+assert.equal(find({ professions: [strength, dexterity] }).length, 5);
+assert.equal(find({ equipLevels: ['999'], equipLevel: '999' }).length, 5);
+const leaders = context.createChronoStoryLeaders(fixture);
+assert.equal(leaders(fixture.items[0]).length, 1);
+assert.equal(leaders(fixture.items[1]).length, 1);
+assert.equal(leaders(fixture.items[2]).length, 0);
+assert.equal(leaders(fixture.items[3]).length, 1);
+assert.equal(leaders(fixture.items[4]).length, 1);
+assert.equal(leaders(find({ query: 'c' })[0]).length, 0);
+
+modes.find(mode => mode.dataset.mode === 'jobs').listeners.click();
+assert.equal(browserHistory.state.chronoStory.state.professions.length, 0);
+assert(!root.innerHTML.includes('drop-equip-level'));
+assert(!root.innerHTML.includes('drop-build'));
+const choose = (control, value) => node(control).listeners.click({ target: { closest: () => ({ dataset: { choice: value } }) } });
+choose('#drop-profession', strength);
+choose('#drop-profession', dexterity);
+assert.deepEqual(Array.from(browserHistory.state.chronoStory.state.professions), [strength, dexterity]);
+choose('#drop-part', '頭盔');
+assert(node('#drop-result-list').innerHTML.includes('最高能力值總和'));
+assert(node('#drop-result-list').innerHTML.includes('drop-best-result'));
+const bestId = data.items.find(item => item.name === '藍色阿爾納帽').id;
+modes.find(mode => mode.dataset.mode === 'items').listeners.click();
+node('#drop-query').listeners.input({ target: { value: '藍色阿爾納帽' } });
+assert(node('#drop-detail-body').innerHTML.includes('最高能力值總和 19'));
+assert(node('#drop-detail-body').innerHTML.includes('弓箭手・頭盔最高'));
+assert(node('#drop-result-list').innerHTML.includes('drop-best-result'));
+assert(node('#drop-result-list').innerHTML.includes(bestId));
+const relatedMonster = node('#drop-detail-body').innerHTML.match(/data-related="([^"]+)"/)[1];
+node('#drop-detail-body').listeners.click({ target: { closest: () => ({ dataset: { related: relatedMonster } }) } });
+browserHistory.back();
+assert(node('#drop-detail-body').innerHTML.includes('最高能力值總和 19'));
+node('#drop-reset').listeners.click();
+assert.equal(browserHistory.state.chronoStory.state.professions.length, 0);
+console.log('Passed: all professions, split thief builds, no level filter, tied global leaders and detail labels.');
