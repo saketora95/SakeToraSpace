@@ -4,7 +4,7 @@
 const tools = [
   // RO Tool
   { id: "ragnarok-timer", title: "倒數計時", category: "ragnarok", icon: "◷", tone: "var(--accent)", description: "一個簡單的倒數計時器，讓安排時間變得更方便。", keywords: "RO 仙境傳說 倒數 計時 timer" },
-  { id: "ragnarok-simple-replacer", title: "韓文裝備簡易取代器", category: "ragnarok", icon: "⇄", tone: "var(--accent)", description: "依詞彙、技能名稱與句型規則，批次取代韓文的裝備或卡片到距說明。", keywords: "RO 仙境傳說 simple replacer 翻譯 取代 韓文 技能", page: "./simple-replacer.html" },
+  { id: "ragnarok-simple-replacer", title: "韓文裝備簡易取代器", category: "ragnarok", icon: "⇄", tone: "var(--accent)", description: "依詞彙、技能名稱與句型規則，批次取代韓文的裝備或卡片道具說明。", keywords: "RO 仙境傳說 simple replacer 翻譯 取代 韓文 技能", page: "./simple-replacer.html" },
   { id: "ragnarok-glacier-weapon", title: "冰晶武器價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依各項素材的單價，比較購買、升級與兌換成本，即時計算冰晶武器價格。", keywords: "RO 仙境傳說 glacier weapon 冰晶 武器 附魔 雪花 魔石 成本 計算" },
   { id: "ragnarok-reform-material", title: "改造素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依影子神秘金屬的單價，換算強化石成本與所需素材數量。", keywords: "RO 仙境傳說 reform 改造 素材 強化石 強化原石 影子神秘金屬 成本 計算" },
   { id: "ragnarok-grade-material", title: "升階素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依乙太星塵單價與低價買進折扣，計算階級提升的成本。", keywords: "RO 仙境傳說 grade 升階 素材 乙太 星塵 魔石 天藍寶石 黃寶石 紫寶石 琥珀 低價買進 成本 計算" },
@@ -19,6 +19,7 @@ const tools = [
   { id: "ragnarok-thro", title: "thRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 thRO 泰國伺服器官方網站。", keywords: "RO 泰國 TH thRO 官網 官方網站", url: "https://ro.gnjoy.in.th/home/" },
   { id: "ragnarok-divine-pride", title: "Divine Pride", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 Divine Pride 網站，瀏覽各國的資料與解檔資訊。", keywords: "RO 仙境傳說 DP Divine Pride divine-pride", url: "https://www.divine-pride.net/" },
   { id: "ragnarok-calculator", title: "ROCalculator", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 Landgris 大大所製作的 ROCalculator，精準計算 RO 的傷害。", keywords: "RO 仙境傳說 ROCalculator Landgris 計算機 計算器", url: "https://landgris.github.io/ROCalculator/" },
+  { id: "ragnarok-replacer-share", title: "韓文裝備簡易取代器", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "供單獨分享時使用的簡易取代器，功能與工具版並無差異。", keywords: "RO 仙境傳說 韓文 裝備 取代 獨立 分享", url: "./ragnarok-replacer.html", subdued: true },
 
   // FFXIV Url
   { id: "ffxiv-wiki", title: "灰機｜FFXIV 中文 Wiki", category: "ffxiv", icon: "↗", tone: "var(--accent)", description: "前往 FFXIV 灰機 Wiki 首頁，查詢遊戲內各項資訊。", keywords: "FFXIV FF14 灰機 灰机 Wiki 百科 攻略", url: "https://ff14.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5" },
@@ -29,6 +30,7 @@ const tools = [
   // ChronoStory Tool
   { id: "chronostory-drop-search", title: "魔物掉落道具查詢", category: "chronostory", icon: "⌕", tone: "var(--accent)", description: "依名稱搜尋道具或魔物，查看裝備效果、掉落來源與掉落率，於獨立頁面操作。", keywords: "ChronoStory 魔物 怪物 道具 掉落 裝備 卷軸 查詢 drop item monster", page: "./chronostory-drops.html#regions" },
   { id: "chronostory-job-info", title: "轉職資訊", category: "chronostory", icon: "◇", tone: "var(--accent)", description: "查詢一至四轉條件、轉職流程與地點，以及三轉考試題庫與四轉道具取得方式。", keywords: "ChronoStory 轉職 職業 一轉 二轉 三轉 四轉 劍士 法師 弓箭手 盜賊 海盜 job advancement" },
+  { id: "chronostory-support-info", title: "共享輔助狀態資訊", category: "chronostory", icon: "◇", tone: "var(--accent)", description: "依職業查閱輔助技能與效果，包含進階強化、持續消耗及骰子各點數效果。", keywords: "ChronoStory 職業 共享 輔助 狀態 技能 buff 隊伍 骰子" },
 
   // ChronoStory Url
   { id: "chronostory-dex", title: "ChronoDEX", category: "chronostory", icon: "↗", tone: "var(--accent)", description: "前往 ChronoDEX 網站。", keywords: "ChronoStory ChronoDEX dex", url: "https://chronostorydex.com/" },
@@ -86,6 +88,7 @@ function toolAction(tool, className, label) {
     : `<button class="${className}" data-open="${tool.id}" aria-label="開啟${tool.title}">${label}</button>`;
 }
 function renderNavigation() {
+  document.querySelector('.navigation [data-filter="favorites"]').closest(".nav-group").hidden = favorites.size === 0;
   document.querySelectorAll("[data-submenu]").forEach(list => {
     const filter = list.dataset.submenu;
     const categoryItems = toolsInFilter(filter);
@@ -108,7 +111,7 @@ function toast(message) {
 }
 function renderCard(tool) {
   return `
-    <article class="tool-card ${tool.url ? "card-link" : "card-tool"}" style="--tone:${tool.tone}">
+    <article class="tool-card ${tool.url ? "card-link" : "card-tool"}${tool.subdued ? " card-subdued" : ""}" style="--tone:${tool.tone}">
       <div class="card-top"><div class="card-identity"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="card-type">${tool.url ? "連結" : "工具"}</span></div><button class="favorite-button" data-favorite="${tool.id}" aria-label="${favorites.has(tool.id) ? "取消收藏" : "收藏"}${tool.title}" aria-pressed="${favorites.has(tool.id)}">${favorites.has(tool.id) ? "★" : "☆"}</button></div>
       <h3>${tool.title}</h3><p>${tool.description}</p>
       <div class="card-footer"><span class="category-label">${toolCategoryLabel(tool)}</span>${toolAction(tool, "open-tool", `${tool.url ? "前往網站" : "開啟工具"} <span aria-hidden="true">↗</span>`)}</div>
@@ -214,27 +217,54 @@ document.addEventListener("keydown", event => {
 $("#year").textContent = new Date().getFullYear();
 
 const dialog = $("#tool-dialog");
-function closeTool() {
+let activeToolId = null;
+function updateToolBookmark(id) {
+  const url = new URL(window.location.href);
+  url.hash = id ? `tool=${encodeURIComponent(id)}` : "";
+  if (url.href !== window.location.href) window.history.pushState(null, "", url);
+}
+function closeTool(updateBookmark = true) {
   stopTimer();
   stopLaboratoryTimers();
   dialog.close();
+  activeToolId = null;
+  if (updateBookmark && window.location.hash.startsWith("#tool=")) updateToolBookmark(null);
 }
-$("#close-dialog").addEventListener("click", closeTool);
+$("#close-dialog").addEventListener("click", () => closeTool());
 // Escape uses the same cleanup as the close button for every tool.
 dialog.addEventListener("cancel", event => {
   event.preventDefault();
   closeTool();
 });
-function openTool(id) {
+function openTool(id, updateBookmark = true) {
   const tool = tools.find(item => item.id === id);
   if (!tool || tool.url) return;
   if (tool.page) { window.location.href = tool.page; return; }
+  if (activeToolId === id && dialog.open) return;
+  stopTimer();
   stopLaboratoryTimers();
   $("#dialog-title").textContent = tool.title;
   $("#dialog-category").textContent = toolCategoryLabel(tool);
   dialog.classList.toggle("dialog-wide", ["ragnarok-glacier-weapon", "ragnarok-reform-material", "ragnarok-grade-material"].includes(id));
   renderers[id]();
   dialog.showModal();
+  activeToolId = id;
+  if (updateBookmark) updateToolBookmark(id);
+}
+function syncToolBookmark() {
+  let id = null;
+  if (window.location.hash.startsWith("#tool=")) {
+    try { id = decodeURIComponent(window.location.hash.slice(6)); }
+    catch { /* Ignore malformed bookmarks. */ }
+  }
+  const tool = tools.find(item => item.id === id && !item.url);
+  if (tool?.page) {
+    window.location.replace(tool.page);
+  } else if (tool && Object.hasOwn(renderers, tool.id)) {
+    openTool(tool.id, false);
+  } else if (dialog.open) {
+    closeTool(false);
+  }
 }
 function formatDuration(seconds) {
   const hours = Math.floor(seconds / 3600);
@@ -521,5 +551,9 @@ function renderChronostoryJobInfo() {
     </details>
   </div>`;
 }
-const renderers = { "ragnarok-timer": renderTimer, "ragnarok-glacier-weapon": renderGlacierWeapon, "ragnarok-reform-material": renderReformMaterial, "ragnarok-grade-material": renderGradeMaterial, "chronostory-job-info": renderChronostoryJobInfo };
+const renderers = { "chronostory-support-info": renderChronostorySupportInfo, "ragnarok-timer": renderTimer, "ragnarok-glacier-weapon": renderGlacierWeapon, "ragnarok-reform-material": renderReformMaterial, "ragnarok-grade-material": renderGradeMaterial, "chronostory-job-info": renderChronostoryJobInfo };
 renderTools();
+
+window.addEventListener("hashchange", syncToolBookmark);
+window.addEventListener("popstate", syncToolBookmark);
+syncToolBookmark();
