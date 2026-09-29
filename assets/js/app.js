@@ -147,7 +147,7 @@ function renderCard(tool) {
     <article class="tool-card ${tool.url ? "card-link" : "card-tool"}${tool.subdued ? " card-subdued" : ""}${tool.subcategory ? " card-article" : ""}" style="--tone:${tool.tone}">
       <div class="card-top"><div class="card-identity"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="card-type">${tool.subcategory ? "酒虎廢文" : tool.url ? "連結" : "工具"}</span></div><button class="favorite-button" data-favorite="${tool.id}" aria-label="${favorites.has(tool.id) ? "取消收藏" : "收藏"}${tool.title}" aria-pressed="${favorites.has(tool.id)}">${favorites.has(tool.id) ? "★" : "☆"}</button></div>
       <h3>${tool.title}</h3><p>${tool.description}</p>
-      ${toolAction(tool, "open-tool", "")}
+      <div class="card-footer"><span class="category-label">${toolCategoryLabel(tool)}</span>${toolAction(tool, "open-tool", `${tool.url ? "前往網站" : "開啟工具"} <span aria-hidden="true">↗</span>`)}</div>
     </article>`;
 }
 function renderTools() {
