@@ -9,6 +9,20 @@ const tools = [
   { id: "ragnarok-reform-material", title: "改造素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依影子神秘金屬的單價，換算強化石成本與所需素材數量。", keywords: "RO 仙境傳說 reform 改造 素材 強化石 強化原石 影子神秘金屬 成本 計算" },
   { id: "ragnarok-grade-material", title: "升階素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依乙太星塵單價與低價買進折扣，計算階級提升的成本。", keywords: "RO 仙境傳說 grade 升階 素材 乙太 星塵 魔石 天藍寶石 黃寶石 紫寶石 琥珀 低價買進 成本 計算" },
 
+  // 酒虎廢文
+  { id: "ragnarok-article-438535", title: "kRO 重點更新整理", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=438535" },
+  { id: "ragnarok-article-436731", title: "kRO 迄今技能調整／優化整理", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=436731" },
+  { id: "ragnarok-article-440198", title: "連鎖自動詠唱裝備整理", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=440198" },
+  { id: "ragnarok-article-437323", title: "技能獨立延遲／冷卻時間關聯裝備一覽", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=437323" },
+  { id: "ragnarok-article-437413", title: "王卡搭配裝備整理", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=437413" },
+  { id: "ragnarok-article-439564", title: "邊界符文頭冠與邊界武器資訊", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=439564" },
+  { id: "ragnarok-article-439592", title: "二次元武器資訊整理", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=439592" },
+  { id: "ragnarok-article-439379", title: "天空符文冠冕與天空武器系列", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=439379" },
+  { id: "ragnarok-article-439950", title: "光輝符文頭冠與光輝武器資訊", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=439950" },
+  { id: "ragnarok-article-439873", title: "二次元生物圈（火山 & 大地）資訊速報", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=439873" },
+  { id: "ragnarok-article-440019", title: "二次元生物圈（劇毒 & 冰凍）資訊速報", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=440019" },
+  { id: "ragnarok-article-440202", title: "二次元生物圈（靈魂、聖殿與死靈）資訊速報", category: "ragnarok", subcategory: "酒虎廢文", icon: "✎", tone: "var(--accent)", description: "於巴哈姆特閱讀酒虎的整理文章。", keywords: "RO 仙境傳說 酒虎廢文 巴哈姆特 攻略 整理", url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=440202" },
+
   // RO Url
   { id: "ragnarok-twro", title: "twRO 官方網站", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 twRO 臺灣伺服器官方網站。", keywords: "RO 台灣 臺灣 TW 官網 官方網站", url: "https://ro.gnjoy.com.tw/" },
   { id: "ragnarok-shop-search", title: "twRO 露天商店查詢平台", category: "ragnarok", icon: "↗", tone: "var(--accent)", description: "前往 twRO 官方露天商店查詢平台，查詢販售、收購與歷史成交紀錄。", keywords: "RO 仙境傳說 twRO 露天 商店 販售 收購 成交 紀錄 價格 查詢", url: "https://event.gnjoy.com.tw/Ro/RoShopSearch" },
@@ -37,7 +51,7 @@ const tools = [
 ];
 const $ = (selector) => document.querySelector(selector);
 const categoryNames = { ragnarok: "仙境傳說", ffxiv: "FFXIV", chronostory: "ChronoStory" };
-const toolCategoryLabel = tool => categoryNames[tool.category] ?? "通用工具";
+const toolCategoryLabel = tool => [categoryNames[tool.category] ?? "通用工具", tool.subcategory].filter(Boolean).join("／");
 const filterNames = { all: "所有工具", favorites: "我的收藏", ...categoryNames };
 const storage = {
   read(key, fallback) { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } },
@@ -67,6 +81,21 @@ function initializeWelcomePanel() {
 }
 initializeWelcomePanel();
 
+function setCardView(view) {
+  const selectedView = view === "compact" ? "compact" : "standard";
+  $("#tool-grid").classList.toggle("view-compact", selectedView === "compact");
+  document.querySelectorAll("[data-card-view]").forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.cardView === selectedView));
+  });
+}
+setCardView(storage.read("saketora.cardView", "standard"));
+document.querySelectorAll("[data-card-view]").forEach(button => {
+  button.addEventListener("click", () => {
+    setCardView(button.dataset.cardView);
+    storage.write("saketora.cardView", button.dataset.cardView);
+  });
+});
+
 
 let favorites = new Set();
 try {
@@ -94,8 +123,12 @@ function renderNavigation() {
     const categoryItems = toolsInFilter(filter);
     const items = categoryItems.filter(matchesType);
     list.hidden = !expandedMenus.has(filter);
+    const renderNavItem = tool => `<li>${toolAction(tool, "nav-tool", tool.title + (tool.url ? ' <span aria-hidden="true">↗</span>' : ''))}</li>`;
+    const articles = items.filter(tool => tool.subcategory === "酒虎廢文");
     list.innerHTML = items.length
-      ? items.map(tool => `<li>${toolAction(tool, "nav-tool", tool.title + (tool.url ? ' <span aria-hidden="true">↗</span>' : ''))}</li>`).join("")
+      ? items.filter(tool => !tool.url).map(renderNavItem).join("") +
+        (articles.length ? `<li class="nav-article-group"><span class="nav-subcategory-title">酒虎廢文</span><ul>${articles.map(renderNavItem).join("")}</ul></li>` : "") +
+        items.filter(tool => tool.url && !tool.subcategory).map(renderNavItem).join("")
       : `<li class="nav-empty">${categoryItems.length ? "沒有符合所選類型的項目" : "該分類下沒有工具或連結"}</li>`;
     const toggle = document.querySelector(`.navigation [data-filter="${filter}"]`);
     toggle.setAttribute("aria-expanded", String(!list.hidden));
@@ -111,10 +144,10 @@ function toast(message) {
 }
 function renderCard(tool) {
   return `
-    <article class="tool-card ${tool.url ? "card-link" : "card-tool"}${tool.subdued ? " card-subdued" : ""}" style="--tone:${tool.tone}">
-      <div class="card-top"><div class="card-identity"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="card-type">${tool.url ? "連結" : "工具"}</span></div><button class="favorite-button" data-favorite="${tool.id}" aria-label="${favorites.has(tool.id) ? "取消收藏" : "收藏"}${tool.title}" aria-pressed="${favorites.has(tool.id)}">${favorites.has(tool.id) ? "★" : "☆"}</button></div>
+    <article class="tool-card ${tool.url ? "card-link" : "card-tool"}${tool.subdued ? " card-subdued" : ""}${tool.subcategory ? " card-article" : ""}" style="--tone:${tool.tone}">
+      <div class="card-top"><div class="card-identity"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="card-type">${tool.subcategory ? "酒虎廢文" : tool.url ? "連結" : "工具"}</span></div><button class="favorite-button" data-favorite="${tool.id}" aria-label="${favorites.has(tool.id) ? "取消收藏" : "收藏"}${tool.title}" aria-pressed="${favorites.has(tool.id)}">${favorites.has(tool.id) ? "★" : "☆"}</button></div>
       <h3>${tool.title}</h3><p>${tool.description}</p>
-      <div class="card-footer"><span class="category-label">${toolCategoryLabel(tool)}</span>${toolAction(tool, "open-tool", `${tool.url ? "前往網站" : "開啟工具"} <span aria-hidden="true">↗</span>`)}</div>
+      ${toolAction(tool, "open-tool", "")}
     </article>`;
 }
 function renderTools() {
@@ -131,11 +164,12 @@ function renderTools() {
     const items = visible.filter(tool => (tool.category ?? "general") === category);
     if (!items.length) return "";
     const toolItems = items.filter(tool => !tool.url);
-    const linkItems = items.filter(tool => tool.url);
+    const linkItems = items.filter(tool => tool.url && !tool.subcategory);
+    const articleItems = items.filter(tool => tool.subcategory === "酒虎廢文");
     const renderRow = (entries, type, title) => entries.length
       ? `<section class="card-section" aria-label="${label}的${title}"><h3 class="card-section-title">${title}<span>${entries.length}</span></h3><div class="tool-grid" data-card-type="${type}">${entries.map(renderCard).join("")}</div></section>`
       : "";
-    return `<details class="category-group" data-category="${category}" ${collapsed.has(category) ? "" : "open"}><summary><h2>${label}</h2><span class="group-count">${items.length}</span></summary><div class="category-content">${renderRow(toolItems, "tools", "工具")}${renderRow(linkItems, "links", "連結")}</div></details>`;
+    return `<details class="category-group" data-category="${category}" ${collapsed.has(category) ? "" : "open"}><summary><h2>${label}</h2><span class="group-count">${items.length}</span></summary><div class="category-content">${renderRow(toolItems, "tools", "工具")}${renderRow(articleItems, "articles", "酒虎廢文")}${renderRow(linkItems, "links", "連結")}</div></details>`;
   }).join("");
   $("#tools-heading").firstChild.textContent = filterNames[activeFilter] + " ";
   $("#result-count").textContent = visible.length;
