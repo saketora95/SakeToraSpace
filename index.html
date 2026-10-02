@@ -6,6 +6,23 @@
   <meta name="theme-color" content="#202427">
   <meta name="description" content="SakeTora Space — 收集遊戲與生活中剛剛好的小工具。">
   <title>SakeTora Space · 日常工具箱</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SakeTora Space">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="SakeTora Space · 日常工具箱">
+  <meta property="og:description" content="SakeTora Space — 收集遊戲與生活中剛剛好的小工具。">
+  <meta property="og:url" content="https://saketora95.github.io/SakeToraSpace/">
+  <meta property="og:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SakeTora Space · 日常工具箱">
+  <meta name="twitter:description" content="SakeTora Space — 收集遊戲與生活中剛剛好的小工具。">
+  <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
   <link rel="icon" href="./assets/favicon.png" type="image/png">
   <link rel="stylesheet" href="./assets/css/styles.css">
   <script src="./assets/js/tools/ragnarok/glacier-weapon.js" defer></script>
@@ -42,7 +59,7 @@
             <h2 id="welcome-heading">歡迎你來到這裡，我是酒虎。</h2>
             <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
             <p>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。<br>使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-            <p class="welcome-version">最後更新：2026-10-02 ‧ <span id="welcome-version">v0.07</span></p>
+            <p class="welcome-version">最後更新：2026-10-02 ‧ <span id="welcome-version">v0.08</span></p>
             <button class="secondary-button welcome-release" type="button" data-release-notes aria-haspopup="dialog" aria-controls="release-dialog">改版資訊</button>
           </div>
         </section>
@@ -75,14 +92,12 @@
   <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>
   <dialog id="release-dialog" aria-labelledby="release-title">
     <div class="dialog-header">
-      <div><span class="eyebrow muted"><time datetime="2026-10-02">2026-10-02</time></span><h2 id="release-title">v0.07 改版資訊</h2></div>
+      <div><span class="eyebrow muted"><time datetime="2026-10-02">2026-10-02</time></span><h2 id="release-title">v0.08 改版資訊</h2></div>
       <form method="dialog"><button class="icon-button" type="submit" aria-label="關閉改版資訊" autofocus>×</button></form>
     </div>
     <ul class="release-summary">
-      <li>ChronoStory 新增職業 BIS 查詢，依職業與裝備部位列出最高能力值總和排行，支援並列裝備與各部位獨立切換排行。</li>
-      <li>盜賊可切換敏捷／幸運與力量／幸運配裝；裝備顯示需求、最高屬性與掉落來源，滑鼠移入或點選來源可標示同一魔物掉落的裝備。</li>
-      <li>韓文裝備簡易取代器的輸入與輸出文字框支援雙向高度同步，兩個獨立頁面皆可使用。</li>
-      <li>縮小首頁圖片尺寸，改善圖片載入速度。</li>
+      <li>首頁與三個獨立頁面新增連結分享預覽，分享時可顯示各頁標題、摘要與酒虎圖片。</li>
+      <li>各頁新增正式網址標記；ChronoStory 頁面摘要同步涵蓋道具、魔物掉落與職業 BIS 裝備比較。</li>
     </ul>
   </dialog>
   <div id="toast" class="toast" role="status" hidden></div>

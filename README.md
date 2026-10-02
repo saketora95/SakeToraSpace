@@ -2,6 +2,11 @@
 
 此專案主要由 AI 生成與建置，收集遊戲與日常使用的小工具及參考連結。
 
+## v0.08（2026-10-02）
+
+- 首頁與三個獨立頁面新增 Open Graph 與 Twitter Card 分享預覽，提供各頁標題、摘要及共用酒虎圖片。
+- 各頁新增正式網址標記，ChronoStory 頁面摘要同步涵蓋職業 BIS 裝備比較。
+
 ## v0.07（2026-10-02）
 
 - ChronoStory 新增[職業 BIS 查詢](chronostory-drops.html#bis)，依職業與部位比較最高能力值總和，支援並列裝備及各部位獨立切換排行。盜賊可選敏捷／幸運或力量／幸運配裝，預設採用敏捷／幸運。
@@ -69,3 +74,9 @@ node scripts/test-chronostory-drop-search.cjs
 在首頁開啟工具時，網址會自動加上 `#tool=工具ID`，可直接複製網址分享或加入瀏覽器書籤。使用者開啟該網址或重新整理時，會直接開啟指定工具；上一頁／下一頁也會同步切換工具。
 
 例如：`index.html#tool=chronostory-support-info`（共享輔助狀態資訊）、`index.html#tool=chronostory-job-info`（轉職資訊）、`index.html#tool=ragnarok-timer`（倒數計時）。獨立頁面工具可直接分享該頁面的網址。
+
+## 連結分享預覽
+
+首頁與三個獨立頁面在 HTML 中提供 Open Graph 與 Twitter Card 標籤，包含各頁標題、摘要與共用酒虎預覽圖片（`assets/welcome.png`，600 × 600）。分享資訊可由不執行 JavaScript 的爬蟲直接讀取。
+
+目前正式網址設為 `https://saketora95.github.io/SakeToraSpace/`；若改用自訂網域或不同部署路徑，請同步更新四個 HTML 的 `canonical`、`og:url`、`og:image` 與 `twitter:image` 完整網址。網址中的 `#tool=...`、`#items`、`#regions`、`#bis` 共用所屬頁面的分享預覽。部署後，分享平台可能仍保留舊預覽快取，需要重新擷取才會顯示更新內容。
