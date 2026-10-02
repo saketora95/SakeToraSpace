@@ -91,3 +91,39 @@
 .drop-table tbody tr:nth-child(even){background:var(--surface-soft)}
 
 .drop-browser.drop-has-result{border-top:1px solid var(--line);padding-top:24px;margin-top:20px}
+
+.drop-modes{flex-wrap:wrap}
+.drop-modes button{flex:1 1 130px}
+#drop-bis-profession{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:stretch}
+.drop-bis-job-column{min-width:0;display:flex;flex-direction:column}
+.drop-bis-job-column>button{flex:1}
+.drop-bis-job-column>button,.drop-bis-builds button{width:100%;padding:8px 4px}
+.drop-bis-builds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:6px}
+.drop-bis-builds button{font-size:12px}
+.drop-bis-controls{margin-bottom:16px}
+.drop-bis-results{border-top:1px solid var(--line)}
+.drop-bis-part{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:16px 0;border-bottom:1px solid var(--line)}
+.drop-bis-heading{min-width:0}
+.drop-bis-heading h3{margin:0 0 10px;font-size:16px}
+.drop-bis-navigation{display:flex;gap:6px}
+.drop-bis-navigation button{min-height:36px;padding:6px 8px;font-size:12px}
+.drop-bis-navigation button:disabled{opacity:.45;cursor:default}
+.drop-bis-data{min-width:0;line-height:1.4}
+.drop-bis-rank{margin:0 0 10px;color:var(--accent);font-weight:700}
+.drop-bis-items{list-style:none;padding:0;margin:0}
+.drop-bis-items li+li{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+.drop-bis-items h4{margin:0 0 4px;font-size:14px}
+.drop-bis-items p{margin:3px 0;overflow-wrap:anywhere}
+@media(max-width:680px){
+  #drop-bis-profession{gap:4px}
+  .drop-bis-builds button{font-size:11px}
+  .drop-bis-part{grid-template-columns:80px minmax(0,1fr);gap:12px;padding:12px 0}
+  .drop-bis-navigation{flex-direction:column;align-items:stretch}
+}
+
+.drop-bis-items li{border-radius:4px;padding:6px 10px 6px 12px}
+.drop-bis-items .drop-bis-shared-item{background:var(--selected);box-shadow:inset 3px 0 var(--accent)}
+.drop-bis-items .drop-bis-hover-item{background:#29414d;box-shadow:inset 3px 0 #8ed0f0}
+.drop-bis-shared-item h4,.drop-bis-shared-source{color:var(--accent)}
+.drop-bis-hover-item h4,.drop-bis-hover-source{color:#8ed0f0}
+.drop-bis-source{display:inline;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;line-height:inherit;text-decoration:underline;text-underline-offset:3px}

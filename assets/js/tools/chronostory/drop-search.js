@@ -157,6 +157,30 @@ function createChronoStoryLeaders(data) {
     .filter(score => score.value === maxima.get(score.key)).map(score => score.label)))];
 }
 
+function createChronoStoryBis(data, profession) {
+  const parts = new Map();
+  if (!profession) return parts;
+  for (const item of data.items.filter(item => item.kind === "equipment")) {
+    for (const record of chronoStoryEquipmentRecords(item)) {
+      if (chronoStoryProfession(record) !== profession) continue;
+      const value = chronoStoryAbilityTotal(record);
+      const part = record.category === "帽子" ? "頭盔" : record.category;
+      if (!part || !Number.isFinite(value)) continue;
+      if (!parts.has(part)) parts.set(part, new Map());
+      const tiers = parts.get(part);
+      if (!tiers.has(value)) tiers.set(value, []);
+      const entries = tiers.get(value);
+      if (!entries.some(entry => entry.item.id === item.id && JSON.stringify(entry.record) === JSON.stringify(record))) {
+        entries.push({ item, record });
+      }
+    }
+  }
+  return new Map([...parts].map(([part, tiers]) => [part,
+    [...tiers].sort((a, b) => b[0] - a[0]).map(([value, entries], tier) => ({
+      value, rank: tier + 1, entries: entries.sort((a, b) => a.item.name.localeCompare(b.item.name, "zh-Hant")),
+    }))]));
+}
+
 function findChronoStoryJobEntries(data, state) {
   const professions = state.professions ?? (state.job ? [state.job] : []);
   const parts = state.parts ?? (state.part ? [state.part] : []);
@@ -207,10 +231,11 @@ function mountChronoStoryDropSearch(root, data) {
   const leaders = createChronoStoryLeaders(data);
   const escape = value => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
   const unique = values => [...new Set(values)];
-  const modeFromHash = () => ["items", "regions", "jobs"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "regions";
-  const state = { mode: modeFromHash(), query: "", kind: "", job: "", region: "", professions: [], parts: [], selected: null, limit: 40 };
+  const modeFromHash = () => ["items", "regions", "jobs", "bis"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "regions";
+  const state = { mode: modeFromHash(), query: "", kind: "", job: "", region: "", professions: [], parts: [], bisJob: "", bisTiers: {}, bisSource: null, selected: null, limit: 40 };
   const history = [];
   let matches = [];
+  let hoveredBisSource = null;
   const summaryRegions = unique(data.summary.map(entry => entry.region));
   const jobs = unique(data.items.flatMap(item => item.jobs));
   const equipmentParts = ["武器", "頭盔", "上衣", "褲子", "套服", "手套", "鞋子", "盾牌", "披風", "戒指"];
@@ -224,11 +249,16 @@ function mountChronoStoryDropSearch(root, data) {
       <button type="button" data-mode="regions" aria-pressed="false">魔物掉落查詢</button>
       <button type="button" data-mode="items" aria-pressed="false">道具查詢</button>
       <button type="button" data-mode="jobs" aria-pressed="false">職業查詢</button>
+      <button type="button" data-mode="bis" aria-pressed="false">職業 BIS 查詢</button>
     </div>
     <div class="drop-region-controls" hidden>
       <label class="field" for="drop-area">區域<select id="drop-area"><option value="">請選擇區域</option>${options(summaryRegions)}</select></label>
       <label class="field" for="drop-monster">魔物<select id="drop-monster" disabled><option value="">請先選擇區域</option></select></label>
     </div>
+    <div class="drop-bis-controls" hidden>
+      <fieldset class="drop-multi-field"><legend>查詢職業</legend><div id="drop-bis-profession" class="drop-multi-options" tabindex="-1"></div></fieldset>
+    </div>
+    <div id="drop-bis-results" class="drop-bis-results" hidden></div>
     <div class="drop-job-controls" hidden>
       <fieldset class="drop-multi-field"><legend>職業（可複選）</legend><div id="drop-profession" class="drop-multi-options" tabindex="-1"></div></fieldset>
       <fieldset class="drop-multi-field"><legend>裝備部位（可複選）</legend><div id="drop-part" class="drop-multi-options"></div></fieldset>
@@ -309,7 +339,40 @@ function mountChronoStoryDropSearch(root, data) {
     $("#drop-more").hidden = state.limit >= matches.length;
   }
 
+  function renderBis() {
+    hoveredBisSource = null;
+    const parts = createChronoStoryBis(data, state.bisJob);
+    const ordered = unique([...equipmentParts, ...parts.keys()]).filter(part => parts.has(part));
+    $("#drop-result-status").textContent = state.bisJob ? `${state.bisJob} · ${parts.size} 個部位` : "";
+    $("#drop-bis-results").innerHTML = ordered.map((part, partIndex) => {
+      const tiers = parts.get(part);
+      const position = Math.max(0, Math.min(state.bisTiers[part] || 0, tiers.length - 1));
+      const tier = tiers[position];
+      return `<section class="drop-bis-part" aria-labelledby="drop-bis-part-${partIndex}">
+        <div class="drop-bis-heading"><h3 id="drop-bis-part-${partIndex}">${escape(part)}</h3>
+        <div class="drop-bis-navigation" role="group" aria-label="${escape(part)}排行切換">
+          <button type="button" class="secondary-button" data-bis-part="${escape(part)}" data-bis-step="-1" ${position === 0 ? "disabled" : ""} aria-label="${escape(part)}：更高排行">↑ 更高</button>
+          <button type="button" class="secondary-button" data-bis-part="${escape(part)}" data-bis-step="1" ${position === tiers.length - 1 ? "disabled" : ""} aria-label="${escape(part)}：更低排行">↓ 更低</button>
+        </div></div>
+        <div class="drop-bis-data"><p class="drop-bis-rank">第 ${tier.rank} 名 · 最高能力值總和 ${escape(tier.value)} · ${position + 1} / ${tiers.length} 層級</p>
+        <ul class="drop-bis-items">${tier.entries.map(({ item, record }) => {
+          const level = record.requirement?.type === "level" ? record.requirement.value : record.level;
+          const sources = unique(index.itemDrops.get(item.id).map(drop => {
+            const monster = index.monsters.get(drop.monsterId);
+            const regions = unique(drop.observations.map(observation => observation.region).filter(Boolean));
+            const label = `${monster.name}${regions.length ? `（${regions.join("、")}）` : ""}`;
+            return `<button type="button" class="drop-bis-source" data-bis-source="${escape(drop.monsterId)}" aria-pressed="${state.bisSource === drop.monsterId}">${escape(label)}</button>`;
+          }));
+          return `<li><h4>${escape(item.name)}</h4><p>等級需求：${escape(level ?? "未記載")}${record.requirement?.type === "luk" ? ` · 幸運需求：${escape(record.requirement.value)}` : ""}</p>
+          ${record.stats ? `<p>最高屬性：${escape(record.stats)}</p>` : ""}
+          <p>掉落來源：${sources.join("、") || "未記載"}</p></li>`;
+        }).join("")}</ul></div></section>`;
+    }).join("") || (state.bisJob ? '<p class="drop-placeholder">尚未收錄可排行的裝備資料。</p>' : "");
+    highlightBisSource();
+  }
+
   function update(refreshDetail = true) {
+    if (state.mode === "bis") { renderBis(); return; }
     if (state.mode === "regions") {
       const monsters = data.summary.filter(entry => entry.region === state.region)
         .map(entry => index.monsters.get(entry.monsterId));
@@ -331,6 +394,21 @@ function mountChronoStoryDropSearch(root, data) {
   function syncControls() {
     const regionMode = state.mode === "regions";
     const jobMode = state.mode === "jobs";
+    const bisMode = state.mode === "bis";
+    $(".drop-bis-controls").hidden = !bisMode;
+    $("#drop-bis-results").hidden = !bisMode;
+    $(".drop-controls").hidden = bisMode;
+    $(".drop-browser").hidden = bisMode;
+    $(".drop-search-actions").hidden = bisMode;
+    $("#drop-result-status").hidden = bisMode && !state.bisJob;
+    $("#drop-bis-profession").innerHTML = ["劍士", "法師", "弓箭手", "盜賊", "海盜"].map(job => {
+      const selected = job === "盜賊" ? state.bisJob.startsWith("盜賊") : state.bisJob === job;
+      const builds = job === "盜賊" ? `<div class="drop-bis-builds" role="group" aria-label="盜賊能力值組合">${["敏捷／幸運", "力量／幸運"].map(build => {
+        const profession = `盜賊 (${build})`;
+        return `<button type="button" class="secondary-button" data-bis-job="${escape(profession)}" aria-pressed="${state.bisJob === profession}">${escape(build.replace("／", "＋"))}</button>`;
+      }).join("")}</div>` : "";
+      return `<div class="drop-bis-job-column"><button type="button" class="secondary-button" data-bis-job="${escape(job)}" aria-pressed="${selected}">${escape(job)}</button>${builds}</div>`;
+    }).join("");
     $(".drop-job-controls").hidden = !jobMode;
     $("#drop-kind-field").hidden = jobMode;
     $("#drop-job-field").hidden = jobMode;
@@ -378,11 +456,11 @@ function mountChronoStoryDropSearch(root, data) {
   }
 
   function reset(mode = state.mode) {
-    Object.assign(state, { professions: [], parts: [] });
+    Object.assign(state, { professions: [], parts: [], bisJob: "", bisTiers: {}, bisSource: null });
     Object.assign(state, { mode, query: "", kind: "", job: "", region: "", selected: null, limit: 40 });
     history.length = 0;
     syncControls();
-    $(state.mode === "regions" ? "#drop-area" : state.mode === "jobs" ? "#drop-profession" : "#drop-query").focus();
+    $(state.mode === "regions" ? "#drop-area" : state.mode === "jobs" ? "#drop-profession" : state.mode === "bis" ? "#drop-bis-profession" : "#drop-query").focus();
   }
 
   function focusDetail() {
@@ -407,6 +485,60 @@ function mountChronoStoryDropSearch(root, data) {
     if (!event.target.value) return;
     state.selected = event.target.value;
     renderDetail();
+  });
+  $("#drop-bis-profession").addEventListener("click", event => {
+    const button = event.target.closest("[data-bis-job]");
+    if (!button) return;
+    state.bisJob = button.dataset.bisJob === "盜賊" ? "盜賊 (敏捷／幸運)" : button.dataset.bisJob;
+    state.bisTiers = {};
+    state.bisSource = null;
+    syncControls();
+    [...$("#drop-bis-profession").querySelectorAll("[data-bis-job]")].find(choice => choice.dataset.bisJob === button.dataset.bisJob)?.focus();
+  });
+  function highlightBisSource() {
+    const results = $("#drop-bis-results");
+    results.querySelectorAll(".drop-bis-items li").forEach(item => {
+      const sources = [...item.querySelectorAll("[data-bis-source]")];
+      const pinned = Boolean(state.bisSource) && sources.some(source => source.dataset.bisSource === state.bisSource);
+      const hovered = Boolean(hoveredBisSource) && sources.some(source => source.dataset.bisSource === hoveredBisSource);
+      item.classList.toggle("drop-bis-shared-item", pinned);
+      item.classList.toggle("drop-bis-hover-item", hovered && !pinned);
+      sources.forEach(source => {
+        const selected = source.dataset.bisSource === state.bisSource;
+        source.classList.toggle("drop-bis-shared-source", selected);
+        source.classList.toggle("drop-bis-hover-source", !selected && source.dataset.bisSource === hoveredBisSource);
+        source.setAttribute("aria-pressed", String(selected));
+      });
+    });
+  }
+  $("#drop-bis-results").addEventListener("mouseover", event => {
+    const source = event.target.closest("[data-bis-source]");
+    if (source) { hoveredBisSource = source.dataset.bisSource; highlightBisSource(); }
+  });
+  $("#drop-bis-results").addEventListener("mouseout", event => {
+    if (event.target.closest("[data-bis-source]")) { hoveredBisSource = null; highlightBisSource(); }
+  });
+  $("#drop-bis-results").addEventListener("click", event => {
+    const source = event.target.closest("[data-bis-source]");
+    if (source?.dataset.bisSource) {
+      state.bisSource = state.bisSource === source.dataset.bisSource ? null : source.dataset.bisSource;
+      highlightBisSource();
+      saveNavigation();
+      return;
+    }
+    const button = event.target.closest("[data-bis-step]");
+    if (!button || button.disabled) return;
+    const part = button.dataset.bisPart;
+    const tiers = createChronoStoryBis(data, state.bisJob).get(part);
+    if (!tiers) return;
+    const position = (state.bisTiers[part] || 0) + Number(button.dataset.bisStep);
+    if (position < 0 || position >= tiers.length) return;
+    state.bisTiers = { ...state.bisTiers, [part]: position };
+    renderBis();
+    saveNavigation();
+    const buttons = [...$("#drop-bis-results").querySelectorAll("[data-bis-step]")].filter(choice => choice.dataset.bisPart === part);
+    (buttons.find(choice => choice.dataset.bisStep === button.dataset.bisStep && !choice.disabled) || buttons.find(choice => !choice.disabled))?.focus();
+    $("#drop-result-status").textContent = `${state.bisJob} · ${part} · 第 ${position + 1} 名 · 最高能力值總和 ${tiers[position].value}`;
   });
   $("#drop-reset").addEventListener("click", () => reset());
   [["profession", "professions"], ["part", "parts"]].forEach(([control, key]) => {

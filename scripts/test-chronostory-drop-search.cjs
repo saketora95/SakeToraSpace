@@ -224,3 +224,112 @@ assert(node('#drop-detail-body').innerHTML.includes('最高能力值總和 19'))
 node('#drop-reset').listeners.click();
 assert.equal(browserHistory.state.chronoStory.state.professions.length, 0);
 console.log('Passed: all professions, split thief builds, no level filter, tied global leaders and detail labels.');
+
+const bis = context.createChronoStoryBis(fixture, strength);
+assert.equal(bis.get('頭盔').length, 2);
+assert.equal(bis.get('頭盔')[0].value, 20);
+assert.equal(bis.get('頭盔')[0].entries.length, 2);
+assert.equal(bis.get('頭盔')[1].rank, 2);
+assert.equal(context.createChronoStoryBis(fixture, '').size, 0);
+assert.equal(context.createChronoStoryBis(fixture, dexterity).get('頭盔')[0].entries[0].item.id, 'd');
+modes.push(Object.assign(node('bis'), { dataset: { mode: 'bis' } }));
+// Remount to wire the newly added mode in this lightweight DOM fixture.
+vm.runInContext('mountChronoStoryDropSearch(root, window.chronoStoryDropData)', context);
+modes.find(mode => mode.dataset.mode === 'bis').listeners.click();
+assert.equal(location.hash, '#bis');
+assert.equal(node('#drop-bis-results').innerHTML, '');
+assert(!node('#drop-bis-profession').innerHTML.includes('aria-pressed="true"'));
+assert(node('.drop-browser').hidden);
+const chooseBis = job => node('#drop-bis-profession').listeners.click({ target: { closest: () => ({ dataset: { bisJob: job } }) } });
+chooseBis(strength);
+assert.equal(browserHistory.state.chronoStory.state.bisJob, strength);
+assert.equal((node('#drop-bis-profession').innerHTML.match(/aria-pressed="true"/g) || []).length, 2);
+for (const label of ['等級需求', '最高能力值總和', '掉落來源', '更高', '更低']) {
+  assert(node('#drop-bis-results').innerHTML.includes(label));
+}
+const realBis = context.createChronoStoryBis(data, strength);
+const [part, tiers] = [...realBis].find(([, tiers]) => tiers.length > 1);
+const step = direction => node('#drop-bis-results').listeners.click({ target: { closest: () => ({ dataset: { bisPart: part, bisStep: String(direction) }, disabled: false }) } });
+step(1);
+assert.equal(browserHistory.state.chronoStory.state.bisTiers[part], 1);
+assert.equal(Object.keys(browserHistory.state.chronoStory.state.bisTiers).length, 1);
+assert(node('#drop-bis-results').innerHTML.includes(`最高能力值總和 ${tiers[1].value}`));
+step(-1);
+assert.equal(browserHistory.state.chronoStory.state.bisTiers[part], 0);
+step(-1);
+assert.equal(browserHistory.state.chronoStory.state.bisTiers[part], 0);
+chooseBis(dexterity);
+assert.equal(browserHistory.state.chronoStory.state.bisJob, dexterity);
+assert.equal(Object.keys(browserHistory.state.chronoStory.state.bisTiers).length, 0);
+node('#drop-reset').listeners.click();
+assert.equal(node('#drop-bis-results').innerHTML, '');
+assert.equal(browserHistory.state.chronoStory.state.bisJob, '');
+console.log('Passed: BIS ties, rankings, no default, single profession, independent tiers, boundaries and reset.');
+
+chooseBis('盜賊');
+assert.equal(browserHistory.state.chronoStory.state.bisJob, dexterity);
+assert.equal(node('.drop-search-actions').hidden, true);
+assert(node('#drop-bis-profession').innerHTML.includes('drop-bis-builds'));
+assert(node('#drop-bis-results').innerHTML.includes('drop-bis-data'));
+chooseBis('劍士');
+assert.equal(browserHistory.state.chronoStory.state.bisJob, '劍士');
+assert.equal((node('#drop-bis-profession').innerHTML.match(/aria-pressed="true"/g) || []).length, 1);
+modes.find(mode => mode.dataset.mode === 'bis').listeners.click();
+assert.equal(node('#drop-result-status').textContent, '');
+assert.equal(node('#drop-result-status').hidden, true);
+modes.find(mode => mode.dataset.mode === 'items').listeners.click();
+assert.equal(node('.drop-search-actions').hidden, false);
+console.log('Passed: thief defaults to dexterity, grouped buttons and BIS-only hidden controls.');
+
+modes.find(mode => mode.dataset.mode === 'bis').listeners.click();
+chooseBis('劍士');
+assert(!node('#drop-bis-results').innerHTML.includes('最優選'));
+assert(!node('#drop-bis-results').innerHTML.includes('<p>最高能力值總和：'));
+assert(node('#drop-bis-results').innerHTML.includes('第 1 名 · 最高能力值總和'));
+
+context.sharedFixture = {
+  items: fixture.items,
+  monsters: [{ id: 'shared', name: '進化迅猛龍' }, { id: 'solo', name: '單一來源' }],
+  summary: [],
+  drops: [
+    { itemId: 'a', monsterId: 'shared', observations: [{ region: '區域一' }] },
+    { itemId: 'e', monsterId: 'shared', observations: [{ region: '區域二' }] },
+    { itemId: 'b', monsterId: 'solo', observations: [] },
+    { itemId: 'b', monsterId: 'solo', observations: [{ region: '另一區域' }] },
+  ],
+};
+vm.runInContext('mountChronoStoryDropSearch(root, sharedFixture)', context);
+modes.find(mode => mode.dataset.mode === 'bis').listeners.click();
+chooseBis(strength);
+let sharedMarkup = node('#drop-bis-results').innerHTML;
+assert(!sharedMarkup.includes('class="drop-bis-shared-item"'));
+assert.equal((sharedMarkup.match(/data-bis-source="shared"/g) || []).length, 2);
+const hoverItems = ['shared', 'shared', 'solo'].map(id => {
+  const source = { dataset: { bisSource: id }, setAttribute() {}, classList: { toggle(name, value) { this[name] = value; } } };
+  return { source, querySelectorAll: () => [source], classList: { toggle(name, value) { this[name] = value; } } };
+});
+node('#drop-bis-results').querySelectorAll = () => hoverItems;
+const sourceEvent = { target: { closest: () => hoverItems[0].source } };
+node('#drop-bis-results').listeners.mouseover(sourceEvent);
+assert.deepEqual(hoverItems.map(item => item.classList['drop-bis-hover-item']), [true, true, false]);
+node('#drop-bis-results').listeners.mouseout(sourceEvent);
+assert(hoverItems.every(item => !item.classList['drop-bis-shared-item'] && !item.source.classList['drop-bis-shared-source']));
+node('#drop-bis-results').listeners.click(sourceEvent);
+node('#drop-bis-results').listeners.mouseout(sourceEvent);
+assert.deepEqual(hoverItems.map(item => item.classList['drop-bis-shared-item']), [true, true, false]);
+const otherSourceEvent = { target: { closest: () => hoverItems[2].source } };
+node('#drop-bis-results').listeners.mouseover(otherSourceEvent);
+assert.equal(hoverItems[2].classList['drop-bis-hover-item'], true);
+const overlap = { dataset: { bisSource: 'solo' }, setAttribute() {}, classList: { toggle() {} } };
+hoverItems[0].querySelectorAll = () => [hoverItems[0].source, overlap];
+node('#drop-bis-results').listeners.mouseover(otherSourceEvent);
+assert.equal(hoverItems[0].classList['drop-bis-shared-item'], true);
+assert.equal(hoverItems[0].classList['drop-bis-hover-item'], false);
+node('#drop-bis-results').listeners.click(sourceEvent);
+assert(hoverItems.every(item => !item.classList['drop-bis-shared-item']));
+node('#drop-bis-results').listeners.mouseout(otherSourceEvent);
+assert(hoverItems.every(item => !item.classList['drop-bis-hover-item']));
+node('#drop-bis-results').querySelectorAll = () => [];
+node('#drop-bis-results').listeners.click({ target: { closest: () => ({ dataset: { bisPart: '頭盔', bisStep: '1' }, disabled: false }) } });
+assert(!node('#drop-bis-results').innerHTML.includes('class="drop-bis-shared-item"'));
+console.log('Passed: shared monster highlights across regions, distinct item counting and tier refresh.');

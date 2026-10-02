@@ -42,7 +42,7 @@
             <h2 id="welcome-heading">歡迎你來到這裡，我是酒虎。</h2>
             <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
             <p>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。<br>使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-            <p class="welcome-version">最後更新：2026-09-29 ‧ <span id="welcome-version">v0.06</span></p>
+            <p class="welcome-version">最後更新：2026-10-02 ‧ <span id="welcome-version">v0.07</span></p>
             <button class="secondary-button welcome-release" type="button" data-release-notes aria-haspopup="dialog" aria-controls="release-dialog">改版資訊</button>
           </div>
         </section>
@@ -75,13 +75,14 @@
   <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>
   <dialog id="release-dialog" aria-labelledby="release-title">
     <div class="dialog-header">
-      <div><span class="eyebrow muted"><time datetime="2026-09-29">2026-09-29</time></span><h2 id="release-title">v0.06 改版資訊</h2></div>
+      <div><span class="eyebrow muted"><time datetime="2026-10-02">2026-10-02</time></span><h2 id="release-title">v0.07 改版資訊</h2></div>
       <form method="dialog"><button class="icon-button" type="submit" aria-label="關閉改版資訊" autofocus>×</button></form>
     </div>
     <ul class="release-summary">
-      <li>標準檢視還原為 v0.05 前的卡片樣式，恢復底部分類、分隔線、操作文字與箭頭，以及原本的高度與間距。</li>
-      <li>保留精簡檢視與顯示偏好記憶，精簡卡片維持隱藏圖示、說明及底部資訊。</li>
-      <li>兩種檢視皆支援整張卡片點擊、鍵盤操作與收藏。</li>
+      <li>ChronoStory 新增職業 BIS 查詢，依職業與裝備部位列出最高能力值總和排行，支援並列裝備與各部位獨立切換排行。</li>
+      <li>盜賊可切換敏捷／幸運與力量／幸運配裝；裝備顯示需求、最高屬性與掉落來源，滑鼠移入或點選來源可標示同一魔物掉落的裝備。</li>
+      <li>韓文裝備簡易取代器的輸入與輸出文字框支援雙向高度同步，兩個獨立頁面皆可使用。</li>
+      <li>縮小首頁圖片尺寸，改善圖片載入速度。</li>
     </ul>
   </dialog>
   <div id="toast" class="toast" role="status" hidden></div>

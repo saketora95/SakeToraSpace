@@ -3,6 +3,24 @@
 const replacerElement = id => document.getElementById(id);
 const input = replacerElement("replace-input");
 const output = replacerElement("replace-output");
+// Both replacer pages share these editors; mirror changes to their border-box height.
+if (typeof ResizeObserver !== "undefined") {
+  const editors = [input, output];
+  const heights = new Map(editors.map(editor => [editor, editor.getBoundingClientRect().height]));
+  const editorResizeObserver = new ResizeObserver(entries => {
+    for (const { target } of entries) {
+      const height = target.getBoundingClientRect().height;
+      if (Math.abs(height - heights.get(target)) < 0.5) continue;
+      heights.set(target, height);
+      const other = target === input ? output : input;
+      if (Math.abs(other.getBoundingClientRect().height - height) < 0.5) continue;
+      heights.set(other, height);
+      other.style.height = `${height}px`;
+    }
+  });
+  editors.forEach(editor => editorResizeObserver.observe(editor));
+}
+
 let controller = null;
 let resultSource = null;
 function updateReplacerStaleNotice() {
