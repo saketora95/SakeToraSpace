@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#202427">
+  <meta name="description" content="仙境傳說技能調整記錄，依職業、技能及版本比較調整前後資料與官方維護公告。">
+  <title>技能調整記錄 · 仙境傳說 · SakeTora Space</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-skill-changes.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SakeTora Space">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="技能調整記錄 · 仙境傳說 · SakeTora Space">
+  <meta property="og:description" content="依職業、技能及版本比較調整前後資料與官方維護公告。">
+  <meta property="og:url" content="https://saketora95.github.io/SakeToraSpace/ragnarok-skill-changes.html">
+  <meta property="og:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="技能調整記錄 · 仙境傳說 · SakeTora Space">
+  <meta name="twitter:description" content="依職業、技能及版本比較調整前後資料與官方維護公告。">
+  <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-skill-changes.css">
+  <script src="./assets/js/tools/ragnarok/skill-change-data.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/skill-changes.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
+</head>
+<body class="skill-changes-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="skill-page-header"><a href="./index.html">← 返回工具箱</a><span class="muted">SakeTora Space / 仙境傳說</span></header>
+  <main id="main">
+    <div class="skill-page-heading"><span class="eyebrow muted">RAGNAROK ONLINE / SKILL HISTORY</span><h1>技能調整記錄</h1><p class="muted">選擇職業或搜尋技能名稱，對照每次改版的調整項目。未指定版本時顯示所有已收錄版本。</p></div>
+    <p id="skill-data-notice" class="skill-data-notice" hidden></p>
+    <p id="skill-current-version" class="skill-current-version"></p>
+    <p id="skill-source" class="skill-source" hidden></p>
+    <section id="skill-changes-tool" aria-label="技能調整查詢">
+      <div class="skill-filters">
+        <label class="field" for="skill-job">職業<select id="skill-job"><option value="">所有職業</option></select></label>
+        <label class="field" for="skill-query">搜尋技能<input id="skill-query" type="search" placeholder="中文、韓文、英文、日文名稱或技能 ID" aria-describedby="skill-query-help"><small id="skill-query-help">可輸入部分名稱；搜尋與職業條件會同時套用。</small></label>
+        <label class="field" for="skill-version">版本<select id="skill-version"><option value="">所有版本</option></select></label>
+        <button id="skill-reset" class="secondary-button" type="button">重設篩選</button>
+      </div>
+      <div class="skill-browser">
+        <aside class="skill-picker" aria-labelledby="skill-picker-heading">
+          <h2 id="skill-picker-heading">符合的技能 <span id="skill-count" class="muted"></span></h2>
+          <button id="skill-show-all" class="secondary-button" type="button" disabled>查看全部符合技能</button>
+          <div id="skill-list" class="skill-list"></div>
+        </aside>
+        <section class="skill-history" aria-labelledby="skill-history-heading">
+          <h2 id="skill-history-heading">調整內容</h2>
+          <p id="skill-result-status" class="muted" role="status" aria-live="polite">正在載入技能資料…</p>
+          <div id="skill-results"></div>
+        </section>
+      </div>
+      <section class="skill-announcements" aria-labelledby="skill-announcements-heading">
+        <h2 id="skill-announcements-heading">各版本官方公告</h2>
+        <p class="muted">列出維護公告與預定調整的開發者筆記，依版本篩選顯示。</p>
+        <div id="skill-announcement-list"></div>
+      </section>
+    </section>
+    <noscript><p class="notice">請啟用 JavaScript 以使用技能調整查詢。</p></noscript>
+    <footer><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></footer>
+  </main>
+</body>
+</html>

@@ -16,6 +16,7 @@
 
 ## 仙境傳說
 
+- **[技能調整記錄](ragnarok-skill-changes.html)**：依職業與多語技能名稱搜尋，預設列出所有版本，也可指定版本或單一技能；現行版本高亮，提供調整前後資料、備註及各版本官方公告索引。目前已從[kRO 技能調整整理文章](https://forum.gamer.com.tw/C.php?bsn=4212&snA=436731)匯入盧恩龍爵的 12 個技能、10 個版本、36 筆記錄及 97 個調整項目；第 8 版本為來源文章的現行版本，第 9 版本標示為未實裝預告，玩家測試項目保留備註。資料存放於 `assets/js/tools/ragnarok/skill-change-data.js`，匯入方式及欄位見[資料格式說明](docs/ragnarok-skill-change-data.md)，驗證指令為 `python3 scripts/test-ragnarok-skill-import.py` 與 `node scripts/test-ragnarok-skill-changes.cjs`。
 - **倒數計時**：一般倒數提醒，並提供中央實驗室三王計時與每日密碼。
 - **韓文裝備簡易取代器**：依規則將韓文裝備說明、技能及遊戲用詞取代為中文，於獨立頁面操作。
 - **[簡易取代器獨立版](ragnarok-replacer.html)**：無導向本站其他頁面的連結；歡迎訊息可關閉或由頁尾重新顯示，關閉狀態與首頁分開保存。此頁共用 `assets/` 的樣式、腳本及圖片，部署時需一併保留。
@@ -77,6 +78,6 @@ node scripts/test-chronostory-drop-search.cjs
 
 ## 連結分享預覽
 
-首頁與三個獨立頁面在 HTML 中提供 Open Graph 與 Twitter Card 標籤，包含各頁標題、摘要與共用酒虎預覽圖片（`assets/welcome.png`，600 × 600）。分享資訊可由不執行 JavaScript 的爬蟲直接讀取。
+首頁與各獨立頁面在 HTML 中提供 Open Graph 與 Twitter Card 標籤，包含各頁標題、摘要與共用酒虎預覽圖片（`assets/welcome.png`，600 × 600）。分享資訊可由不執行 JavaScript 的爬蟲直接讀取。
 
-目前正式網址設為 `https://saketora95.github.io/SakeToraSpace/`；若改用自訂網域或不同部署路徑，請同步更新四個 HTML 的 `canonical`、`og:url`、`og:image` 與 `twitter:image` 完整網址。網址中的 `#tool=...`、`#items`、`#regions`、`#bis` 共用所屬頁面的分享預覽。部署後，分享平台可能仍保留舊預覽快取，需要重新擷取才會顯示更新內容。
+目前正式網址設為 `https://saketora95.github.io/SakeToraSpace/`；若改用自訂網域或不同部署路徑，請同步更新五個 HTML 的 `canonical`、`og:url`、`og:image` 與 `twitter:image` 完整網址。網址中的 `#tool=...`、`#items`、`#regions`、`#bis` 共用所屬頁面的分享預覽。部署後，分享平台可能仍保留舊預覽快取，需要重新擷取才會顯示更新內容。
