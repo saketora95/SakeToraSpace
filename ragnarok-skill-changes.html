@@ -32,29 +32,28 @@
 </head>
 <body class="skill-changes-page">
   <a class="skip-link" href="#main">跳至主要內容</a>
-  <header class="skill-page-header"><a href="./index.html">← 返回工具箱</a><span class="muted">SakeTora Space / 仙境傳說</span></header>
+  <header class="skill-page-header"><a id="skill-home-link" href="./index.html">← 返回工具箱</a><span class="muted">SakeTora Space / 仙境傳說</span></header>
   <main id="main">
-    <div class="skill-page-heading"><span class="eyebrow muted">RAGNAROK ONLINE / SKILL HISTORY</span><h1>技能調整記錄</h1><p class="muted">選擇職業或搜尋技能名稱，對照每次改版的調整項目。未指定版本時顯示所有已收錄版本。</p></div>
+    <div class="skill-page-heading"><span class="eyebrow muted">RAGNAROK ONLINE / SKILL HISTORY</span><h1>技能調整記錄</h1></div>
     <p id="skill-data-notice" class="skill-data-notice" hidden></p>
-    <p id="skill-current-version" class="skill-current-version"></p>
-    <p id="skill-source" class="skill-source" hidden></p>
     <section id="skill-changes-tool" aria-label="技能調整查詢">
       <div class="skill-filters">
         <label class="field" for="skill-job">職業<select id="skill-job"><option value="">所有職業</option></select></label>
-        <label class="field" for="skill-query">搜尋技能<input id="skill-query" type="search" placeholder="中文、韓文、英文、日文名稱或技能 ID" aria-describedby="skill-query-help"><small id="skill-query-help">可輸入部分名稱；搜尋與職業條件會同時套用。</small></label>
+        <label class="field" for="skill-query">搜尋技能<input id="skill-query" type="search" placeholder="中文、韓文、英文、日文名稱或技能 ID"></label>
         <label class="field" for="skill-version">版本<select id="skill-version"><option value="">所有版本</option></select></label>
         <button id="skill-reset" class="secondary-button" type="button">重設篩選</button>
+        <button id="skill-copy-filters" class="secondary-button" type="button" aria-label="複製篩選連結" title="複製篩選連結">🔗</button>
       </div>
+      <span id="skill-copy-status" class="skill-copy-status" role="status" aria-live="polite"></span>
       <div class="skill-browser">
         <aside class="skill-picker" aria-labelledby="skill-picker-heading">
-          <h2 id="skill-picker-heading">符合的技能 <span id="skill-count" class="muted"></span></h2>
-          <button id="skill-show-all" class="secondary-button" type="button" disabled>查看全部符合技能</button>
+          <h2 id="skill-picker-heading">篩選結果 <span id="skill-count" class="muted"></span></h2>
+          <button id="skill-show-all" class="secondary-button" type="button" aria-pressed="true" aria-controls="skill-results">查看全部符合技能</button>
           <div id="skill-list" class="skill-list"></div>
         </aside>
-        <section class="skill-history" aria-labelledby="skill-history-heading">
-          <h2 id="skill-history-heading">調整內容</h2>
-          <p id="skill-result-status" class="muted" role="status" aria-live="polite">正在載入技能資料…</p>
-          <div id="skill-results"></div>
+        <section class="skill-history" aria-label="技能調整記錄">
+          <p id="skill-result-status" class="muted" role="status" aria-live="polite" hidden></p>
+          <div id="skill-results" tabindex="-1"></div>
         </section>
       </div>
       <section class="skill-announcements" aria-labelledby="skill-announcements-heading">

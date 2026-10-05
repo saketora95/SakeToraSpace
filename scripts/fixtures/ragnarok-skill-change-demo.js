@@ -67,7 +67,7 @@ window.ragnarokSkillChangeData = {
     ] },
     { id: "demo-arrow-v2", skillId: "demo-arrow", versionId: "demo-v2", announcementIds: ["demo-notice-v2"], changes: [
       { item: "射程", before: 7, after: 9, unit: "格" },
-      { item: "技能倍率", before: null, after: 450, unit: "%", note: "未記載的舊數值使用 null，顯示為「未記載」。" },
+      { item: "技能倍率", before: null, after: 450, unit: "%", note: "舊數值缺漏時使用 null，顯示為「—」。" },
     ] },
   ],
 };
