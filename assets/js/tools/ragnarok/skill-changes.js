@@ -95,7 +95,8 @@
     const tokens = normalize(query).split(/\s+/).filter(Boolean);
     const changedSkills = versionId ? new Set(data.records.filter(record => record.versionId === versionId).map(record => record.skillId)) : null;
     return data.skills.filter(skill => {
-      const names = normalize([skill.names.zhHant, skill.names.ko, skill.names.en, skill.names.ja, skill.skillId].join(" "));
+      const names = normalize([skill.names.zhHant, skill.names.ko, skill.names.en, skill.names.ja, skill.skillId,
+        ...(skill.searchKeywords || [])].join(" "));
       return (!jobId || skill.jobIds.includes(jobId)) && (!changedSkills || changedSkills.has(skill.id)) &&
         tokens.every(token => names.includes(token));
     });

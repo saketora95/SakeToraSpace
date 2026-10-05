@@ -59,7 +59,7 @@
             <h2 id="welcome-heading">歡迎你來到這裡，我是酒虎。</h2>
             <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
             <p>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。<br>使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-            <p class="welcome-version">最後更新：2026-10-05 ‧ <span id="welcome-version">v0.09</span></p>
+            <p class="welcome-version">最後更新：2026-10-05 ‧ <span id="welcome-version">v0.10</span></p>
             <button class="secondary-button welcome-release" type="button" data-release-notes aria-haspopup="dialog" aria-controls="release-dialog">改版資訊</button>
           </div>
         </section>
@@ -92,14 +92,12 @@
   <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>
   <dialog id="release-dialog" aria-labelledby="release-title">
     <div class="dialog-header">
-      <div><span class="eyebrow muted"><time datetime="2026-10-05">2026-10-05</time></span><h2 id="release-title">v0.09 改版資訊</h2></div>
+      <div><span class="eyebrow muted"><time datetime="2026-10-05">2026-10-05</time></span><h2 id="release-title">v0.10 改版資訊</h2></div>
       <form method="dialog"><button class="icon-button" type="submit" aria-label="關閉改版資訊" autofocus>×</button></form>
     </div>
     <ul class="release-summary">
-      <li>仙境傳說技能調整記錄完整收錄 21 個可篩選職業、290 個技能及 642 筆調整記錄，支援多語技能名稱與 ID 查詢。</li>
-      <li>技能依職業與 ID 排序；現行版本固定為 4.2，並以不同標籤區分當版調整與沿用資料。</li>
-      <li>新增篩選與單一技能的連結複製功能；分享連結可還原查詢狀態，加入 #no=1 可隱藏返回工具箱連結。</li>
-      <li>未篩選時先提供提示與展開完整資料按鈕，並改善技能選取、頁面文字及篩選列按鈕對齊。</li>
+      <li>死侍武器系列的 5 個技能可透過 4457 搜尋，也可搭配技能名稱及職業、版本篩選；原有技能 ID 保持不變。</li>
+      <li>技能資料與匯入器支援額外搜尋關鍵字，方便後續維護。</li>
     </ul>
   </dialog>
   <div id="toast" class="toast" role="status" hidden></div>

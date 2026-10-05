@@ -350,6 +350,9 @@ window.ragnarokSkillChangeData = {
         "en": "Servant Weapon"
       },
       "metadataSourceUrl": "https://ro.gnjoy.com/guide/runemidgarts/skillview.asp?lineseq=2&skillid=5201",
+      "searchKeywords": [
+        "4457"
+      ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
     },
     {
@@ -365,6 +368,9 @@ window.ragnarokSkillChangeData = {
         "en": "Servant Weapon - Sign"
       },
       "metadataSourceUrl": "https://ro.gnjoy.com/guide/runemidgarts/skillview.asp?lineseq=2&skillid=5203",
+      "searchKeywords": [
+        "4457"
+      ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
     },
     {
@@ -380,6 +386,9 @@ window.ragnarokSkillChangeData = {
         "en": "Servant Weapon - Phantom"
       },
       "metadataSourceUrl": "https://ro.gnjoy.com/guide/runemidgarts/skillview.asp?lineseq=2&skillid=5204",
+      "searchKeywords": [
+        "4457"
+      ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
     },
     {
@@ -395,6 +404,9 @@ window.ragnarokSkillChangeData = {
         "en": "Servant Weapon - Demolition"
       },
       "metadataSourceUrl": "https://ro.gnjoy.com/guide/runemidgarts/skillview.asp?lineseq=2&skillid=5205",
+      "searchKeywords": [
+        "4457"
+      ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
     },
     {
@@ -515,6 +527,9 @@ window.ragnarokSkillChangeData = {
         "en": null
       },
       "metadataSourceUrl": "https://ro.gnjoy.com/guide/runemidgarts/skillview.asp?lineseq=2&skillid=6608",
+      "searchKeywords": [
+        "4457"
+      ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200",
       "sourceHeading": "서번트 웨폰 – 클리브 / 死侍武器 - 斬裂"
     },

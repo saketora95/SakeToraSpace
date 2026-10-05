@@ -362,6 +362,8 @@ def make_skill(name, heading, post_id, section_jobs):
              "names": {"zhHant": name, "ko": metadata.get("ko"), "ja": metadata.get("ja"), "en": metadata.get("en")}}
     if metadata.get("sourceUrl"):
         skill["metadataSourceUrl"] = metadata["sourceUrl"]
+    if metadata.get("searchKeywords"):
+        skill["searchKeywords"] = list(metadata["searchKeywords"])
     skill["sourceUrl"] = section_url(post_id)
     if section_key(heading) != name:
         skill["sourceHeading"] = description(section_key(heading))

@@ -41,7 +41,10 @@
           "description": "直接採用各地官方遊戲客戶端名稱：twRO 中文對照、kROM 韓文、iRO 英文、jRO 日文。 台版名稱為「死侍武器」。 同名攻擊子技能已依官方技能清單或 rAthena 主動技能名稱排除。"
         }
       ],
-      "internalName": "DK_SERVANTWEAPON"
+      "internalName": "DK_SERVANTWEAPON",
+      "searchKeywords": [
+        "4457"
+      ]
     },
     "死侍武器-瞬幻": {
       "skillId": 5204,
@@ -76,7 +79,10 @@
           "description": "直接採用各地官方遊戲客戶端名稱：twRO 中文對照、kROM 韓文、iRO 英文、jRO 日文。 台版名稱為「死侍武器-瞬幻」。"
         }
       ],
-      "internalName": "DK_SERVANT_W_PHANTOM"
+      "internalName": "DK_SERVANT_W_PHANTOM",
+      "searchKeywords": [
+        "4457"
+      ]
     },
     "死侍武器-破滅": {
       "skillId": 5205,
@@ -111,7 +117,10 @@
           "description": "直接採用各地官方遊戲客戶端名稱：twRO 中文對照、kROM 韓文、iRO 英文、jRO 日文。 台版名稱為「死侍武器-破滅」。"
         }
       ],
-      "internalName": "DK_SERVANT_W_DEMOL"
+      "internalName": "DK_SERVANT_W_DEMOL",
+      "searchKeywords": [
+        "4457"
+      ]
     },
     "風暴斬擊": {
       "skillId": 5213,
@@ -391,7 +400,10 @@
           "description": "直接採用各地官方遊戲客戶端名稱：twRO 中文對照、kROM 韓文、iRO 英文、jRO 日文。 台版名稱為「死侍武器-標記」。"
         }
       ],
-      "internalName": "DK_SERVANT_W_SIGN"
+      "internalName": "DK_SERVANT_W_SIGN",
+      "searchKeywords": [
+        "4457"
+      ]
     },
     "死侍武器-斬裂": {
       "skillId": 6608,
@@ -426,6 +438,9 @@
           ],
           "description": "直接採用各地官方遊戲客戶端名稱：twRO 中文對照、kROM 韓文、iRO 英文、jRO 日文。"
         }
+      ],
+      "searchKeywords": [
+        "4457"
       ]
     },
     "ABR精熟": {
