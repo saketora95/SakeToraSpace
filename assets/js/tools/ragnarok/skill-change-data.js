@@ -7,7 +7,7 @@ window.ragnarokSkillChangeData = {
     "isDemo": false,
     "server": "kRO",
     "currentVersionId": "kro-v4-2",
-    "updatedAt": "2026-10-05",
+    "updatedAt": "2026-10-06",
     "notice": "收錄來源文章全部職業與非四轉補充的 kRO 調整摘要；版本編號依來源文章。預告、版本未知與玩家測試內容另有標註，缺漏值不予推測。",
     "source": {
       "title": "kRO 迄今技能調整／優化整理",
@@ -4886,7 +4886,7 @@ window.ragnarokSkillChangeData = {
           "item": "冷卻時間",
           "before": 150,
           "after": 60,
-          "note": "原文未標示單位"
+          "unit": "秒"
         },
         {
           "item": "技能倍率",
@@ -5069,7 +5069,7 @@ window.ragnarokSkillChangeData = {
           "before": 15,
           "after": 30,
           "unit": "%",
-          "note": "巨人成長狀態下"
+          "note": "於巨人成長狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -5105,7 +5105,7 @@ window.ragnarokSkillChangeData = {
           "before": 30,
           "after": 60,
           "unit": "%",
-          "note": "巨人成長狀態下"
+          "note": "於巨人成長狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -5157,7 +5157,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "倍率計算",
           "before": null,
-          "after": "納入武器等級"
+          "after": "加入武器等級係數"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -5206,7 +5206,7 @@ window.ragnarokSkillChangeData = {
           "before": 3750,
           "after": 5150,
           "unit": "%",
-          "note": "五級武器、武器重量 150"
+          "note": "以五級武器、武器重量 150 計算"
         },
         {
           "item": "SP 消耗",
@@ -5219,7 +5219,7 @@ window.ragnarokSkillChangeData = {
           "after": 3
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 7
         }
@@ -5247,7 +5247,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 7,
           "after": 10
         }
@@ -5379,7 +5379,7 @@ window.ragnarokSkillChangeData = {
           "after": 72
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 7
         }
@@ -5407,9 +5407,10 @@ window.ragnarokSkillChangeData = {
           "after": "7 x 7"
         },
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -5460,9 +5461,9 @@ window.ragnarokSkillChangeData = {
       "evidence": "article",
       "changes": [
         {
-          "item": "一般近距離物理攻擊",
+          "item": "一般近距離物理攻擊的傷害加成",
           "before": null,
-          "after": "新增傷害加成"
+          "after": "新增效果"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -5479,21 +5480,21 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": "不受施展技能等級",
-          "after": "依據施展技能等級 影響"
+          "after": "依據施展技能等級影響"
         },
         {
-          "item": "一般近距離物理攻擊傷害",
+          "item": "一般近距離物理攻擊的傷害加成",
           "before": 200,
           "after": 250,
           "unit": "%",
-          "note": "傷害加成"
+          "note": ""
         },
         {
-          "item": "對人形與天使種族魔物傷害",
+          "item": "對人形與天使種族敵人的傷害加成",
           "before": 50,
           "after": 100,
           "unit": "%",
-          "note": "傷害加成"
+          "note": ""
         },
         {
           "item": "每次攻擊消耗",
@@ -5570,7 +5571,7 @@ window.ragnarokSkillChangeData = {
           "before": 14000,
           "after": 38000,
           "unit": "%",
-          "note": "對人類與天使種族時"
+          "note": "對人類與天使種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -5740,7 +5741,7 @@ window.ragnarokSkillChangeData = {
           "before": null,
           "after": 4,
           "unit": "次",
-          "note": "活力之源狀態下"
+          "note": "於活力之源狀態下"
         },
         {
           "item": "劍氣體消耗",
@@ -5763,7 +5764,7 @@ window.ragnarokSkillChangeData = {
           "before": null,
           "after": 5400,
           "unit": "%",
-          "note": "活力之源時"
+          "note": "於活力之源狀態下"
         },
         {
           "item": "固定詠唱",
@@ -6065,7 +6066,7 @@ window.ragnarokSkillChangeData = {
           "before": 11000,
           "after": 37500,
           "unit": "%",
-          "note": "對無形與昆蟲種族時"
+          "note": "對無形與昆蟲種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -6321,7 +6322,7 @@ window.ragnarokSkillChangeData = {
           "note": "戰斧踏滅時"
         },
         {
-          "item": "戰斧踏滅時技能倍率中的 POW 係數",
+          "item": "戰斧踏滅時 POW 係數",
           "before": 7,
           "after": 10
         }
@@ -6404,7 +6405,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 10,
           "after": 12
         }
@@ -6683,9 +6684,10 @@ window.ragnarokSkillChangeData = {
           "after": 72
         },
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         },
         {
           "item": "AP 恢復",
@@ -6863,7 +6865,7 @@ window.ragnarokSkillChangeData = {
           "after": "偽裝強化施展時，變更為 3 次攻擊"
         },
         {
-          "item": "偽裝強化時技能倍率中的 POW 係數",
+          "item": "於偽裝強化狀態下 POW 係數",
           "before": 5,
           "after": 7
         },
@@ -6878,7 +6880,7 @@ window.ragnarokSkillChangeData = {
           "before": 1500,
           "after": 2000,
           "unit": "%",
-          "note": "偽裝強化時"
+          "note": "於偽裝強化狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -6908,7 +6910,7 @@ window.ragnarokSkillChangeData = {
           "before": 2000,
           "after": 3250,
           "unit": "%",
-          "note": "偽裝強化時"
+          "note": "於偽裝強化狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -6930,14 +6932,14 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "刪除偽裝強化狀態下會增強傷害的效果"
+          "after": "刪除於偽裝強化狀態下會增強傷害的效果"
         },
         {
           "item": "技能基本倍率",
           "before": 2750,
           "after": 3250,
           "unit": "%",
-          "note": "偽裝強化時 3250%"
+          "note": "於偽裝強化狀態下 3250%"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -7179,12 +7181,12 @@ window.ragnarokSkillChangeData = {
           "unit": "格"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 2
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 7,
           "after": 3,
           "note": "魅影強化時"
@@ -7235,7 +7237,7 @@ window.ragnarokSkillChangeData = {
           "item": "持續時間",
           "before": 120,
           "after": 300,
-          "note": "原文未標示單位"
+          "unit": "秒"
         },
         {
           "item": "無視",
@@ -7285,7 +7287,7 @@ window.ragnarokSkillChangeData = {
           "before": 9500,
           "after": 14500,
           "unit": "%",
-          "note": "對人類與龍族種族時"
+          "note": "對人類與龍族種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -7412,9 +7414,10 @@ window.ragnarokSkillChangeData = {
           "after": "刪除迴旋次數的條件，並因此變更為固定打擊 5 次。"
         },
         {
-          "item": "技能效果",
+          "item": "暴擊支援",
           "before": null,
-          "after": "一般情形下，此技能不會暴擊；僅在裝備拳刃時，以暴擊率的一半適用暴擊效果。"
+          "after": "適用暴擊",
+          "note": "僅於裝備拳刃時適用，採用施展者一半的暴擊率；其餘情形不適用暴擊"
         },
         {
           "item": "SP 消耗",
@@ -7628,7 +7631,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "魔力巔峰狀態下，爆炸傷害造成 2 次打擊"
+          "after": "於魔力巔峰狀態下，爆炸傷害造成 2 次打擊"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -7885,7 +7888,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "魔力巔峰狀態下，技能倍率變更為 4250%"
+          "after": "於魔力巔峰狀態下，技能倍率變更為 4250%"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -8117,7 +8120,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "魔力巔峰狀態下，技能倍率變更為 4250%"
+          "after": "於魔力巔峰狀態下，技能倍率變更為 4250%"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -8414,7 +8417,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "魔力巔峰狀態下，技能倍率變更為 4250%"
+          "after": "於魔力巔峰狀態下，技能倍率變更為 4250%"
         },
         {
           "item": "技能範圍",
@@ -8772,7 +8775,7 @@ window.ragnarokSkillChangeData = {
           "item": "冷卻時間",
           "before": 60,
           "after": 6,
-          "note": "原文未標示單位"
+          "unit": "秒"
         },
         {
           "item": "SP 消耗",
@@ -8795,7 +8798,7 @@ window.ragnarokSkillChangeData = {
           "before": 11000,
           "after": 21400,
           "unit": "%",
-          "note": "對不死與龍族種族時"
+          "note": "對不死與龍族種族敵人時"
         },
         {
           "item": "技能倍率",
@@ -8808,7 +8811,7 @@ window.ragnarokSkillChangeData = {
           "item": "持續時間",
           "before": 15,
           "after": 6,
-          "note": "原文未標示單位"
+          "unit": "秒"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -8868,7 +8871,7 @@ window.ragnarokSkillChangeData = {
           "before": 21400,
           "after": 28200,
           "unit": "%",
-          "note": "對不死與龍族種族時"
+          "note": "對不死與龍族種族敵人時"
         },
         {
           "item": "技能效果",
@@ -9009,9 +9012,10 @@ window.ragnarokSkillChangeData = {
           "unit": "秒"
         },
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9065,7 +9069,7 @@ window.ragnarokSkillChangeData = {
           "after": "7 x 7"
         },
         {
-          "item": "技能倍率中的鈍器&書籍精熟係數",
+          "item": "鈍器&書籍精熟係數",
           "before": 100,
           "after": 500
         }
@@ -9150,7 +9154,7 @@ window.ragnarokSkillChangeData = {
           "before": 12150,
           "after": 18150,
           "unit": "%",
-          "note": "對惡魔與不死種族時"
+          "note": "對惡魔與不死種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9180,7 +9184,7 @@ window.ragnarokSkillChangeData = {
           "before": 18000,
           "after": 20000,
           "unit": "%",
-          "note": "對惡魔與不死種族時"
+          "note": "對惡魔與不死種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9244,7 +9248,7 @@ window.ragnarokSkillChangeData = {
           "before": 3500,
           "after": 4750,
           "unit": "%",
-          "note": "對惡魔與不死種族時"
+          "note": "對惡魔與不死種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9269,7 +9273,7 @@ window.ragnarokSkillChangeData = {
           "before": 4500,
           "after": 5250,
           "unit": "%",
-          "note": "對惡魔與不死種族時"
+          "note": "對惡魔與不死種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9294,7 +9298,7 @@ window.ragnarokSkillChangeData = {
           "before": 5250,
           "after": 6750,
           "unit": "%",
-          "note": "對惡魔與不死種族時"
+          "note": "對惡魔與不死種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9324,7 +9328,7 @@ window.ragnarokSkillChangeData = {
           "before": 6750,
           "after": 8000,
           "unit": "%",
-          "note": "對惡魔與不死種族時"
+          "note": "對惡魔與不死種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9431,12 +9435,12 @@ window.ragnarokSkillChangeData = {
           "note": "範圍"
         },
         {
-          "item": "範圍傷害技能倍率中的靈魂忠誠係數",
+          "item": "範圍傷害靈魂忠誠係數",
           "before": 100,
           "after": 500
         },
         {
-          "item": "範圍傷害技能倍率中的 SPL 係數",
+          "item": "範圍傷害 SPL 係數",
           "before": 7,
           "after": 10
         }
@@ -9545,7 +9549,7 @@ window.ragnarokSkillChangeData = {
           "before": 3050,
           "after": 22750,
           "unit": "%",
-          "note": "對惡魔與不死種族時"
+          "note": "對惡魔與不死種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -9764,7 +9768,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "對目標造成 3 次聖屬性魔法傷害。 若於安希拉狀態時，變更為無屬性魔法傷害。"
+          "after": "對目標造成 3 次聖屬性魔法傷害。 若於安希拉狀態下，變更為無屬性魔法傷害。"
         },
         {
           "item": "AP 恢復",
@@ -9774,7 +9778,13 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能基本倍率",
           "before": null,
-          "after": "6500 + （靈魂忠誠Lv x 50）%（神聖權能時 8250 + （靈魂忠誠Lv x 50）%）"
+          "after": "6500 + （靈魂忠誠Lv x 50）%"
+        },
+        {
+          "item": "技能基本倍率",
+          "before": null,
+          "after": "8250 + （靈魂忠誠Lv x 50）%）",
+          "note": "於神聖權能狀態下"
         },
         {
           "item": "固定詠唱",
@@ -9992,7 +10002,7 @@ window.ragnarokSkillChangeData = {
           "after": "9 x 9"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 5,
           "after": 10
         }
@@ -10155,7 +10165,7 @@ window.ragnarokSkillChangeData = {
           "after": "不再造成異常狀態"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 5,
           "after": 10
         },
@@ -10208,7 +10218,7 @@ window.ragnarokSkillChangeData = {
           "after": "不再造成異常狀態"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 5,
           "after": 10
         },
@@ -10261,7 +10271,7 @@ window.ragnarokSkillChangeData = {
           "after": "不再造成異常狀態"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 5,
           "after": 10
         },
@@ -10314,7 +10324,7 @@ window.ragnarokSkillChangeData = {
           "after": "不再造成異常狀態"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 5,
           "after": 10
         },
@@ -10340,13 +10350,13 @@ window.ragnarokSkillChangeData = {
           "item": "持續時間",
           "before": 60,
           "after": 180,
-          "note": "原文未標示單位"
+          "unit": "秒"
         },
         {
           "item": "冷卻時間",
           "before": 300,
           "after": 180,
-          "note": "原文未標示單位"
+          "unit": "秒"
         },
         {
           "item": "技能效果",
@@ -10374,7 +10384,7 @@ window.ragnarokSkillChangeData = {
           "item": "冷卻時間",
           "before": 180,
           "after": 60,
-          "note": "原文未標示單位"
+          "unit": "秒"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901200"
@@ -10818,10 +10828,9 @@ window.ragnarokSkillChangeData = {
           "unit": "秒"
         },
         {
-          "item": "防盾精熟的技能倍率係數",
+          "item": "防盾精熟係數",
           "before": 25,
-          "after": 75,
-          "unit": "%"
+          "after": 75
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -10853,7 +10862,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 3,
           "after": 5
         }
@@ -10881,7 +10890,7 @@ window.ragnarokSkillChangeData = {
           "unit": "格"
         },
         {
-          "item": "技能倍率中的防盾精熟係數",
+          "item": "防盾精熟係數",
           "before": 75,
           "after": 250
         },
@@ -10892,12 +10901,12 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 7
         },
         {
-          "item": "技能倍率中的盾牌精煉值係數",
+          "item": "盾牌精煉值係數",
           "before": 4,
           "after": 25
         }
@@ -10925,17 +10934,17 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的防盾精熟係數",
+          "item": "防盾精熟係數",
           "before": 250,
           "after": 750
         },
         {
-          "item": "技能倍率中的盾牌精煉值係數",
+          "item": "盾牌精煉值係數",
           "before": 25,
           "after": 100
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 7,
           "after": 10
         }
@@ -10954,7 +10963,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "刪除攻擊架式的限制。"
+          "after": "刪除攻擊架式的限制"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -10993,8 +11002,8 @@ window.ragnarokSkillChangeData = {
         },
         {
           "item": "打擊次數",
-          "before": "最大 5",
-          "after": "7 次"
+          "before": "最大 5 次",
+          "after": "最大 7 次"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -11031,7 +11040,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 3,
           "after": 5
         }
@@ -11054,12 +11063,12 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的矛&劍精熟係數",
+          "item": "矛&劍精熟係數",
           "before": 100,
           "after": 250
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 7
         }
@@ -11087,7 +11096,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的矛&劍精熟係數",
+          "item": "矛&劍精熟係數",
           "before": 250,
           "after": 500
         }
@@ -11110,7 +11119,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的矛&劍精熟係數",
+          "item": "矛&劍精熟係數",
           "before": 500,
           "after": 600
         }
@@ -11152,7 +11161,7 @@ window.ragnarokSkillChangeData = {
           "item": "持續時間",
           "before": 300,
           "after": 150,
-          "note": "原文未標示單位"
+          "unit": "秒"
         },
         {
           "item": "技能倍率",
@@ -11165,7 +11174,7 @@ window.ragnarokSkillChangeData = {
           "before": 11000,
           "after": 16850,
           "unit": "%",
-          "note": "對植物與昆蟲種族時"
+          "note": "對植物與昆蟲種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -11202,7 +11211,7 @@ window.ragnarokSkillChangeData = {
           "before": 600,
           "after": 3500,
           "unit": "%",
-          "note": "抗性聖盾時"
+          "note": "於抗性聖盾狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -11249,7 +11258,7 @@ window.ragnarokSkillChangeData = {
           "before": 3500,
           "after": 5500,
           "unit": "%",
-          "note": "抗性聖盾時"
+          "note": "於抗性聖盾狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -11276,18 +11285,18 @@ window.ragnarokSkillChangeData = {
           "unit": "秒"
         },
         {
-          "item": "技能倍率中的矛&劍精熟係數",
+          "item": "矛&劍精熟係數",
           "before": 50,
           "after": 100
         },
         {
-          "item": "技能倍率中的矛&劍精熟係數",
+          "item": "矛&劍精熟係數",
           "before": 100,
           "after": 150,
-          "note": "抗性聖盾時"
+          "note": "於抗性聖盾狀態下"
         },
         {
-          "item": "技能倍率中的 SPL 係數",
+          "item": "SPL 係數",
           "before": 5,
           "after": 7
         },
@@ -11324,7 +11333,7 @@ window.ragnarokSkillChangeData = {
           "before": 4500,
           "after": 6500,
           "unit": "%",
-          "note": "抗性聖盾時"
+          "note": "於抗性聖盾狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -11388,7 +11397,7 @@ window.ragnarokSkillChangeData = {
           "before": 11000,
           "after": 21000,
           "unit": "%",
-          "note": "對植物與昆蟲種族時"
+          "note": "對植物與昆蟲種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -11449,14 +11458,14 @@ window.ragnarokSkillChangeData = {
       "evidence": "article",
       "changes": [
         {
-          "item": "技能效果",
+          "item": "防護罩的 MHP 預設值",
           "before": null,
-          "after": "防護罩的 MHP 預設值變更為施展者 50% 的 MHP"
+          "after": "施展者 50% 的 MHP"
         },
         {
-          "item": "技能效果",
+          "item": "防護罩的 STA 係數",
           "before": null,
-          "after": "防護罩的 STA 係數變更為原先的 15 倍"
+          "after": "變更為原先的 15 倍"
         },
         {
           "item": "AP 恢復",
@@ -11504,11 +11513,9 @@ window.ragnarokSkillChangeData = {
           "unit": "秒"
         },
         {
-          "item": "防護罩的 MHP 預設值變更為施展者",
-          "before": 50,
-          "after": 30,
-          "unit": "%",
-          "note": "的 MHP"
+          "item": "防護罩的 MHP 預設值",
+          "before": "施展者 50% 的 MHP",
+          "after": "施展者的 30% MHP"
         },
         {
           "item": "技能基本倍率",
@@ -11641,7 +11648,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "盾牌專用技能。 對目標 7 * 7 範圍造成近距離物理命中傷害。 若於抗性聖盾狀態，變更為遠距離物理命中傷害。"
+          "after": "盾牌專用技能。 對目標 7 * 7 範圍造成近距離物理命中傷害。 若於抗性聖盾狀態下，變更為遠距離物理命中傷害。"
         },
         {
           "item": "AP 恢復",
@@ -12668,7 +12675,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 7
         }
@@ -13052,7 +13059,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的魔劍精熟係數",
+          "item": "魔劍精熟係數",
           "before": 100,
           "after": 200
         }
@@ -13075,7 +13082,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的魔劍精熟係數",
+          "item": "魔劍精熟係數",
           "before": 200,
           "after": 250
         }
@@ -13172,7 +13179,7 @@ window.ragnarokSkillChangeData = {
           "note": "額外"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 5,
           "after": 15
         }
@@ -13252,9 +13259,10 @@ window.ragnarokSkillChangeData = {
           "after": "追加有 50% 機率造成 3 倍傷害"
         },
         {
-          "item": "技能效果",
-          "before": "依據施展者一半的暴擊機率適用暴擊",
-          "after": "依據施展者的暴擊機率適用暴擊"
+          "item": "暴擊支援",
+          "before": "適用暴擊",
+          "after": "適用暴擊",
+          "note": "調整前：依據施展者一半的暴擊機率適用暴擊；調整後：依據施展者的暴擊機率適用暴擊"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -13314,7 +13322,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 5,
           "after": 15
         }
@@ -13398,7 +13406,7 @@ window.ragnarokSkillChangeData = {
           "before": 11500,
           "after": 23500,
           "unit": "%",
-          "note": "對天使與惡魔種族時"
+          "note": "對天使與惡魔種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -13445,7 +13453,7 @@ window.ragnarokSkillChangeData = {
           "before": 23500,
           "after": 28500,
           "unit": "%",
-          "note": "對天使與惡魔種族時"
+          "note": "對天使與惡魔種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -13477,7 +13485,7 @@ window.ragnarokSkillChangeData = {
       "evidence": "article",
       "changes": [
         {
-          "item": "追擊狀態對連鎖射擊的傷害加成",
+          "item": "於追擊狀態下對連鎖射擊的傷害加成",
           "before": 700,
           "after": 1100,
           "unit": "%"
@@ -13539,7 +13547,7 @@ window.ragnarokSkillChangeData = {
           "before": 5250,
           "after": 6250,
           "unit": "%",
-          "note": "追擊狀態下"
+          "note": "於追擊狀態下"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -14088,7 +14096,7 @@ window.ragnarokSkillChangeData = {
           "note": "召喚元素：迪盧比奧時"
         },
         {
-          "item": "召喚元素：迪盧比奧時，技能倍率中的 SPL 係數",
+          "item": "召喚元素：迪盧比奧時， SPL 係數",
           "before": 7,
           "after": 10
         }
@@ -14149,7 +14157,7 @@ window.ragnarokSkillChangeData = {
           "note": "召喚元素：迪盧比奧時"
         },
         {
-          "item": "召喚元素：迪盧比奧時，技能倍率中的 SPL 係數",
+          "item": "召喚元素：迪盧比奧時， SPL 係數",
           "before": 5,
           "after": 7
         }
@@ -14346,7 +14354,7 @@ window.ragnarokSkillChangeData = {
           "note": "召喚元素：泰雷莫圖斯時"
         },
         {
-          "item": "召喚元素：泰雷莫圖斯時，技能倍率中的 SPL 係數",
+          "item": "召喚元素：泰雷莫圖斯時， SPL 係數",
           "before": 7,
           "after": 10
         }
@@ -14407,7 +14415,7 @@ window.ragnarokSkillChangeData = {
           "note": "召喚元素：迪盧比奧時"
         },
         {
-          "item": "召喚元素：迪盧比奧時，技能倍率中的 SPL 係數",
+          "item": "召喚元素：迪盧比奧時， SPL 係數",
           "before": 5,
           "after": 7
         }
@@ -14604,7 +14612,7 @@ window.ragnarokSkillChangeData = {
           "before": 11000,
           "after": 24000,
           "unit": "%",
-          "note": "對無形與龍族種族時"
+          "note": "對無形與龍族種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -14640,7 +14648,7 @@ window.ragnarokSkillChangeData = {
           "before": 24000,
           "after": 28550,
           "unit": "%",
-          "note": "對無形與龍族種族時"
+          "note": "對無形與龍族種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -14847,7 +14855,7 @@ window.ragnarokSkillChangeData = {
           "after": "11 x 11"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 3,
           "after": 5
         }
@@ -14893,9 +14901,10 @@ window.ragnarokSkillChangeData = {
       "evidence": "article",
       "changes": [
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -14911,9 +14920,8 @@ window.ragnarokSkillChangeData = {
       "changes": [
         {
           "item": "冷卻時間",
-          "before": 1.5,
-          "after": "依技能等級 1.8 / 1.6 / 1.4 / 1.2 / 1 秒",
-          "note": "原文未標示單位"
+          "before": "1.5 秒",
+          "after": "依技能等級 1.8 / 1.6 / 1.4 / 1.2 / 1 秒"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -14957,9 +14965,10 @@ window.ragnarokSkillChangeData = {
           "note": "對聖油洗禮目標時"
         },
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -15003,12 +15012,12 @@ window.ragnarokSkillChangeData = {
           "after": "11 x 11"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 3,
           "after": 15
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 15,
           "note": "對聖油洗禮目標時"
@@ -15055,7 +15064,7 @@ window.ragnarokSkillChangeData = {
           "note": "對聖油洗禮目標時"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 15,
           "after": 10,
           "note": "對聖油洗禮目標時保持 15"
@@ -15098,9 +15107,10 @@ window.ragnarokSkillChangeData = {
       "evidence": "article",
       "changes": [
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -15142,7 +15152,7 @@ window.ragnarokSkillChangeData = {
           "before": 11000,
           "after": 23000,
           "unit": "%",
-          "note": "對惡魔與動物種族時"
+          "note": "對惡魔與動物種族敵人時"
         },
         {
           "item": "技能範圍",
@@ -15150,7 +15160,7 @@ window.ragnarokSkillChangeData = {
           "after": "11 x 11"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 10,
           "after": 15
         },
@@ -15194,7 +15204,7 @@ window.ragnarokSkillChangeData = {
           "before": 23000,
           "after": 24500,
           "unit": "%",
-          "note": "對惡魔與動物種族時"
+          "note": "對惡魔與動物種族敵人時"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -15219,7 +15229,7 @@ window.ragnarokSkillChangeData = {
           "before": 24500,
           "after": 26500,
           "unit": "%",
-          "note": "對惡魔與動物種族時"
+          "note": "對惡魔與動物種族敵人時"
         },
         {
           "item": "冷卻時間",
@@ -15383,7 +15393,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 3,
           "after": 5
         }
@@ -15400,9 +15410,10 @@ window.ragnarokSkillChangeData = {
       "evidence": "article",
       "changes": [
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -15444,7 +15455,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 4,
           "after": 5
         }
@@ -15461,9 +15472,10 @@ window.ragnarokSkillChangeData = {
       "evidence": "article",
       "changes": [
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -15505,7 +15517,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 4,
           "after": 7
         }
@@ -15573,7 +15585,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 4,
           "after": 9
         }
@@ -15601,9 +15613,10 @@ window.ragnarokSkillChangeData = {
           "after": "2 次打擊"
         },
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901201"
@@ -15641,7 +15654,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 10
         }
@@ -15722,7 +15735,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 10
         }
@@ -15814,7 +15827,7 @@ window.ragnarokSkillChangeData = {
           "after": "固定 7 x 7"
         },
         {
-          "item": "技能倍率中的 POW 係數",
+          "item": "POW 係數",
           "before": 5,
           "after": 10
         }
@@ -15878,17 +15891,17 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "於信仰之力狀態時，變更為造成 3 次近距離物理暴擊傷害。"
+          "after": "於信仰之力狀態下，變更為造成 3 次近距離物理暴擊傷害。"
         },
         {
           "item": "技能類型",
           "before": null,
-          "after": "於審判者狀態時，變更為造成 4 次傷害"
+          "after": "於審判者狀態下，變更為造成 4 次傷害"
         },
         {
           "item": "技能類型",
           "before": null,
-          "after": "於驅魔火焰狀態時，變更為造成 2 次傷害，並吸收 15% 傷害到 HP（上限 5 萬）。"
+          "after": "於驅魔火焰狀態下，變更為造成 2 次傷害，並吸收 15% 傷害到 HP（上限 5 萬）。"
         },
         {
           "item": "技能基本倍率",
@@ -16088,7 +16101,7 @@ window.ragnarokSkillChangeData = {
         },
         {
           "item": "技能效果",
-          "before": "技能倍率中的依混聲烙印目標數量增加傷害的 SPL 係數 （1.5 * 混聲烙印等級）",
+          "before": "依混聲烙印目標數量增加傷害的 SPL 係數 （1.5 * 混聲烙印等級）",
           "after": "（2 * 混聲烙印等級）"
         }
       ],
@@ -16192,7 +16205,7 @@ window.ragnarokSkillChangeData = {
           "note": "對混聲烙印目標時"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 2,
           "after": 3
         }
@@ -16228,7 +16241,7 @@ window.ragnarokSkillChangeData = {
           "note": "對混聲烙印目標時"
         },
         {
-          "item": "技能倍率中的 CON 係數",
+          "item": "CON 係數",
           "before": 3,
           "after": 5,
           "note": "對混聲烙印目標時 7"
@@ -16664,7 +16677,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的詭影狩獵係數",
+          "item": "詭影狩獵係數",
           "before": 500,
           "after": 700
         }
@@ -16727,9 +16740,10 @@ window.ragnarokSkillChangeData = {
           "after": "7 x 7"
         },
         {
-          "item": "暴擊判定",
+          "item": "暴擊支援",
           "before": null,
-          "after": "採用施展者暴擊率"
+          "after": "適用暴擊",
+          "note": ""
         },
         {
           "item": "技能效果",
@@ -16749,7 +16763,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的詭影舞動係數",
+          "item": "詭影舞動係數",
           "before": 1000,
           "after": 500
         }
@@ -16772,7 +16786,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的詭影舞動係數",
+          "item": "詭影舞動係數",
           "before": 500,
           "after": 1500
         }
@@ -16972,7 +16986,7 @@ window.ragnarokSkillChangeData = {
           "note": "爆炸"
         },
         {
-          "item": "技能倍率中的風魔飛鏢-掌握係數",
+          "item": "風魔飛鏢-掌握係數",
           "before": 300,
           "after": 1000
         },
@@ -17045,7 +17059,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的飛刀-曲折係數",
+          "item": "飛刀-曲折係數",
           "before": 7,
           "after": 10
         }
@@ -17073,7 +17087,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的飛刀-扭曲係數",
+          "item": "飛刀-扭曲係數",
           "before": 50,
           "after": 70
         }
@@ -17096,7 +17110,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的飛刀-扭曲係數",
+          "item": "飛刀-扭曲係數",
           "before": 350,
           "after": 500
         }
@@ -17158,7 +17172,7 @@ window.ragnarokSkillChangeData = {
           "after": 76
         },
         {
-          "item": "技能倍率中的「飛刀-旋轉」係數",
+          "item": "「飛刀-旋轉」係數",
           "before": 5,
           "after": 10
         }
@@ -17309,7 +17323,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的「暗戰砲」係數",
+          "item": "「暗戰砲」係數",
           "before": 50,
           "after": 70
         }
@@ -17423,7 +17437,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的「暗戰砲」係數",
+          "item": "「暗戰砲」係數",
           "before": 25,
           "after": 40
         }
@@ -17527,7 +17541,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的「暗戰砲」係數",
+          "item": "「暗戰砲」係數",
           "before": 50,
           "after": 70
         }
@@ -17641,7 +17655,7 @@ window.ragnarokSkillChangeData = {
           "unit": "%"
         },
         {
-          "item": "技能倍率中的「暗戰砲」係數",
+          "item": "「暗戰砲」係數",
           "before": 7,
           "after": 15
         }
@@ -18742,7 +18756,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "僅可在專注瞄準狀態下使用。 消耗 1 個瞄準層數，移動至指定位置。"
+          "after": "僅可於專注瞄準狀態下使用。 消耗 1 個瞄準層數，移動至指定位置。"
         },
         {
           "item": "固定詠唱",
@@ -19495,7 +19509,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "僅可在天機合一狀態使用。 對目標造成近距離物理命中傷害，並獲得衛星效果。 累積足夠衛星數量時，變更為施展強化版本。"
+          "after": "僅可於天機合一狀態下使用。 對目標造成近距離物理命中傷害，並獲得衛星效果。 累積足夠衛星數量時，變更為施展強化版本。"
         },
         {
           "item": "AP 消耗",
@@ -20079,7 +20093,7 @@ window.ragnarokSkillChangeData = {
           "item": "冷卻時間",
           "before": 60,
           "after": 5,
-          "note": "原文未標示單位"
+          "unit": "秒"
         },
         {
           "item": "技能倍率",
@@ -20157,7 +20171,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "在北方的保佑或四方五行的保佑狀態下使用。 對自身周圍 9 * 9 範圍造成 3 次無屬性魔法傷害。 傷害屬性會依據溫暖的風而變更。"
+          "after": "於北方的保佑或四方五行的保佑狀態下使用。 對自身周圍 9 * 9 範圍造成 3 次無屬性魔法傷害。 傷害屬性會依據溫暖的風而變更。"
         },
         {
           "item": "渡靈符消耗",
@@ -22772,7 +22786,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "僅可在 [變身：猛禽] 狀態下使用。 對目標 9 * 9 範圍造成 4 次遠距離物理命中傷害。 於巔峰階段時，變更為遠距離物理暴擊傷害。"
+          "after": "僅可於 [變身：猛禽] 狀態下使用。 對目標 9 * 9 範圍造成 4 次遠距離物理命中傷害。 於巔峰階段時，變更為遠距離物理暴擊傷害。"
         },
         {
           "item": "AP 恢復",
@@ -22834,17 +22848,17 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能類型",
           "before": null,
-          "after": "冰之真理狀態下，不會觸發動冰河新星。"
+          "after": "於冰之真理狀態下，不會觸發動冰河新星。"
         },
         {
           "item": "技能類型",
           "before": null,
-          "after": "風之真理狀態下，賦予積蓄效果，但不會發動強化技能。"
+          "after": "於風之真理狀態下，賦予積蓄效果，但不會發動強化技能。"
         },
         {
           "item": "技能類型",
           "before": null,
-          "after": "大地真理狀態下，賦予生長效果，但不會發動大地綻放。"
+          "after": "於大地真理狀態下，賦予生長效果，但不會發動大地綻放。"
         },
         {
           "item": "AP 恢復",
@@ -22920,7 +22934,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "在存在安希拉效果的狀態下施放時，會改為解除安希拉效果，並且不消耗藍色魔力礦石就能生成安希拉。（SP % 消耗維持不變）"
+          "after": "於存在安希拉效果的狀態下施放時，會改為解除安希拉效果，並且不消耗藍色魔力礦石就能生成安希拉。（SP % 消耗維持不變）"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901252"
@@ -23040,7 +23054,7 @@ window.ragnarokSkillChangeData = {
         {
           "item": "技能效果",
           "before": null,
-          "after": "MHP 增加效果變更為即便處於變身狀態也會生效"
+          "after": "MHP 增加效果變更為即便處於變身狀態下也會生效"
         }
       ],
       "sourceUrl": "https://forum.gamer.com.tw/Co.php?bsn=4212&sn=2901252"

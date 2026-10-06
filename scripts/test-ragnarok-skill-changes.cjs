@@ -158,6 +158,9 @@ assert.equal(api.formatValue(null, "%"), "—");
 assert.equal(api.formatValue(undefined, "秒"), "—");
 assert.equal(api.formatValue("5 x 5"), "5 x 5");
 assert.equal(api.formatValue(400, "%"), "400%");
+assert.equal(api.formatValue(3, "格"), "3 格");
+assert.equal(api.formatValue(4, "次"), "4 次");
+assert.equal(api.formatValue(100, " HP"), "100 HP");
 console.log("Passed: multilingual/combined filters, shared jobs, all-version default, ordering, typed values.");
 
 const widthsFor = (sample, includeVersion = true, availableWidth = 900) => Object.fromEntries(Array.from(
@@ -453,7 +456,10 @@ assertSharedColumns(5);
 assert.match(results(), /預告・尚未實裝/);
 assert(!results().includes("<time"));
 assert(!results().includes("公布："));
-assert.match(sources(), /公布：<time datetime="2026-09-30"/);
+assert.match(sources(), /<time datetime="2026-09-30">2026-09-30<\/time> <span class="skill-planned-badge">/);
+assert.equal((sources().match(/<time datetime="2026-09-30"/g) || []).length, 1);
+assert(!sources().includes("另開分頁"));
+assert(!sources().includes("公布："));
 assert.equal(node("#skill-data-notice").hidden, true);
 assert.equal(node("#skill-data-notice").textContent, "");
 assert.equal((results().match(/class="skill-version-rows is-current"/g) || []).length, 10);

@@ -109,7 +109,9 @@
   }
 
   function formatValue(value, unit = "") {
-    return value === null || value === undefined ? "—" : `${value}${unit === "秒" ? " 秒" : unit}`;
+    if (value === null || value === undefined) return "—";
+    const suffix = unit.trim();
+    return suffix ? `${String(value).trimEnd()}${suffix === "%" ? "" : " "}${suffix}` : String(value);
   }
 
   // Resolve each skill against the full history so filters cannot move its current marker.
@@ -222,13 +224,13 @@
       return badge ? ` <span class="${badge.className}">${escape(badge.label)}</span>` : "";
     };
     const date = value => value ? `<time datetime="${escape(value)}">${escape(value)}</time>` : "";
-    const versionDate = version => version.status === "planned" ? `<span class="skill-version-date">公布：${date(version.announcedAt)}</span>` : date(version.releasedAt);
+    const versionDate = version => date(version.releasedAt || version.announcedAt);
     const jobNames = skill => skill.jobIds.map(id => jobs.get(id).name).join("、") || "（缺少技能所屬職業）";
     const skillIdLabel = skill => skill.skillId === null ? "（缺少技能 ID）" : `ID ${skill.skillId}`;
-    function sourceLinks(entries) {
+    function sourceLinks(entries, displayedDate) {
       const linked = entries.filter(entry => entry.url);
       if (!linked.length) return '<p class="skill-pending-source">官方維護公告連結待補。</p>';
-      return `<ul class="skill-announcement-links">${linked.map(entry => `<li><a href="${escape(entry.url)}" target="_blank" rel="noopener noreferrer">${escape(entry.title)} ↗<span class="muted">（另開分頁）</span></a>${date(entry.publishedAt)}</li>`).join("")}</ul>`;
+      return `<ul class="skill-announcement-links">${linked.map(entry => `<li><a href="${escape(entry.url)}" target="_blank" rel="noopener noreferrer">${escape(entry.title)} ↗</a>${entry.publishedAt === displayedDate ? "" : date(entry.publishedAt)}</li>`).join("")}</ul>`;
     }
     function renderRows(record, includeVersion = false) {
       const version = versions.get(record.versionId);
@@ -282,7 +284,7 @@
       renderResults();
       $("#skill-announcement-list").innerHTML = sortedVersions.filter(version => version.status !== "unknown" &&
         (!state.versionId || version.id === state.versionId)).map(version =>
-        `<section class="skill-announcement-version${isCurrent(version) ? " is-current" : ""}"><div class="skill-version-heading"><h3>${escape(version.name)}</h3>${currentBadge(version)}${versionDate(version)}</div>${sourceLinks(data.announcements.filter(entry => entry.versionId === version.id))}</section>`).join("");
+        `<section class="skill-announcement-version${isCurrent(version) ? " is-current" : ""}"><div class="skill-version-heading"><h3>${escape(version.name)}</h3>${versionDate(version)}${currentBadge(version)}</div>${sourceLinks(data.announcements.filter(entry => entry.versionId === version.id), version.releasedAt || version.announcedAt)}</section>`).join("");
     }
     $("#skill-job").innerHTML = '<option value="">所有職業</option>' + data.jobs.map(job => `<option value="${escape(job.id)}">${escape(job.name)}</option>`).join("");
     $("#skill-version").innerHTML = '<option value="">所有版本</option>' + sortedVersions.map(version => `<option value="${escape(version.id)}">${escape(version.name)}${isCurrent(version) ? "（現行版本）" : version.status === "planned" ? "（預告・尚未實裝）" : ""}</option>`).join("");

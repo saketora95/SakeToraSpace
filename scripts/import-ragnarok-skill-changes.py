@@ -164,11 +164,52 @@ def description(value):
     if not isinstance(value, str):
         return value
     value = value.translate(str.maketrans(",;:()!?", "，；：（）！？"))
+    value = value.replace("技能倍率中的", "").replace("追擊狀態對", "於追擊狀態下對")
+    value = value.replace("偽裝強化時", "於偽裝強化狀態下")
+    value = value.replace("活力之源時", "於活力之源狀態下")
+    value = re.sub(r"(?<!以)五級武器、武器重量 150(?! 計算)", "以五級武器、武器重量 150 計算", value)
+    value = re.sub(r"(?:於|在)([^，。；]+?)狀態(?:下|時)?", r"於\1狀態下", value)
+    value = re.sub(r"(?<!於)(巨人成長|活力之源|追擊|偽裝強化|魔力巔峰|冰之真理|風之真理|大地真理)狀態下", r"於\1狀態下", value)
     # Keep decimal points and abbreviations such as P.ATK intact.
-    return re.sub(r"\.(?=\s|$)", "。", value)
+    return re.sub(r"\.(?=\s|$)", "。", value).strip()
+
+
+TIME_ITEMS = {"固定詠唱", "固定詠唱時間", "冷卻時間", "變動詠唱", "變動詠唱時間",
+              "共通延遲", "共通技能延遲", "技能共通延遲", "持續時間"}
 
 
 def change(item, before, after, unit="", note=""):
+    if item == "暴擊判定":
+        item = "暴擊支援"
+        if after == "採用施展者暴擊率":
+            note = "；".join(filter(None, (note, after)))
+            after = "適用暴擊"
+    elif isinstance(before, str) and isinstance(after, str) and "暴擊機率適用暴擊" in before and "暴擊機率適用暴擊" in after:
+        item = "暴擊支援"
+        note = "；".join(filter(None, (note, f"調整前：{before}", f"調整後：{after}")))
+        before, after, unit = "適用暴擊", "適用暴擊", ""
+    elif isinstance(after, str) and "一般情形下" in after and "此技能不會暴擊" in after and "裝備拳刃" in after:
+        item, after, unit = "暴擊支援", "適用暴擊", ""
+        note = "；".join(filter(None, (note, "僅於裝備拳刃時適用，採用施展者一半的暴擊率；其餘情形不適用暴擊")))
+    if item == "技能效果" and isinstance(after, str) and after.startswith("防護罩的 MHP 預設值變更為施展者"):
+        item, after = "防護罩的 MHP 預設值", after.removeprefix("防護罩的 MHP 預設值變更為")
+    elif item == "防護罩的 MHP 預設值變更為施展者":
+        item, before, after, unit = "防護罩的 MHP 預設值", f"施展者 {before}% 的 MHP", f"施展者的 {after}% MHP", ""
+        note = "；".join(part for part in note.split("；") if part != "的 MHP")
+    if item in TIME_ITEMS:
+        note = "；".join(part for part in note.split("；") if part != "原文未標示單位")
+        def seconds(value):
+            if isinstance(value, (int, float)) and unit == "分鐘":
+                return value * 60
+            if isinstance(value, str):
+                return re.sub(r"(\d+(?:\.\d+)?)\s*分鐘", lambda match: f"{float(match[1]) * 60:g} 秒", value)
+            return value
+        before, after = seconds(before), seconds(after)
+        if all(value is None or isinstance(value, (int, float)) for value in (before, after)):
+            unit = "秒"
+        else:
+            before, after = [f"{value} 秒" if isinstance(value, (int, float)) else value for value in (before, after)]
+            unit = ""
     result = {"item": description(item), "before": description(before), "after": description(after)}
     if unit:
         result["unit"] = unit
@@ -219,7 +260,7 @@ def parse_value(value):
     value = value.strip()
     if value in ("?", "？", "未知", "未記載", "—"):
         return None, ""
-    scalar = re.fullmatch(r"([+-]?\d+(?:\.\d+)?)\s*(%|秒|HP|次|格|顆|枝|發|瓶|個)?", value)
+    scalar = re.fullmatch(r"([+-]?\d+(?:\.\d+)?)\s*(%|秒|分鐘|HP|次|格|顆|枝|發|瓶|個)?", value)
     if scalar:
         return number(scalar[1]), scalar[2] or ""
     if re.fullmatch(r"\d+\s*[xX*×]\s*\d+", value):

@@ -54,11 +54,30 @@ def source_fixture():
 
 
 class SkillImportTests(unittest.TestCase):
+    def test_time_units_and_condition_wording(self):
+        for item in ("固定詠唱時間", "冷卻時間", "變動詠唱時間", "共通技能延遲", "持續時間"):
+            entry = importer.parse_line(f"{item} 2 → 1")[0]
+            self.assertEqual(entry["unit"], "秒")
+            self.assertNotIn("note", entry)
+        entry = importer.parse_line("冷卻時間 1 分鐘 → 30 秒")[0]
+        self.assertEqual((entry["before"], entry["after"]), ("60 秒", "30 秒"))
+        entry = importer.parse_line("冷卻時間 2 → 1 分鐘")[0]
+        self.assertEqual((entry["before"], entry["after"], entry["unit"]), (120, 60, "秒"))
+        for original, expected in (
+            ("技能倍率中的 POW 係數", "POW 係數"),
+            ("五級武器、武器重量 150", "以五級武器、武器重量 150 計算"),
+            ("巨人成長狀態下", "於巨人成長狀態下"),
+            ("於安希拉狀態時", "於安希拉狀態下"),
+            ("偽裝強化時", "於偽裝強化狀態下"),
+        ):
+            self.assertEqual(importer.description(original), expected)
+            self.assertEqual(importer.description(expected), expected)
+
     def test_numeric_zero_and_units(self):
         entry = importer.parse_line("固定詠唱時間 0.4 → 0 秒")[0]
         self.assertEqual((entry["before"], entry["after"], entry["unit"]), (0.4, 0, "秒"))
         entry = importer.parse_line("技能倍率 3750% → 5150%（五級武器、武器重量 150）")[0]
-        self.assertEqual(entry["note"], "五級武器、武器重量 150")
+        self.assertEqual(entry["note"], "以五級武器、武器重量 150 計算")
         self.assertEqual(importer.parse_line("ＭＳＰ 的預設計算比率 12.5% → 25%")[0]["before"], 12.5)
         entry = importer.parse_line("技能倍率 3750% → 5150%（五級武器:重量 150;P.ATK 12.5%,上限.）")[0]
         self.assertEqual(entry["note"], "五級武器：重量 150；P.ATK 12.5%，上限。")
@@ -83,8 +102,8 @@ class SkillImportTests(unittest.TestCase):
         self.assertIsNone(importer.parse_line("新增此技能")[0]["before"])
         self.assertIsNone(importer.parse_line("依據施展者的暴擊率適用暴擊")[0]["before"])
         entry = importer.parse_line("冷卻時間 150 → 60")[0]
-        self.assertNotIn("unit", entry)
-        self.assertIn("未標示單位", entry["note"])
+        self.assertEqual(entry["unit"], "秒")
+        self.assertNotIn("note", entry)
 
     def test_unfamiliar_descriptions_are_preserved_without_invention(self):
         entry = importer.parse_line("這是未處理的新調整格式")[0]
