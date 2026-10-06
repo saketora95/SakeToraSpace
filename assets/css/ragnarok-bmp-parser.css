@@ -1,0 +1,18 @@
+.bmp-header{max-width:1200px;margin:auto;padding:24px 32px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.bmp-header a{color:var(--accent)}
+.bmp-tutorial-link{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.bmp-parser-page main{max-width:1200px;padding:24px 32px}
+.bmp-parser-page h1{margin:8px 0;font-size:30px}
+.bmp-controls{display:grid;grid-template-columns:minmax(0,1fr) 220px;align-items:start;gap:24px;padding:24px;margin-top:28px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.bmp-controls .field{min-width:0;gap:8px;align-content:start}
+.bmp-controls .field input{width:100%;min-width:0;height:44px;padding:10px 12px;font-size:14px;line-height:22px}
+.bmp-controls #bmp-file{padding:0;line-height:42px}
+#bmp-file::file-selector-button{height:42px;margin:0 12px 0 0;padding:0 16px;border:0;border-right:1px solid var(--control-line);background:var(--surface-soft);color:var(--accent);font:inherit;cursor:pointer}
+.bmp-controls .field span{font-size:12px}
+#bmp-status{grid-column:1/-1;overflow-wrap:anywhere;margin:0}
+#bmp-status[data-error="true"]{color:var(--danger)}
+.bmp-downloads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.bmp-download-option{min-width:0;padding:16px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.bmp-download-option button{width:100%;min-height:44px;justify-content:center}
+.bmp-download-option p{margin:10px 0 0;font-size:12px;overflow-wrap:anywhere}
+@media(max-width:700px){.bmp-header{padding:20px}.bmp-parser-page main{padding:16px 20px}.bmp-controls,.bmp-downloads{grid-template-columns:1fr}.bmp-controls{padding:16px;gap:20px}}

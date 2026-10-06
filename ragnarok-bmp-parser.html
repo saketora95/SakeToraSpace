@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#202427">
+  <meta name="description" content="將圖片依透明度門檻轉為洋紅背景的 BMP，全程在瀏覽器內處理。">
+  <title>對話立繪轉換器 · 仙境傳說 · SakeTora Space</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-bmp-parser.html">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-bmp-parser.css">
+  <script src="./assets/js/tools/ragnarok/bmp-parser.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
+</head>
+<body class="bmp-parser-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="bmp-header"><a id="bmp-home-link" href="./index.html" hidden>← 返回工具箱</a><span class="muted">SakeTora Space / 仙境傳說</span></header>
+  <main id="main">
+    <span class="eyebrow muted">RAGNAROK ONLINE / IMAGE CONVERTER</span>
+    <h1>對話立繪轉換器</h1>
+    <p class="muted">將圖片中的透明背景替換為純洋紅色（#FF00FF），輸出 24 位元 BMP 以套用在 RO 當中。</p>
+    <p class="muted">取代遊戲內既有立繪的方式，可參照於「<a class="bmp-tutorial-link" href="https://youtu.be/49nOHzmY4_U?t=199" target="_blank" rel="noopener noreferrer">【RO 仙境傳說】解答如何把面板＆卡普拉NPC立繪換成自己喜歡的樣子【銀雪的RO教學】</a>」影片中的教學。</p>
+    <section class="bmp-controls" aria-label="圖片轉換設定">
+      <label class="field" for="bmp-file">選擇圖片<input id="bmp-file" type="file" accept="image/png,image/webp"><span class="muted">僅支援含透明背景的 PNG 或 WebP 格式檔案</span></label>
+      <label class="field" for="bmp-threshold">透明度門檻（0 ~ 255）<input id="bmp-threshold" type="text" inputmode="numeric" value="128"></label>
+      <p id="bmp-status" role="status" aria-live="polite" hidden></p>
+    </section>
+    <section class="bmp-downloads" aria-label="下載轉換結果">
+      <div class="bmp-download-option"><button id="bmp-download-single" class="primary-button" type="button" disabled>下載單一圖檔</button><p class="muted">僅下載單一份轉換結果。</p></div>
+      <div class="bmp-download-option"><button id="bmp-download-kafra" class="primary-button" type="button" aria-describedby="bmp-kafra-note" disabled>下載卡普拉群圖檔</button><p id="bmp-kafra-note" class="muted">共計包含 10 份。<br>此下載高機率觸發瀏覽器的防護機制，請允許多個檔案下載。</p></div>
+      <div class="bmp-download-option"><button id="bmp-download-zonda" class="primary-button" type="button" aria-describedby="bmp-zonda-note" disabled>下載准它群圖檔</button><p id="bmp-zonda-note" class="muted">共計包含 2 份。<br>此下載高機率觸發瀏覽器的防護機制，請允許多個檔案下載。</p></div>
+    </section>
+    <noscript><p class="notice">請啟用 JavaScript 以轉換圖片。</p></noscript>
+    <footer><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></footer>
+  </main>
+</body>
+</html>

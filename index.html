@@ -59,7 +59,7 @@
             <h2 id="welcome-heading">歡迎你來到這裡，我是酒虎。</h2>
             <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
             <p>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。<br>使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-            <p class="welcome-version">最後更新：2026-10-06 ‧ <span id="welcome-version">v0.11</span></p>
+            <p class="welcome-version">最後更新：2026-10-07 ‧ <span id="welcome-version">v0.12</span></p>
             <button class="secondary-button welcome-release" type="button" data-release-notes aria-haspopup="dialog" aria-controls="release-dialog">改版資訊</button>
           </div>
         </section>
@@ -92,14 +92,13 @@
   <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>
   <dialog id="release-dialog" aria-labelledby="release-title">
     <div class="dialog-header">
-      <div><span class="eyebrow muted"><time datetime="2026-10-06">2026-10-06</time></span><h2 id="release-title">v0.11 改版資訊</h2></div>
+      <div><span class="eyebrow muted"><time datetime="2026-10-07">2026-10-07</time></span><h2 id="release-title">v0.12 改版資訊</h2></div>
       <form method="dialog"><button class="icon-button" type="submit" aria-label="關閉改版資訊" autofocus>×</button></form>
     </div>
     <ul class="release-summary">
-      <li>技能詠唱、冷卻、共通技能延遲與持續時間統一使用秒；除 % 外，單位與數值皆保持一個空格。</li>
-      <li>統一暴擊支援、係數與狀態條件描述，修正武器計算條件、死侍武器-斬裂與守護神盾的資料呈現。</li>
-      <li>官方公告日期置於標籤前，移除重複日期及多餘說明文字。</li>
-      <li>同步更新匯入規則、文件與驗證，維持資料格式一致。</li>
+      <li>仙境傳說新增「對話立繪轉換器」，將 PNG、WebP 依透明度門檻轉為洋紅背景，以原圖尺寸輸出 24 位元 BMP。</li>
+      <li>提供單一圖檔、卡普拉群（10 份）與准它群（2 份）下載，套用指定檔名，並提醒瀏覽器的多檔下載限制。</li>
+      <li>加入立繪替換教學影片連結，獨立頁面支援 #no=1 隱藏返回工具箱連結。</li>
     </ul>
   </dialog>
   <div id="toast" class="toast" role="status" hidden></div>
