@@ -18,6 +18,7 @@ function laboratoryPassword(date = new Date()) {
     password, binary: `${bits.slice(0, 4)} ${bits.slice(4)}`, targets: targets.join("、") || "無" };
 }
 function updateLaboratoryTimers() {
+  updateTimerTitle();
   if (!document.querySelector("#laboratory-timers")) return;
   const today = laboratoryPassword();
   document.querySelector("#laboratory-date").textContent = today.date;
@@ -25,11 +26,10 @@ function updateLaboratoryTimers() {
   document.querySelector("#laboratory-binary").textContent = today.binary;
   document.querySelector("#laboratory-targets").textContent = today.targets;
   laboratoryTimers.forEach((item, index) => {
-    const remaining = item.state === "running" ? Math.max(0, Math.ceil((item.deadline - Date.now()) / 1000))
-      : item.state === "finished" ? 0 : item.duration;
-    if (item.state === "running" && remaining === 0) {
+    const remaining = ["running", "finished"].includes(item.state) ? Math.ceil((item.deadline - Date.now()) / 1000)
+      : item.duration;
+    if (item.state === "running" && remaining <= 0) {
       item.state = "finished";
-      item.deadline = null;
       if (item.alarm.gain) item.alarm.gain.gain.setValueAtTime(.2, item.alarm.context.currentTime);
     }
     document.querySelector(`#laboratory-display-${index}`).textContent = formatDuration(remaining);
@@ -48,6 +48,7 @@ function stopLaboratoryTimers() {
   clearInterval(laboratoryInterval);
   laboratoryInterval = null;
   laboratoryTimers.forEach(resetLaboratoryTimer);
+  updateTimerTitle();
 }
 function renderLaboratoryTimers() {
   document.querySelector("#tool-content").insertAdjacentHTML("beforeend", `

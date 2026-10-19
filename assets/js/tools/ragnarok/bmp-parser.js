@@ -2,8 +2,45 @@
 
 (() => {
   // BMP uses bottom-up BGR rows padded to multiples of four bytes.
-  function encodeBmp({ width, height, data }, threshold = 128) {
+  function encodeBmp({ width, height, data }, threshold = 128, outline = null) {
     if (!Number.isInteger(threshold) || threshold < 0 || threshold > 255) throw new Error("透明度門檻請輸入 0–255 的整數。");
+    let distances = null;
+    let color = null;
+    if (outline) {
+      if (!Number.isInteger(outline.width) || outline.width < 1 || outline.width > 5) throw new Error("框線寬度請選擇 1–5 像素。");
+      if (!/^#[0-9a-f]{6}$/i.test(outline.color)) throw new Error("請選擇有效的框線顏色。");
+      if (outline.color.toUpperCase() === "#FF00FF") throw new Error("框線顏色不能使用 #FF00FF，這是 RO 的透明背景色。請選擇其他顏色。");
+      color = outline.color.slice(1).match(/../g).map(value => parseInt(value, 16));
+      // Two passes compute the distance to the original silhouette in square pixels.
+      // Cap distances at 6 since the widest supported outline is 5 pixels.
+      distances = new Uint8Array(width * height);
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const i = y * width + x;
+          let distance = data[i * 4 + 3] >= threshold ? 0 : 6;
+          if (x > 0) distance = Math.min(distance, distances[i - 1] + 1);
+          if (y > 0) {
+            distance = Math.min(distance, distances[i - width] + 1);
+            if (x > 0) distance = Math.min(distance, distances[i - width - 1] + 1);
+            if (x + 1 < width) distance = Math.min(distance, distances[i - width + 1] + 1);
+          }
+          distances[i] = distance;
+        }
+      }
+      for (let y = height - 1; y >= 0; y--) {
+        for (let x = width - 1; x >= 0; x--) {
+          const i = y * width + x;
+          let distance = distances[i];
+          if (x + 1 < width) distance = Math.min(distance, distances[i + 1] + 1);
+          if (y + 1 < height) {
+            distance = Math.min(distance, distances[i + width] + 1);
+            if (x > 0) distance = Math.min(distance, distances[i + width - 1] + 1);
+            if (x + 1 < width) distance = Math.min(distance, distances[i + width + 1] + 1);
+          }
+          distances[i] = distance;
+        }
+      }
+    }
     const stride = Math.ceil(width * 3 / 4) * 4;
     const size = 54 + stride * height;
     const buffer = new ArrayBuffer(size);
@@ -23,9 +60,10 @@
         const source = (y * width + x) * 4;
         const target = 54 + (height - 1 - y) * stride + x * 3;
         const keep = data[source + 3] >= threshold;
-        const r = keep ? data[source] : 255;
-        const g = keep ? data[source + 1] : 0;
-        const b = keep ? data[source + 2] : 255;
+        const border = !keep && distances && distances[y * width + x] <= outline.width;
+        const r = keep ? data[source] : border ? color[0] : 255;
+        const g = keep ? data[source + 1] : border ? color[1] : 0;
+        const b = keep ? data[source + 2] : border ? color[2] : 255;
         bytes[target] = b;
         bytes[target + 1] = g;
         bytes[target + 2] = r;
@@ -43,6 +81,9 @@
   const $ = selector => document.querySelector(selector);
   const fileInput = $("#bmp-file");
   const thresholdInput = $("#bmp-threshold");
+  const outlineEnabled = $("#bmp-outline-enabled");
+  const outlineWidth = $("#bmp-outline-width");
+  const outlineColor = $("#bmp-outline-color");
   const downloads = [$("#bmp-download-single"), $("#bmp-download-kafra"), $("#bmp-download-zonda")];
   const original = document.createElement("canvas");
   let source = null;
@@ -65,9 +106,17 @@
     output = null;
     downloads.forEach(button => { button.disabled = true; });
     thresholdInput.value = normalizeThreshold(thresholdInput.value);
+    outlineWidth.disabled = outlineColor.disabled = !outlineEnabled.checked;
+    const forbiddenColor = outlineEnabled.checked && outlineColor.value.toUpperCase() === "#FF00FF";
+    outlineColor.setCustomValidity(forbiddenColor ? "框線顏色不能使用 #FF00FF。" : "");
+    outlineColor.setAttribute("aria-invalid", String(forbiddenColor));
+    if (forbiddenColor) return status("框線顏色不能使用 #FF00FF，這是 RO 的透明背景色。請選擇其他顏色。", true);
+    status("");
     if (!source) return;
     try {
-      const converted = encodeBmp(source, Number(thresholdInput.value));
+      const converted = encodeBmp(source, Number(thresholdInput.value), outlineEnabled.checked ? {
+        width: Number(outlineWidth.value), color: outlineColor.value,
+      } : null);
       output = converted.buffer;
       downloads.forEach(button => { button.disabled = false; });
       status(`${filename} · ${source.width} × ${source.height} 像素（原圖尺寸）· 可下載 BMP。`);
@@ -76,6 +125,9 @@
     }
   }
   thresholdInput.addEventListener("input", convert);
+  outlineEnabled.addEventListener("change", convert);
+  outlineWidth.addEventListener("change", convert);
+  outlineColor.addEventListener("input", convert);
   fileInput.addEventListener("change", async () => {
     const current = ++revision;
     source = null;

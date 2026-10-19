@@ -303,10 +303,12 @@ function syncToolBookmark() {
   }
 }
 function formatDuration(seconds) {
+  const sign = seconds < 0 ? "-" : "";
+  seconds = Math.abs(seconds);
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor(seconds % 3600 / 60);
   const rest = Math.floor(seconds % 60);
-  return (hours ? String(hours).padStart(2, "0") + ":" : "") + String(minutes).padStart(2, "0") + ":" + String(rest).padStart(2, "0");
+  return sign + (hours ? String(hours).padStart(2, "0") + ":" : "") + String(minutes).padStart(2, "0") + ":" + String(rest).padStart(2, "0");
 }
 
 const durationKey = "saketora.ragnarok-timer.seconds";
@@ -314,6 +316,7 @@ const validDuration = value => Number.isInteger(value) && value >= 1 && value <=
 const savedDuration = Number(storage.read(durationKey, "55"));
 const initialDuration = validDuration(savedDuration) ? savedDuration : 55;
 const timer = { duration: initialDuration, remaining: initialDuration, state: "idle", deadline: null, interval: null };
+const originalPageTitle = document.title;
 
 // A looping two-beep buffer is prepared during the Start gesture. Keep its
 // gain at zero until expiry, so audio does not depend on a later user gesture.
@@ -391,9 +394,23 @@ async function playTimerButtonSound(action, targetAlarm = alarm) {
   }
 }
 function remainingSeconds() {
-  return timer.state === "running" ? Math.max(0, Math.ceil((timer.deadline - Date.now()) / 1000)) : timer.remaining;
+  return ["running", "finished"].includes(timer.state) ? Math.ceil((timer.deadline - Date.now()) / 1000) : timer.remaining;
+}
+function updateTimerTitle() {
+  const parts = [];
+  if (timer.state !== "idle") {
+    parts.push(`${remainingSeconds()} 秒${timer.state === "paused" ? "（已暫停）" : ""}`);
+  }
+  laboratoryTimers.forEach((item, index) => {
+    if (["running", "finished"].includes(item.state)) {
+      parts.push(`王${index + 1}：${Math.ceil((item.deadline - Date.now()) / 1000)} 秒`);
+    }
+  });
+  const title = parts.length ? `${parts.join(" / ")}｜${originalPageTitle}` : originalPageTitle;
+  if (document.title !== title) document.title = title;
 }
 function updateTimerView() {
+  updateTimerTitle();
   if (!$("#timer-form")) return;
   $("#timer-display").textContent = formatDuration(remainingSeconds());
   $("#timer-duration").disabled = timer.state !== "idle";
@@ -405,11 +422,7 @@ function updateTimerView() {
   $("#timer-status").textContent = message;
 }
 function tickTimer() {
-  if (timer.state === "running" && remainingSeconds() === 0) {
-    clearInterval(timer.interval);
-    timer.interval = null;
-    timer.deadline = null;
-    timer.remaining = 0;
+  if (timer.state === "running" && remainingSeconds() <= 0) {
     timer.state = "finished";
     if (alarm.gain) alarm.gain.gain.setValueAtTime(.2, alarm.context.currentTime);
   }

@@ -59,7 +59,7 @@
             <h2 id="welcome-heading">歡迎你來到這裡，我是酒虎。</h2>
             <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
             <p>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。<br>使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-            <p class="welcome-version">最後更新：2026-10-07 ‧ <span id="welcome-version">v0.12</span></p>
+            <p class="welcome-version">最後更新：2026-10-19 ‧ <span id="welcome-version">v0.13</span></p>
             <button class="secondary-button welcome-release" type="button" data-release-notes aria-haspopup="dialog" aria-controls="release-dialog">改版資訊</button>
           </div>
         </section>
@@ -92,13 +92,13 @@
   <dialog id="tool-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow muted"></span><h2 id="dialog-title"></h2></div><button id="close-dialog" class="icon-button" aria-label="關閉工具">×</button></div><div id="tool-content"></div></dialog>
   <dialog id="release-dialog" aria-labelledby="release-title">
     <div class="dialog-header">
-      <div><span class="eyebrow muted"><time datetime="2026-10-07">2026-10-07</time></span><h2 id="release-title">v0.12 改版資訊</h2></div>
+      <div><span class="eyebrow muted"><time datetime="2026-10-19">2026-10-19</time></span><h2 id="release-title">v0.13 改版資訊</h2></div>
       <form method="dialog"><button class="icon-button" type="submit" aria-label="關閉改版資訊" autofocus>×</button></form>
     </div>
     <ul class="release-summary">
-      <li>仙境傳說新增「對話立繪轉換器」，將 PNG、WebP 依透明度門檻轉為洋紅背景，以原圖尺寸輸出 24 位元 BMP。</li>
-      <li>提供單一圖檔、卡普拉群（10 份）與准它群（2 份）下載，套用指定檔名，並提醒瀏覽器的多檔下載限制。</li>
-      <li>加入立繪替換教學影片連結，獨立頁面支援 #no=1 隱藏返回工具箱連結。</li>
+      <li>對話立繪轉換器可追加 1～5 像素純色框線，支援自訂顏色，並禁止使用透明背景色 #FF00FF。</li>
+      <li>一般倒數與中央實驗室（三王）倒數在時間到後持續顯示負值，保留提示音效，按下停止即可重設。</li>
+      <li>計時期間，分頁標題同步顯示目前秒數；支援負值、暫停狀態與多個計時並列，全部停止後恢復原標題。</li>
     </ul>
   </dialog>
   <div id="toast" class="toast" role="status" hidden></div>

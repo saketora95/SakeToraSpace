@@ -24,6 +24,14 @@
     <section class="bmp-controls" aria-label="圖片轉換設定">
       <label class="field" for="bmp-file">選擇圖片<input id="bmp-file" type="file" accept="image/png,image/webp"><span class="muted">僅支援含透明背景的 PNG 或 WebP 格式檔案</span></label>
       <label class="field" for="bmp-threshold">透明度門檻（0 ~ 255）<input id="bmp-threshold" type="text" inputmode="numeric" value="128"></label>
+      <div class="bmp-outline">
+        <label class="bmp-outline-toggle"><input id="bmp-outline-enabled" type="checkbox">追加純色像素框線</label>
+        <div class="bmp-outline-settings">
+          <label class="field" for="bmp-outline-width">框線寬度<select id="bmp-outline-width" disabled><option value="1">1 像素</option><option value="2">2 像素</option><option value="3">3 像素</option><option value="4">4 像素</option><option value="5">5 像素</option></select></label>
+          <label class="field" for="bmp-outline-color">框線顏色<input id="bmp-outline-color" type="color" value="#000000" aria-describedby="bmp-outline-note" disabled></label>
+        </div>
+        <p id="bmp-outline-note" class="muted">依透明度門檻沿圖形外側追加框線，維持原圖尺寸，超出圖片邊緣的部分會裁切。顏色不可使用透明背景色 #FF00FF。</p>
+      </div>
       <p id="bmp-status" role="status" aria-live="polite" hidden></p>
     </section>
     <section class="bmp-downloads" aria-label="下載轉換結果">
