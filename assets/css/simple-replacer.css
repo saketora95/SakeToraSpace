@@ -1,17 +1,21 @@
-.replacer-header{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px max(24px,calc((100% - 1280px)/2));border-bottom:1px solid var(--line)}
-.replacer-header a{color:var(--accent)}
-.replacer-page main{max-width:1328px;padding:28px 24px 40px}
-.replacer-heading{margin-bottom:22px}.replacer-heading h1{margin:4px 0;font-size:30px}.replacer-heading p{margin:8px 0}
-.replacer-panel{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:20px}
+.replacer-panel{padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin-bottom:20px}
 .replacer-editors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;margin-top:16px}
 .replacer-editors textarea{height:clamp(280px,48vh,600px);font-size:14px;line-height:1.8;resize:vertical}
-.replacer-panel summary{cursor:pointer;font-size:16px}.replacer-panel summary span{font-size:12px;margin-left:8px}
+.replacer-panel summary{cursor:pointer;font-size:16px;font-weight:700}.replacer-panel summary span{font:12px var(--mono);margin-left:8px}
 .replacer-filters{display:grid;grid-template-columns:180px 1fr;gap:16px;margin:20px 0 14px}
-.replacer-filters select{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--control-line);padding:10px;border-radius:6px}
-.replacer-rule-scroll{overflow:auto;max-height:480px;border:1px solid var(--line);border-radius:6px}
+.replacer-filters select{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--control-line);padding:10px}
+.replacer-rule-scroll{overflow:auto;max-height:480px;border:1px solid var(--line);border-radius:10px}
 .replacer-rule-scroll table{border-collapse:collapse;width:100%;font-size:12px;table-layout:fixed}
 .replacer-rule-scroll th,.replacer-rule-scroll td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere;white-space:pre-wrap}
 .replacer-rule-scroll th{position:sticky;top:0;background:var(--surface-soft)}.replacer-rule-scroll td:nth-child(2){color:var(--accent)}
-.replacer-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;font-size:12px}
-.replacer-copyright{margin:24px 0 0;color:var(--muted);font-size:12px}
-@media(max-width:700px){.replacer-editors{grid-template-columns:1fr}.replacer-filters{grid-template-columns:1fr}.replacer-page main{padding:20px 16px}.replacer-panel{padding:14px}.replacer-editors textarea{height:300px}.replacer-header{font-size:12px;padding:16px}.replacer-editors textarea,.replacer-filters input,.replacer-filters select{font-size:16px}}
+.replacer-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;font:12px var(--mono)}
+
+/* Standalone version: the welcome card shares the about-dialog look. */
+.replacer-page .welcome-panel{grid-template-columns:minmax(110px,150px) minmax(0,1fr);gap:28px;margin-bottom:24px;padding:24px 28px;border:2px solid var(--rule-strong);border-radius:18px;background:var(--card);box-shadow:6px 6px 0 var(--rule-strong)}
+.replacer-page .welcome-portrait{border-radius:50%;filter:none}
+.replacer-page .welcome-copy h2{margin:0 90px 10px 0;font-size:clamp(20px,2.2vw,26px);font-weight:900;color:var(--ink)}
+.replacer-page .welcome-copy p{margin:0 0 8px;line-height:1.8;color:var(--ink-2)}
+.replacer-page .welcome-close{top:14px;right:14px;padding:4px 12px;min-height:32px}
+
+@media(max-width:700px){.replacer-editors{grid-template-columns:1fr}.replacer-filters{grid-template-columns:1fr}.replacer-panel{padding:14px}.replacer-editors textarea{height:300px}.replacer-editors textarea,.replacer-filters input,.replacer-filters select{font-size:16px}
+  .replacer-page .welcome-panel{grid-template-columns:minmax(0,1fr);padding:44px 18px 20px;box-shadow:4px 4px 0 var(--rule-strong)}.replacer-page .welcome-portrait{max-width:110px}.replacer-page .welcome-copy h2{margin-right:0}}

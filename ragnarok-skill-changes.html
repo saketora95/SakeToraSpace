@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#202427">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
   <meta name="description" content="仙境傳說技能調整記錄，依職業、技能及版本比較調整前後資料與官方維護公告。">
   <title>技能調整記錄 · 仙境傳說 · SakeTora Space</title>
   <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-skill-changes.html">
@@ -24,17 +25,26 @@
   <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
   <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
   <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
   <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
   <link rel="stylesheet" href="./assets/css/ragnarok-skill-changes.css">
+  <script src="./assets/js/theme.js" defer></script>
   <script src="./assets/js/tools/ragnarok/skill-change-data.js" defer></script>
   <script src="./assets/js/tools/ragnarok/skill-changes.js" defer></script>
   <script src="./assets/js/page-navigation.js" defer></script>
 </head>
 <body class="skill-changes-page">
   <a class="skip-link" href="#main">跳至主要內容</a>
-  <header class="skill-page-header"><a id="skill-home-link" href="./index.html">← 返回工具箱</a><span class="muted">SakeTora Space / 仙境傳說</span></header>
-  <main id="main">
-    <div class="skill-page-heading"><span class="eyebrow muted">RAGNAROK ONLINE / SKILL HISTORY</span><h1>技能調整記錄</h1></div>
+  <header class="site-header">
+    <div class="crumbs"><a id="skill-home-link" class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="logo logo-static"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></span><span class="crumb">仙境傳說</span><span class="crumb" aria-current="page">技能調整記錄</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head"><span class="page-kicker">RAGNAROK ONLINE / SKILL HISTORY</span><h1>技能調整記錄</h1></div>
     <p id="skill-data-notice" class="skill-data-notice" hidden></p>
     <section id="skill-changes-tool" aria-label="技能調整查詢">
       <div class="skill-filters">
@@ -62,7 +72,7 @@
       </section>
     </section>
     <noscript><p class="notice">請啟用 JavaScript 以使用技能調整查詢。</p></noscript>
-    <footer><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></footer>
   </main>
+  <footer class="site-footer"><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><span class="footer-links"><button id="back-to-top" type="button">返回頂端 ↑</button></span></footer>
 </body>
 </html>

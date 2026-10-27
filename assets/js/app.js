@@ -52,91 +52,221 @@ const tools = [
   { id: "chronostory-dex", title: "ChronoDEX", category: "chronostory", icon: "↗", tone: "var(--accent)", description: "前往 ChronoDEX 網站。", keywords: "ChronoStory ChronoDEX dex", url: "https://chronostorydex.com/" },
 ];
 const $ = (selector) => document.querySelector(selector);
-const categoryNames = { ragnarok: "仙境傳說", ffxiv: "FFXIV", chronostory: "ChronoStory" };
-const toolCategoryLabel = tool => [categoryNames[tool.category] ?? "通用工具", tool.subcategory].filter(Boolean).join("／");
-const filterNames = { all: "所有工具", favorites: "我的收藏", ...categoryNames };
+const categories = [
+  { id: "ragnarok", name: "仙境傳說" },
+  { id: "ffxiv", name: "FFXIV" },
+  { id: "chronostory", name: "ChronoStory" },
+];
+const categoryName = id => categories.find(category => category.id === id)?.name ?? "通用工具";
+const toolCategoryLabel = tool => [categoryName(tool.category), tool.subcategory].filter(Boolean).join("／");
 const storage = {
   read(key, fallback) { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } },
   write(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } },
 };
-function initializeWelcomePanel() {
-  const panel = $("#welcome-panel");
-  const restoreButton = $("#welcome-restore");
-  const version = $("#welcome-version").textContent.trim();
-  $("#site-version").textContent = version;
-  const storageKey = "saketora.welcome.dismissedVersion";
-  panel.hidden = storage.read(storageKey, "") === version;
-  restoreButton.hidden = !panel.hidden;
-  $("#welcome-close").addEventListener("click", () => {
-    storage.write(storageKey, version);
-    panel.hidden = true;
-    restoreButton.hidden = false;
-    $("#search").focus({ preventScroll: true });
-  });
-  restoreButton.addEventListener("click", () => {
-    storage.write(storageKey, "");
-    panel.hidden = false;
-    restoreButton.hidden = true;
-    $("#welcome-close").focus({ preventScroll: true });
-    panel.scrollIntoView({ block: "start" });
-  });
-}
-initializeWelcomePanel();
+const readJson = (key, fallback) => { try { return JSON.parse(storage.read(key, "null")) ?? fallback; } catch { return fallback; } };
+const escapeHtml = text => String(text).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
+const toolById = id => tools.find(tool => tool.id === id);
+const validIds = list => Array.isArray(list) ? list.filter(id => typeof id === "string" && toolById(id)) : [];
 
-function setCardView(view) {
-  const selectedView = view === "compact" ? "compact" : "standard";
-  $("#tool-grid").classList.toggle("view-compact", selectedView === "compact");
-  document.querySelectorAll("[data-card-view]").forEach(button => {
-    button.setAttribute("aria-pressed", String(button.dataset.cardView === selectedView));
-  });
+let favorites = new Set(validIds(readJson("saketora.favorites", [])));
+let recent = validIds(readJson("saketora.recent", []));
+const tabIds = ["favorites", ...categories.map(category => category.id)];
+let tab = storage.read("saketora.homeTab", "");
+if (!tabIds.includes(tab)) tab = favorites.size ? "favorites" : categories[0].id;
+let pane = "tool";
+let activeIndex = 0;
+
+function kindOf(tool) {
+  if (tool.subcategory) return "article";
+  return tool.url ? "link" : "tool";
 }
-setCardView(storage.read("saketora.cardView", "standard"));
-document.querySelectorAll("[data-card-view]").forEach(button => {
-  button.addEventListener("click", () => {
-    setCardView(button.dataset.cardView);
-    storage.write("saketora.cardView", button.dataset.cardView);
+// Dialog tools open through the #tool= bookmark, handled by syncToolBookmark.
+function actionOf(tool) {
+  if (tool.page) return { href: tool.page, label: "獨立頁面", external: false };
+  if (tool.url && /^https?:/.test(tool.url)) return { href: tool.url, label: new URL(tool.url).hostname.replace(/^www\./, ""), external: true };
+  if (tool.url) return { href: tool.url, label: "獨立頁面", external: false };
+  return { href: `#tool=${encodeURIComponent(tool.id)}`, label: "工具視窗", external: false };
+}
+const kindNames = { tool: "工具", article: "酒虎廢文", link: "外部連結" };
+
+function highlight(text, tokens) {
+  const lower = text.toLocaleLowerCase();
+  const marks = new Array(text.length).fill(false);
+  tokens.forEach(token => {
+    for (let i = lower.indexOf(token); token && i >= 0; i = lower.indexOf(token, i + token.length)) {
+      for (let k = i; k < i + token.length; k++) marks[k] = true;
+    }
   });
+  let html = "";
+  let open = false;
+  [...text].forEach((ch, i) => {
+    if (marks[i] !== open) { html += marks[i] ? "<mark>" : "</mark>"; open = marks[i]; }
+    html += escapeHtml(ch);
+  });
+  return open ? html + "</mark>" : html;
+}
+
+function linkAttrs(tool) {
+  const action = actionOf(tool);
+  return `href="${escapeHtml(action.href)}" data-track="${tool.id}"${action.external ? ' target="_blank" rel="noopener noreferrer"' : ""}`;
+}
+function starButton(tool) {
+  const on = favorites.has(tool.id);
+  return `<button class="star" type="button" data-star="${tool.id}" aria-pressed="${on}" aria-label="${on ? "取消收藏" : "收藏"}：${escapeHtml(tool.title)}">${on ? "★" : "☆"}</button>`;
+}
+
+function renderTile(tool) {
+  return `<li class="tile">
+    <span class="tile-glyph" aria-hidden="true">${tool.icon}</span>
+    <div class="tile-text">
+      <a class="tile-title stretch" ${linkAttrs(tool)}>${escapeHtml(tool.title)}</a>
+      <p>${escapeHtml(tool.description)}</p>
+    </div>
+    ${starButton(tool)}
+  </li>`;
+}
+function renderRow(tool, tokens = [], context = false) {
+  const action = actionOf(tool);
+  return `<li class="row row-${kindOf(tool)}${tool.subdued ? " row-subdued" : ""}" title="${escapeHtml(tool.description)}">
+    ${context ? `<span class="row-kind">${escapeHtml(categoryName(tool.category))}・${kindNames[kindOf(tool)]}</span>` : ""}
+    <a class="row-title stretch" ${linkAttrs(tool)}>${highlight(tool.title, tokens)}</a>
+    ${context ? `<span class="row-desc">${escapeHtml(tool.description)}</span>` : ""}
+    <span class="row-meta">${escapeHtml(action.label)}${action.external ? ' <span aria-hidden="true">↗</span>' : ""}</span>
+    ${starButton(tool)}
+  </li>`;
+}
+
+function renderRecent() {
+  const items = recent.map(toolById).slice(0, 5);
+  $("#recent").hidden = !items.length;
+  $("#recent-list").innerHTML = items.map(tool => `<li><a class="chip-link" ${linkAttrs(tool)}><span aria-hidden="true">${tool.icon}</span>${escapeHtml(tool.title)}</a></li>`).join("");
+}
+
+function renderTabs() {
+  const count = id => id === "favorites" ? favorites.size : tools.filter(tool => tool.category === id).length;
+  const name = id => id === "favorites" ? "★ 收藏" : categoryName(id);
+  $("#tabs").innerHTML = tabIds.map(id =>
+    `<button type="button" role="tab" id="tab-${id}" data-tab="${id}" aria-controls="panel" aria-selected="${tab === id}" tabindex="${tab === id ? 0 : -1}">${name(id)}<span>${count(id)}</span></button>`).join("");
+}
+
+// Each category fits one screen: tools, articles and links sit side by side.
+function renderPanel() {
+  const items = tools.filter(tool => tab === "favorites" ? favorites.has(tool.id) : tool.category === tab);
+  const groups = ["tool", "article", "link"].map(kind => [kind, items.filter(tool => kindOf(tool) === kind)]).filter(([, entries]) => entries.length);
+  $("#panel").setAttribute("aria-labelledby", `tab-${tab}`);
+  if (!items.length) {
+    $("#panel").innerHTML = emptyState(tab === "favorites"
+      ? ["還沒有收藏", "在任何項目旁按下 ☆，它就會集中到這個分頁。"]
+      : ["這個分類還是空的", "看看其他分類吧。"]);
+    return;
+  }
+  if (!groups.some(([kind]) => kind === pane)) pane = groups[0][0];
+  const block = ([kind, entries]) => `<section class="block block-${kind}" data-kind="${kind}" ${pane === kind ? "data-current" : ""} aria-label="${kindNames[kind]}">
+      <h2>${kindNames[kind]}<span>${entries.length}</span></h2>
+      ${kind === "tool"
+        ? `<ul class="tiles">${entries.map(renderTile).join("")}</ul>`
+        : `<ul class="rows">${entries.map(tool => renderRow(tool)).join("")}</ul>`}
+    </section>`;
+  $("#panel").innerHTML = `
+    <div class="panes" role="group" aria-label="切換類型">${groups.map(([kind, entries]) =>
+      `<button type="button" data-pane="${kind}" aria-pressed="${pane === kind}">${kindNames[kind]}<span>${entries.length}</span></button>`).join("")}</div>
+    <div class="board board-${groups.length}">${groups.map(block).join("")}</div>`;
+}
+
+function emptyState([title, text]) {
+  return `<div class="empty"><p class="empty-title">${title}</p><p>${text}</p></div>`;
+}
+
+function searchResults(query) {
+  const tokens = query.toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  return {
+    tokens,
+    items: tools
+      .map(tool => {
+        const title = tool.title.toLocaleLowerCase();
+        const haystack = [tool.title, tool.description, tool.keywords, toolCategoryLabel(tool)].join(" ").toLocaleLowerCase();
+        if (!tokens.every(token => haystack.includes(token))) return null;
+        const score = tokens.reduce((sum, token) => sum + (title.startsWith(token) ? 20 : title.includes(token) ? 10 : 1), 0) + (kindOf(tool) === "tool" ? 2 : 0);
+        return { tool, score };
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score)
+      .map(entry => entry.tool),
+  };
+}
+
+function renderSearch(query) {
+  const { tokens, items } = searchResults(query);
+  activeIndex = Math.min(activeIndex, Math.max(items.length - 1, 0));
+  $("#search-status").textContent = items.length ? `在所有分類找到 ${items.length} 項・↑↓ 選擇、Enter 開啟、Esc 清除` : "沒有符合的項目";
+  $("#results").innerHTML = items.length
+    ? `<ul class="rows rows-search" id="search-list" role="listbox" aria-label="搜尋結果">${items.map(tool => renderRow(tool, tokens, true)).join("")}</ul>`
+    : emptyState([`找不到「${escapeHtml(query)}」`, "試試更短的關鍵字，例如「價格」、「RO」、「掉落」。"]);
+  updateActive();
+}
+
+function updateActive() {
+  const rows = [...document.querySelectorAll("#search-list .row")];
+  rows.forEach((row, index) => {
+    row.classList.toggle("active", index === activeIndex);
+    row.setAttribute("aria-selected", String(index === activeIndex));
+  });
+  rows[activeIndex]?.scrollIntoView({ block: "nearest" });
+}
+
+function renderHome() {
+  const query = $("#search").value.trim();
+  const searching = Boolean(query);
+  document.body.classList.toggle("is-searching", searching);
+  $("#results").hidden = !searching;
+  $("#browse").hidden = searching;
+  renderRecent();
+  if (searching) { renderSearch(query); return; }
+  $("#search-status").textContent = "";
+  renderTabs();
+  renderPanel();
+}
+
+function selectTab(id, focus = false) {
+  tab = id;
+  storage.write("saketora.homeTab", id);
+  renderHome();
+  if (focus) $(`#tab-${id}`).focus();
+}
+
+$("#search").addEventListener("input", () => { activeIndex = 0; renderHome(); });
+$("#search").addEventListener("keydown", event => {
+  const rows = [...document.querySelectorAll("#search-list .row")];
+  if (event.key === "ArrowDown" && rows.length) { event.preventDefault(); activeIndex = (activeIndex + 1) % rows.length; updateActive(); }
+  else if (event.key === "ArrowUp" && rows.length) { event.preventDefault(); activeIndex = (activeIndex - 1 + rows.length) % rows.length; updateActive(); }
+  else if (event.key === "Enter" && rows[activeIndex]) { event.preventDefault(); rows[activeIndex].querySelector("a").click(); }
+  else if (event.key === "Escape" && $("#search").value) { $("#search").value = ""; renderHome(); }
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey &&
+      !document.querySelector("dialog[open]") && !event.target.closest("input, textarea, [contenteditable]")) {
+    event.preventDefault();
+    $("#search").focus();
+    $("#search").select();
+  }
+});
+$("#tabs").addEventListener("click", event => {
+  const button = event.target.closest("[data-tab]");
+  if (button) selectTab(button.dataset.tab);
+});
+$("#tabs").addEventListener("keydown", event => {
+  const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+  if (!step) return;
+  event.preventDefault();
+  selectTab(tabIds[(tabIds.indexOf(tab) + step + tabIds.length) % tabIds.length], true);
+});
+$("#panel").addEventListener("click", event => {
+  const button = event.target.closest("[data-pane]");
+  if (!button) return;
+  pane = button.dataset.pane;
+  renderPanel();
 });
 
-
-let favorites = new Set();
-try {
-  const saved = JSON.parse(storage.read("saketora.favorites", "[]"));
-  if (Array.isArray(saved)) favorites = new Set(saved.filter(id => tools.some(tool => tool.id === id)));
-} catch { /* Corrupt saved data should never prevent the tools from opening. */ }
-let activeFilter = favorites.size > 0 ? "favorites" : "all";
-const expandedMenus = new Set(activeFilter === "all" ? [] : [activeFilter]);
-function toolsInFilter(filter) {
-  return tools.filter(tool => filter === "all" || (filter === "favorites" ? favorites.has(tool.id) : tool.category === filter));
-}
-function matchesType(tool) {
-  return $(tool.url ? "#show-links" : "#show-tools").checked;
-}
-function toolAction(tool, className, label) {
-  if (tool.page) return `<a class="${className}" href="${tool.page}" aria-label="開啟${tool.title}">${label}</a>`;
-  return tool.url
-    ? `<a class="${className}" href="${tool.url}" target="_blank" rel="noopener noreferrer" aria-label="${tool.title}（另開分頁）">${label}</a>`
-    : `<button class="${className}" data-open="${tool.id}" aria-label="開啟${tool.title}">${label}</button>`;
-}
-function renderNavigation() {
-  document.querySelector('.navigation [data-filter="favorites"]').closest(".nav-group").hidden = favorites.size === 0;
-  document.querySelectorAll("[data-submenu]").forEach(list => {
-    const filter = list.dataset.submenu;
-    const categoryItems = toolsInFilter(filter);
-    const items = categoryItems.filter(matchesType);
-    list.hidden = !expandedMenus.has(filter);
-    const renderNavItem = tool => `<li>${toolAction(tool, "nav-tool", tool.title + (tool.url ? ' <span aria-hidden="true">↗</span>' : ''))}</li>`;
-    const articles = items.filter(tool => tool.subcategory === "酒虎廢文");
-    list.innerHTML = items.length
-      ? items.filter(tool => !tool.url).map(renderNavItem).join("") +
-        (articles.length ? `<li class="nav-article-group"><span class="nav-subcategory-title">酒虎廢文</span><ul>${articles.map(renderNavItem).join("")}</ul></li>` : "") +
-        items.filter(tool => tool.url && !tool.subcategory).map(renderNavItem).join("")
-      : `<li class="nav-empty">${categoryItems.length ? "沒有符合所選類型的項目" : "該分類下沒有工具或連結"}</li>`;
-    const toggle = document.querySelector(`.navigation [data-filter="${filter}"]`);
-    toggle.setAttribute("aria-expanded", String(!list.hidden));
-  });
-  $("#all-tool-count").textContent = tools.length;
-}
 let toastTimeout;
 function toast(message) {
   $("#toast").textContent = message;
@@ -144,113 +274,29 @@ function toast(message) {
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => { $("#toast").hidden = true; }, 3500);
 }
-function renderCard(tool) {
-  return `
-    <article class="tool-card ${tool.url ? "card-link" : "card-tool"}${tool.subdued ? " card-subdued" : ""}${tool.subcategory ? " card-article" : ""}" style="--tone:${tool.tone}">
-      <div class="card-top"><div class="card-identity"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="card-type">${tool.subcategory ? "酒虎廢文" : tool.url ? "連結" : "工具"}</span></div><button class="favorite-button" data-favorite="${tool.id}" aria-label="${favorites.has(tool.id) ? "取消收藏" : "收藏"}${tool.title}" aria-pressed="${favorites.has(tool.id)}">${favorites.has(tool.id) ? "★" : "☆"}</button></div>
-      <h3>${tool.title}</h3><p>${tool.description}</p>
-      <div class="card-footer"><span class="category-label">${toolCategoryLabel(tool)}</span>${toolAction(tool, "open-tool", `${tool.url ? "前往網站" : "開啟工具"} <span aria-hidden="true">↗</span>`)}</div>
-    </article>`;
-}
-function renderTools() {
-  renderNavigation();
-  const query = $("#search").value.trim().toLocaleLowerCase();
-  const visible = tools.filter(tool =>
-    matchesType(tool) &&
-    (activeFilter === "all" || (activeFilter === "favorites" ? favorites.has(tool.id) : tool.category === activeFilter)) &&
-    [tool.title, tool.description, tool.keywords, toolCategoryLabel(tool)].join(" ").toLocaleLowerCase().includes(query)
-  );
-  const collapsed = new Set([...$("#tool-grid").querySelectorAll("details:not([open])")].map(group => group.dataset.category));
-  const groups = [...Object.entries(categoryNames), ["general", "通用工具"]];
-  $("#tool-grid").innerHTML = groups.map(([category, label]) => {
-    const items = visible.filter(tool => (tool.category ?? "general") === category);
-    if (!items.length) return "";
-    const toolItems = items.filter(tool => !tool.url);
-    const linkItems = items.filter(tool => tool.url && !tool.subcategory);
-    const articleItems = items.filter(tool => tool.subcategory === "酒虎廢文");
-    const renderRow = (entries, type, title) => entries.length
-      ? `<section class="card-section" aria-label="${label}的${title}"><h3 class="card-section-title">${title}<span>${entries.length}</span></h3><div class="tool-grid" data-card-type="${type}">${entries.map(renderCard).join("")}</div></section>`
-      : "";
-    return `<details class="category-group" data-category="${category}" ${collapsed.has(category) ? "" : "open"}><summary><h2>${label}</h2><span class="group-count">${items.length}</span></summary><div class="category-content">${renderRow(toolItems, "tools", "工具")}${renderRow(articleItems, "articles", "酒虎廢文")}${renderRow(linkItems, "links", "連結")}</div></details>`;
-  }).join("");
-  $("#tools-heading").firstChild.textContent = filterNames[activeFilter] + " ";
-  $("#result-count").textContent = visible.length;
-  $("#favorite-count").textContent = favorites.size;
-  $("#empty-state").hidden = visible.length !== 0;
-  const emptyFavorites = activeFilter === "favorites" && !query && favorites.size === 0;
-  $("#empty-title").textContent = emptyFavorites ? "把常用的工具，留在這裡" : "找不到符合的工具";
-  $("#empty-description").textContent = emptyFavorites ? "點一下工具卡片的星星，就能加入你的收藏。" : "換個關鍵字，或看看其他分類吧。";
-  if (!query && categoryNames[activeFilter] && !tools.some(tool => tool.category === activeFilter)) {
-    $("#empty-title").textContent = `${categoryNames[activeFilter]} 尚未新增工具`;
-    $("#empty-description").textContent = "你可以先到「所有工具」查看其他工具。";
-  }
-  if (!$("#show-tools").checked && !$("#show-links").checked) {
-    $("#empty-title").textContent = "請選擇要顯示的類型";
-    $("#empty-description").textContent = "勾選「工具」或「連結」，兩者都勾選即可顯示全部。";
-  } else if (!visible.length && toolsInFilter(activeFilter).length) {
-    $("#empty-title").textContent = "找不到符合的項目";
-    $("#empty-description").textContent = "調整搜尋關鍵字、顯示類型或分類再試試。";
-  }
-  document.querySelectorAll("[data-filter]").forEach(button => {
-    const selected = button.dataset.filter === activeFilter;
-    button.classList.toggle("active", selected);
-    button.setAttribute("aria-pressed", String(selected));
-  });
-}
-document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => {
-  const nextFilter = button.dataset.filter;
-  const collapse = nextFilter === activeFilter && button.closest(".navigation") && expandedMenus.has(nextFilter);
-  expandedMenus.clear();
-  if (nextFilter !== "all" && !collapse) expandedMenus.add(nextFilter);
-  activeFilter = nextFilter;
-  renderTools();
-}));
-$(".navigation").addEventListener("click", event => {
-  const button = event.target.closest("[data-open]");
-  if (button) openTool(button.dataset.open);
-});
-$("#navigation-toggle").addEventListener("click", () => {
-  const expanded = $(".sidebar").classList.toggle("menu-open");
-  $("#navigation-toggle").setAttribute("aria-expanded", String(expanded));
-});
-$("#search").addEventListener("input", renderTools);
-document.querySelectorAll(".type-filters input").forEach(input => input.addEventListener("change", renderTools));
-$("#clear-filters").addEventListener("click", () => {
-  activeFilter = "all";
-  expandedMenus.clear();
-  $("#search").value = "";
-  $("#show-tools").checked = true;
-  $("#show-links").checked = true;
-  renderTools();
-});
-$("#tool-grid").addEventListener("click", event => {
-  const favorite = event.target.closest("[data-favorite]");
-  if (favorite) {
-    const id = favorite.dataset.favorite;
-    const oldIndex = [...document.querySelectorAll("[data-favorite]")].indexOf(favorite);
+document.addEventListener("click", event => {
+  const star = event.target.closest("[data-star]");
+  if (star) {
+    const id = star.dataset.star;
     favorites.has(id) ? favorites.delete(id) : favorites.add(id);
-    const persisted = storage.write("saketora.favorites", JSON.stringify([...favorites]));
-    renderTools();
-    const buttons = [...document.querySelectorAll("[data-favorite]")];
-    (buttons.find(button => button.dataset.favorite === id) || buttons[Math.min(oldIndex, buttons.length - 1)] || $("#clear-filters")).focus();
-    toast(persisted ? (favorites.has(id) ? "已加入收藏" : "已取消收藏") : "瀏覽器無法儲存設定；收藏僅保留在本次使用。");
+    const saved = storage.write("saketora.favorites", JSON.stringify([...favorites]));
+    renderHome();
+    (document.querySelector(`[data-star="${id}"]`) ?? $(`#tab-${tab}`))?.focus();
+    toast(saved ? (favorites.has(id) ? "已加入收藏" : "已取消收藏") : "瀏覽器無法儲存設定；收藏僅保留在本次使用。");
+    return;
   }
-  const open = event.target.closest("[data-open]");
-  if (open) openTool(open.dataset.open);
-});
-const releaseDialog = $("#release-dialog");
-document.querySelectorAll("[data-release-notes]").forEach(button => {
-  button.addEventListener("click", () => releaseDialog.showModal());
+  const link = event.target.closest("[data-track]");
+  if (link) {
+    recent = [link.dataset.track, ...recent.filter(id => id !== link.dataset.track)].slice(0, 8);
+    storage.write("saketora.recent", JSON.stringify(recent));
+    renderRecent();
+  }
 });
 
-document.addEventListener("keydown", event => {
-  if (event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey &&
-      !document.querySelector("dialog[open]") && !event.target.closest("input, textarea, [contenteditable]")) {
-    event.preventDefault();
-    $("#search").focus();
-  }
-});
+document.querySelectorAll("[data-open-dialog]").forEach(button => button.addEventListener("click", () => $(`#${button.dataset.openDialog}`).showModal()));
+$("#tool-total").textContent = tools.length;
 $("#year").textContent = new Date().getFullYear();
+renderHome();
 
 const dialog = $("#tool-dialog");
 let activeToolId = null;
@@ -601,7 +647,6 @@ function renderChronostoryJobInfo() {
   </div>`;
 }
 const renderers = { "chronostory-support-info": renderChronostorySupportInfo, "ragnarok-timer": renderTimer, "ragnarok-glacier-weapon": renderGlacierWeapon, "ragnarok-reform-material": renderReformMaterial, "ragnarok-grade-material": renderGradeMaterial, "chronostory-job-info": renderChronostoryJobInfo };
-renderTools();
 
 window.addEventListener("hashchange", syncToolBookmark);
 window.addEventListener("popstate", syncToolBookmark);

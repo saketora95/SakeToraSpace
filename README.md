@@ -2,30 +2,28 @@
 
 此專案主要由 AI 生成與建置，收集遊戲與日常使用的小工具及參考連結。
 
+網站：<https://saketora95.github.io/SakeToraSpace/>
+
 ## 仙境傳說
 
-- **[對話立繪轉換器](ragnarok-bmp-parser.html)**：選取 PNG 或 WebP 圖片，依透明度門檻（預設 128）替換為洋紅背景，以原圖尺寸輸出 24 位元 BMP：單一圖檔使用原檔名加上 `_modified.bmp`；卡普拉群提供 `kafra_01.bmp` 至 `kafra_09.bmp` 及 `kafra_do01.bmp`；准它群提供 `zonda_01.bmp` 及 `zonda_do01.bmp`。群組下載可能需允許瀏覽器下載多個檔案。全程於瀏覽器內處理；網址加上 `#no=1` 可隱藏返回工具箱連結。
-- **[技能調整記錄](ragnarok-skill-changes.html)**：依職業與多語技能名稱搜尋，預設列出所有版本，也可指定版本或單一技能；現行版本高亮，提供調整前後資料、備註及各版本官方公告索引。已完整匯入[kRO 技能調整整理文章](https://forum.gamer.com.tw/C.php?bsn=4212&snA=436731)的全部職業與非四轉補充，涵蓋 21 個可篩選職業、290 個技能、13 個版本分類、642 筆記錄及 1848 個調整項目。現行版本設定為 4.2，較早記錄以「沿用至 4.2 版本」標示；第 9 版本保留未實裝預告，未知版本、玩家測試與已撤回效果分別保留來源說明。資料存放於 `assets/js/tools/ragnarok/skill-change-data.js`，匯入方式及欄位見[資料格式說明](docs/ragnarok-skill-change-data.md)，驗證指令為 `python3 scripts/test-ragnarok-skill-import.py` 與 `node scripts/test-ragnarok-skill-changes.cjs`。
-- **倒數計時**：一般倒數提醒，並提供中央實驗室三王計時與每日密碼。
-- **韓文裝備簡易取代器**：依規則將韓文裝備說明、技能及遊戲用詞取代為中文，於獨立頁面操作。
-- **[簡易取代器獨立版](ragnarok-replacer.html)**：無導向本站其他頁面的連結；歡迎訊息可關閉或由頁尾重新顯示，關閉狀態與首頁分開保存。此頁共用 `assets/` 的樣式、腳本及圖片，部署時需一併保留。
-- **冰晶武器價格**：比較素材購買、升級與兌換成本。
-- **改造素材價格**：估算強化石成本、素材需求與購入參考價格。
-- **升階素材價格**：計算乙太素材成本與升階花費期望值。
-- **參考連結**：各地區官方網站、Divine Pride 與 ROCalculator。
-- **酒虎廢文**：收錄 12 篇巴哈姆特文章，涵蓋 kRO 更新、技能調整、裝備與二次元生物圈資訊；以獨立子分類與文章卡片呈現，支援搜尋及收藏。
+- **[倒數計時](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-timer)**：一般倒數提醒，並提供中央實驗室三王計時與每日密碼。
+- **[韓文裝備簡易取代器](https://saketora95.github.io/SakeToraSpace/simple-replacer.html)**：依規則將韓文的裝備與道具說明取代為中文用詞。
+  - [獨立分享版](https://saketora95.github.io/SakeToraSpace/ragnarok-replacer.html)：功能相同，不含本站其他連結。
+- **[技能調整記錄](https://saketora95.github.io/SakeToraSpace/ragnarok-skill-changes.html#no=1)**：依職業、技能與版本查閱 kRO 的技能調整與官方公告。
+- **[對話立繪轉換器](https://saketora95.github.io/SakeToraSpace/ragnarok-bmp-parser.html#no=1)**：將透明背景的圖片轉為 RO 可用的洋紅背景 BMP。
+- **[冰晶武器價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-glacier-weapon)**：比較素材購買、升級與兌換成本。
+- **[改造素材價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-reform-material)**：換算強化石成本與所需素材。
+- **[升階素材價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-grade-material)**：計算階級提升的素材成本。
+- **酒虎廢文**：巴哈姆特上的整理文章，包含 kRO 更新、技能調整、裝備與二次元生物圈資訊。
+- **參考連結**：各地區官方網站、twRO 露天商店與裝備道具查詢、Divine Pride、ROCalculator。
 
 ## FFXIV
 
-- **灰機 Wiki**：查詢中文遊戲資料。
-- **Paissa**：查看住宅狀況。
-- **Eorzea Collection**：預覽裝備外觀。
-- **Lodestone**：查詢伺服器狀態。
+- **參考連結**：灰機 Wiki、Paissa 住宅狀況、Eorzea Collection 裝備外觀、Lodestone 伺服器狀態。
 
 ## ChronoStory
 
-- **共享輔助狀態資訊**：預設以概要表格比較 12 種職業的技能與輔助功能；左側依五種基礎職業分組選擇，右側查看完整數值、持續消耗與骰子規則。
-- **道具與魔物查詢**：於 [ChronoStory 獨立查詢頁](chronostory-drops.html#items) 搜尋道具掉落來源或魔物掉落品；支援部分名稱、多關鍵字、裝備職業與道具類型篩選，可點選名稱互相查詢。
-- **魔物掉落查詢**：直接進入同一頁的[地區查詢模式](chronostory-drops.html#regions)，先選地區、再選魔物，查看掉落道具、效果與掉落率。切換地區時會清除上一隻魔物，避免混用結果。
-- **轉職資訊**：提供一至四轉等級與流程、可展開的各職業地點、三轉考試題庫，以及四轉正攻法與秘咒法說明；四個項目均預設收合。
-- **[ChronoDEX](https://chronostorydex.com/)**：前往 ChronoDEX 網站。
+- **[魔物掉落道具查詢](https://saketora95.github.io/SakeToraSpace/chronostory-drops.html)**：依道具、魔物、地區或職業查詢掉落來源與裝備資訊。
+- **[轉職資訊](https://saketora95.github.io/SakeToraSpace/#tool=chronostory-job-info)**：一至四轉的條件、流程與地點。
+- **[共享輔助狀態資訊](https://saketora95.github.io/SakeToraSpace/#tool=chronostory-support-info)**：各職業可共享的輔助技能與效果。
+- **參考連結**：ChronoDEX。

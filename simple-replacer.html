@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#202427">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
   <meta name="description" content="仙境傳說簡易取代器，依詞彙、技能與句型規則批次取代文字。">
   <title>簡易取代器 · SakeTora Space</title>
   <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/simple-replacer.html">
@@ -24,8 +25,14 @@
   <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
   <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
   <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
   <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
   <link rel="stylesheet" href="./assets/css/simple-replacer.css">
+  <script src="./assets/js/theme.js" defer></script>
   <script src="./assets/js/tools/ragnarok/replacer-data/replaceList.js" defer></script>
   <script src="./assets/js/tools/ragnarok/replacer-data/replaceRegexList.js" defer></script>
   <script src="./assets/js/tools/ragnarok/replacer-engine.js" defer></script>
@@ -34,11 +41,14 @@
 </head>
 <body class="replacer-page">
   <a class="skip-link" href="#main">跳至主要內容</a>
-  <header class="replacer-header"><a href="./index.html">← 返回工具箱</a><span class="muted">SakeTora Space / 仙境傳說</span></header>
-  <main id="main">
-    <div class="replacer-heading"><div><span class="eyebrow muted">SIMPLE REPLACER</span><h1>簡易取代器</h1></div>
-      <p class="muted">依據設計好的規則，將部分句型與遊戲用詞，取代為中文玩家較容易理解的文字。</p>
-      <p class="muted">此工具並不是一個翻譯工具，僅是一個取代工具，因此對文字的精準度要求更高，而且規則也尚未完全覆蓋所有遊戲用詞，容易出現疏漏，敬請多加留意。</p>
+  <header class="site-header">
+    <div class="crumbs"><a class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="crumb">仙境傳說</span><span class="crumb" aria-current="page">簡易取代器</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head"><span class="page-kicker">SIMPLE REPLACER</span><h1>簡易取代器</h1>
+      <p>依據設計好的規則，將部分句型與遊戲用詞，取代為中文玩家較容易理解的文字。</p>
+      <p>此工具並不是一個翻譯工具，僅是一個取代工具，因此對文字的精準度要求更高，而且規則也尚未完全覆蓋所有遊戲用詞，容易出現疏漏，敬請多加留意。</p>
     </div>
     <section aria-label="文字取代" class="replacer-panel">
       <div class="actions"><button id="replace-run" class="primary-button" type="button">執行取代</button><button id="replace-clear" class="secondary-button" type="button">清空文字</button><button id="replace-copy" class="secondary-button" type="button" disabled>複製結果</button></div>
@@ -54,8 +64,7 @@
       <div class="replacer-pagination"><button id="rule-prev" type="button" class="secondary-button">上一頁</button><span id="rule-page" role="status"></span><button id="rule-next" type="button" class="secondary-button">下一頁</button></div>
     </details>
     <noscript><p>請啟用 JavaScript 以使用取代功能。</p></noscript>
-    <p class="replacer-copyright">仙境傳說 Ragnarok Online © GRAVITY CO., Ltd. &amp; Lee MyoungJin(studio DTDS). ALL Rights Reserved.</p>
-    <footer><div class="footer-actions"><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></div></footer>
   </main>
+  <footer class="site-footer"><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd. &amp; Lee MyoungJin(studio DTDS). ALL Rights Reserved.</span><span class="footer-links"><a href="./">回到工具箱</a><button id="back-to-top" type="button">返回頂端 ↑</button></span></footer>
 </body>
 </html>

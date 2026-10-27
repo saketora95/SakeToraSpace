@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#202427">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
   <meta name="description" content="ChronoStory 道具與魔物掉落查詢，支援名稱搜尋、地區篩選與職業 BIS 裝備比較。">
   <title>魔物掉落道具查詢 · ChronoStory · SakeTora Space</title>
   <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/chronostory-drops.html">
@@ -24,19 +25,28 @@
   <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
   <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
   <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
   <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
   <link rel="stylesheet" href="./assets/css/chronostory-drops.css">
+  <script src="./assets/js/theme.js" defer></script>
   <script src="./assets/js/tools/chronostory/drop-search.js" defer></script>
   <script src="./assets/js/page-navigation.js" defer></script>
 </head>
 <body class="chronostory-page">
   <a class="skip-link" href="#main">跳至主要內容</a>
-  <header class="chronostory-header"><a href="./index.html">← 返回工具箱</a><span class="muted">SakeTora Space / ChronoStory</span></header>
-  <main id="main">
-    <div class="chronostory-heading"><span class="eyebrow muted">CHRONOSTORY</span><h1>魔物掉落道具查詢</h1><p class="muted">搜尋道具名稱，或依區域選擇魔物，查看掉落清單。</p></div>
+  <header class="site-header">
+    <div class="crumbs"><a class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="crumb">ChronoStory</span><span class="crumb" aria-current="page">魔物掉落道具查詢</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head"><span class="page-kicker">CHRONOSTORY</span><h1>魔物掉落道具查詢</h1><p>搜尋道具名稱，或依區域選擇魔物，查看掉落清單。</p></div>
     <section id="chronostory-content" class="chronostory-panel" aria-label="ChronoStory 掉落查詢"></section>
     <noscript><p>請啟用 JavaScript 以使用查詢功能。</p></noscript>
-    <footer><div class="footer-actions"><button id="back-to-top" class="secondary-button" type="button">返回頂端</button></div></footer>
   </main>
+  <footer class="site-footer"><span>© SakeTora Space・資料可能有誤，使用前請確認</span><span class="footer-links"><a href="./">回到工具箱</a><button id="back-to-top" type="button">返回頂端 ↑</button></span></footer>
 </body>
 </html>
