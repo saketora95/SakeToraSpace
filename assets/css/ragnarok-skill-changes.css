@@ -23,7 +23,7 @@
 .skill-metadata{margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.5}
 .skill-metadata-separator{color:var(--accent)}
 .skill-version-record{border:1px solid var(--line);border-left:3px solid var(--line);border-radius:7px;padding:10px;margin-top:8px}
-.skill-version-record.is-current,.skill-announcement-version.is-current{border-color:var(--accent);background:var(--selected)}
+.skill-version-record.is-current{border-color:var(--accent);background:var(--selected)}
 .skill-version-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px}
 .skill-version-heading h4{margin:0;font-size:14px}
 .skill-version-heading time{color:var(--muted);font-size:12px}
@@ -54,8 +54,16 @@
 .skill-empty{padding:14px;border:1px dashed var(--line);border-radius:8px;color:var(--muted)}
 .skill-announcements{margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
 .skill-announcements>p{font-size:12px}
-.skill-announcement-version{border:1px solid var(--line);border-radius:8px;padding:12px;margin:8px 0}
-.skill-announcement-version h3{font-size:14px;margin:0}
+.skill-announcement-table{width:100%;min-width:560px;border-collapse:collapse;text-align:left;font-size:13px;background:var(--panel);border:1px solid var(--line)}
+.skill-announcement-table th,.skill-announcement-table td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.skill-announcement-table thead{background:var(--bg)}
+.skill-announcement-table thead th:first-child{width:200px}.skill-announcement-table thead th:nth-child(2){width:110px}
+.skill-announcement-table tbody th{font-weight:600}
+.skill-announcement-table td time{color:var(--muted);font-size:12px;white-space:nowrap}
+.skill-announcement-table tr.is-current{background:var(--selected)}
+.skill-announcement-table tr.is-current th{box-shadow:inset 3px 0 var(--accent)}
+.skill-announcement-table .skill-announcement-links,.skill-announcement-table .skill-pending-source{margin:0}
+.skill-announcement-table .skill-announcement-links li:first-child{margin-top:0}
 @media(min-width:1100px){.skill-picker{position:sticky;top:72px}}
 @media(max-width:900px){.skill-filters{grid-template-columns:1fr 1fr}.skill-filters>button{align-self:end;margin-top:0}.skill-browser{grid-template-columns:220px minmax(0,1fr)}}
 @media(max-width:680px){.skill-filters{grid-template-columns:1fr;padding:16px;gap:14px}.skill-filters input,.skill-filters select{font-size:16px}.skill-browser{grid-template-columns:1fr;gap:18px}.skill-list{max-height:280px}.skill-card{padding:12px}.skill-version-record{padding:8px}}

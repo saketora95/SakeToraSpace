@@ -34,10 +34,10 @@ function renderReformMaterial() {
     <form class="tool-form" id="reform-form" novalidate>
       <div class="reform-prices">
       <label class="field" for="reform-ore-price">影子神秘原石
-        <input id="reform-ore-price" data-reform-index="5" type="number" min="0" max="1000000000" step="1" required value="${reformState.values[5]}">
+        <input id="reform-ore-price" data-reform-index="5" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="10" required value="${reformState.values[5]}">
       </label>
       <label class="field" for="reform-price">影子神秘金屬
-        <input id="reform-price" data-reform-index="0" type="number" min="0" max="1000000000" step="1" required value="${reformState.values[0]}">
+        <input id="reform-price" data-reform-index="0" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="10" required value="${reformState.values[0]}">
       </label>
       </div>
       <div class="reform-messages">
@@ -55,7 +55,7 @@ function renderReformMaterial() {
             </th>
             <td><label class="field"><span class="sr-only">強化石(${level})需求數量</span><input data-reform-index="${index + 1}" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="6" required value="${reformState.values[index + 1]}"></label></td>
             <td><output id="reform-total-${index}"></output></td>
-            <td><output id="reform-metal-${index}"></output></td>
+            <td><output id="reform-metal-${index}"></output><small class="reform-note" id="reform-ore-count-${index}" hidden></small></td>
             <td><output id="reform-stone-${index}"></output></td>
             <td><output id="reform-ore-${index}"></output></td>
           </tr>`).join("")}</tbody>
@@ -70,21 +70,27 @@ function renderReformMaterial() {
     const valid = inputs.map(validInput);
     inputs.forEach((input, index) => input.setAttribute("aria-invalid", String(!valid[index])));
     const price = Number(inputs[0].value);
-    const materials = valid[0] ? calculateReformMaterials(price) : null;
-    const show = (id, value) => { content.querySelector(id).textContent = value === null ? "無法計算" : format.format(value); };
     const orePrice = Number(inputs[5].value);
     const synthesisCost = orePrice * 20;
+    // Price the stones from the cheaper metal source; synthesis is assumed to have no Zeny fee.
+    const synthesize = valid[5] && synthesisCost < price;
+    const materials = valid[0] ? calculateReformMaterials(synthesize ? synthesisCost : price) : null;
+    const show = (id, value) => { content.querySelector(id).textContent = value === null ? "無法計算" : format.format(value); };
     const recommendation = content.querySelector("#reform-recommendation");
     if (!valid[0] || !valid[5]) {
       recommendation.textContent = "購買建議：請填入有效的原石與金屬單價，才能比較成本。";
     } else {
       const method = price < synthesisCost ? "建議直接購買影子神秘金屬" : price > synthesisCost ? "建議購買影子神秘原石合成" : "直接購買影子神秘金屬與原石合成成本相同，可自由選擇";
-      recommendation.textContent = `${method}（金屬 ${format.format(price)} Zeny／個；以 20 個原石合成 1 個金屬，成本 ${format.format(synthesisCost)} Zeny／個）。`;
+      recommendation.textContent = `${method}（金屬 ${format.format(price)} Zeny／個；以 20 個原石合成 1 個金屬，成本 ${format.format(synthesisCost)} Zeny／個），下表以較低成本計算。`;
     }
     reformLevels.forEach((level, index) => {
       const quantity = Number(inputs[index + 1].value);
+      const metals = quantity * 3 ** index;
       show(`#reform-total-${index}`, materials && valid[index + 1] ? materials[index].stone * quantity : null);
-      show(`#reform-metal-${index}`, valid[index + 1] ? quantity * 3 ** index : null);
+      show(`#reform-metal-${index}`, valid[index + 1] ? metals : null);
+      const oreCount = content.querySelector(`#reform-ore-count-${index}`);
+      oreCount.hidden = !(synthesize && valid[0] && valid[index + 1]);
+      oreCount.textContent = `＝ ${format.format(metals * 20)} 個影子神秘原石`;
       show(`#reform-stone-${index}`, materials ? materials[index].stone : null);
       show(`#reform-ore-${index}`, materials ? materials[index].ore : null);
     });

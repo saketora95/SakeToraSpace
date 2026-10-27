@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="仙境傳說 kRO 邊界符文頭冠與邊界武器整理，依職業查閱各階級效果、套裝效果、頭飾附魔與武器隨機附加能力。">
+  <title>邊界符文頭冠與邊界武器 · 仙境傳說 · SakeTora Space</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-border-gear.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SakeTora Space">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="邊界符文頭冠與邊界武器 · 仙境傳說 · SakeTora Space">
+  <meta property="og:description" content="依職業查閱邊界符文頭冠與邊界武器的效果、套裝效果與附魔資訊。">
+  <meta property="og:url" content="https://saketora95.github.io/SakeToraSpace/ragnarok-border-gear.html">
+  <meta property="og:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="邊界符文頭冠與邊界武器 · 仙境傳說 · SakeTora Space">
+  <meta name="twitter:description" content="依職業查閱邊界符文頭冠與邊界武器的效果、套裝效果與附魔資訊。">
+  <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-border-gear.css">
+  <script src="./assets/js/theme.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/border-gear-data.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/border-gear.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
+</head>
+<body class="border-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header">
+    <div class="crumbs"><a class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="crumb">仙境傳說</span><span class="crumb" aria-current="page">邊界符文頭冠與邊界武器</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head">
+      <span class="page-kicker">RAGNAROK ONLINE / BORDER GEAR</span>
+      <h1>邊界符文頭冠與邊界武器</h1>
+      <p id="border-release"></p>
+      <p class="border-source">資料為人工整理，可能包含疏漏，實際效果以遊戲內說明為主。</p>
+    </div>
+    <section id="border-tool" aria-label="邊界裝備資訊">
+      <div class="border-views" role="tablist" aria-label="資訊分類">
+        <button type="button" role="tab" id="border-tab-gear" aria-controls="border-view-gear" data-view="gear">裝備效果</button>
+        <button type="button" role="tab" id="border-tab-headgear" aria-controls="border-view-headgear" data-view="headgear">頭飾附魔</button>
+        <button type="button" role="tab" id="border-tab-weapon" aria-controls="border-view-weapon" data-view="weapon">武器附魔</button>
+      </div>
+
+      <div id="border-view-gear" role="tabpanel" aria-labelledby="border-tab-gear">
+        <div class="border-filters">
+          <label class="field" for="border-job">職業<select id="border-job"><option value="">所有職業</option></select></label>
+          <label class="field" for="border-query">搜尋<input id="border-query" type="search" placeholder="道具、技能或效果，例如：謳歌、冷卻時間"></label>
+          <button id="border-reset" class="secondary-button" type="button">重設篩選</button>
+        </div>
+        <p id="border-status" class="border-status" role="status" aria-live="polite"></p>
+        <div id="border-results"></div>
+      </div>
+
+      <div id="border-view-headgear" role="tabpanel" aria-labelledby="border-tab-headgear" hidden></div>
+      <div id="border-view-weapon" role="tabpanel" aria-labelledby="border-tab-weapon" hidden></div>
+    </section>
+    <noscript><p class="notice">請啟用 JavaScript 以瀏覽邊界裝備資訊。</p></noscript>
+  </main>
+  <footer class="site-footer"><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><span class="footer-links"><button id="back-to-top" type="button">返回頂端 ↑</button></span></footer>
+</body>
+</html>

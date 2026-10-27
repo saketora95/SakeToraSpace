@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="仙境傳說連鎖自動詠唱裝備整理，依職業、道具與技能查詢連鎖效果、機率及 kRO／twRO 實裝日期。">
+  <title>連鎖自動詠唱裝備 · 仙境傳說 · SakeTora Space</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-autocast-chains.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SakeTora Space">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="連鎖自動詠唱裝備 · 仙境傳說 · SakeTora Space">
+  <meta property="og:description" content="依職業、道具與技能查詢連鎖效果、機率及 kRO／twRO 實裝日期。">
+  <meta property="og:url" content="https://saketora95.github.io/SakeToraSpace/ragnarok-autocast-chains.html">
+  <meta property="og:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="連鎖自動詠唱裝備 · 仙境傳說 · SakeTora Space">
+  <meta name="twitter:description" content="依職業、道具與技能查詢連鎖效果、機率及 kRO／twRO 實裝日期。">
+  <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-autocast-chains.css">
+  <script src="./assets/js/theme.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/autocast-chain-data.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/autocast-chains.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
+</head>
+<body class="chain-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header">
+    <div class="crumbs"><a class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="crumb">仙境傳說</span><span class="crumb" aria-current="page">連鎖自動詠唱裝備</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head">
+      <span class="page-kicker">RAGNAROK ONLINE / CHAIN AUTOCAST</span>
+      <h1>連鎖自動詠唱裝備</h1>
+      <p>此頁面整理具有「施展技能 A 時，有機率自動連鎖施展技能 B」功能的相關裝備。</p>
+      <p class="chain-source">資料為人工整理，可能包含疏漏，實際效果以遊戲內說明為主。</p>
+    </div>
+    <section id="chain-tool" aria-label="連鎖自動詠唱裝備查詢">
+      <div class="chain-filters">
+        <label class="field" for="chain-job">職業<select id="chain-job"><option value="">所有職業</option></select></label>
+        <label class="field" for="chain-query">搜尋<input id="chain-query" type="search" placeholder="道具或技能名稱，例如：光輝、謳歌"></label>
+        <label class="field" for="chain-origin">分類<select id="chain-origin"><option value="">全部</option><option value="原生">原生</option><option value="臺特">臺特</option></select></label>
+        <label class="field" for="chain-server">twRO 實裝<select id="chain-server"><option value="">全部</option><option value="released">已實裝</option><option value="pending">尚未實裝</option></select></label>
+        <button id="chain-reset" class="secondary-button" type="button">重設篩選</button>
+      </div>
+      <p id="chain-status" class="chain-status" role="status" aria-live="polite"></p>
+      <div id="chain-results"></div>
+    </section>
+    <noscript><p class="notice">請啟用 JavaScript 以使用連鎖自動詠唱裝備查詢。</p></noscript>
+  </main>
+  <footer class="site-footer"><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><span class="footer-links"><button id="back-to-top" type="button">返回頂端 ↑</button></span></footer>
+</body>
+</html>

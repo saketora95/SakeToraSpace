@@ -5,7 +5,11 @@ const tools = [
   // RO Tool
   { id: "ragnarok-timer", title: "倒數計時", category: "ragnarok", icon: "◷", tone: "var(--accent)", description: "一個簡單的倒數計時器，讓安排時間變得更方便。", keywords: "RO 仙境傳說 倒數 計時 timer" },
   { id: "ragnarok-simple-replacer", title: "韓文裝備簡易取代器", category: "ragnarok", icon: "⇄", tone: "var(--accent)", description: "依詞彙、技能名稱與句型規則，批次取代韓文的裝備或卡片道具說明。", keywords: "RO 仙境傳說 simple replacer 翻譯 取代 韓文 技能", page: "./simple-replacer.html" },
-  { id: "ragnarok-skill-changes", title: "技能調整記錄", category: "ragnarok", icon: "≋", tone: "var(--accent)", description: "依職業、技能名稱與版本查閱技能調整，對照改版前後數值與官方維護公告。", keywords: "RO 仙境傳說 技能 調整 記錄 改版 版本 職業 skill changes", page: "./ragnarok-skill-changes.html" },
+  { id: "ragnarok-skill-changes", title: "技能調整記錄", category: "ragnarok", kind: "info", icon: "≋", tone: "var(--accent)", description: "依職業、技能名稱與版本查閱技能調整，對照改版前後數值與官方維護公告。", keywords: "RO 仙境傳說 技能 調整 記錄 改版 版本 職業 skill changes", page: "./ragnarok-skill-changes.html" },
+  { id: "ragnarok-autocast-chains", title: "連鎖自動詠唱裝備", category: "ragnarok", kind: "info", icon: "⇉", tone: "var(--accent)", description: "依職業、道具與技能查詢連鎖自動詠唱效果、機率及 kRO／twRO 實裝日期。", keywords: "RO 仙境傳說 連鎖 自動詠唱 自動施放 autocast chain 裝備 卡片 頭冠 武器 臺特 原生", page: "./ragnarok-autocast-chains.html" },
+  { id: "ragnarok-boss-cards", title: "王卡搭配裝備", category: "ragnarok", kind: "info", icon: "♛", tone: "var(--accent)", description: "依 MVP、裝備名稱與 MVP 類型查詢可與王卡搭配的裝備及附魔。", keywords: "RO 仙境傳說 王卡 MVP 卡片 搭配 裝備 附魔 野生 副本 boss card combo", page: "./ragnarok-boss-cards.html" },
+  { id: "ragnarok-border-gear", title: "邊界符文頭冠與邊界武器", category: "ragnarok", kind: "info", icon: "⚔", tone: "var(--accent)", description: "依職業查閱邊界頭冠與武器的精煉、階級與套裝效果，以及頭飾與武器附魔。", keywords: "RO 仙境傳說 邊界 符文 頭冠 武器 套裝 附魔 Zero Cell 階級 時空寶石 border", page: "./ragnarok-border-gear.html" },
+  { id: "ragnarok-twin-weapons", title: "二次元武器", category: "ragnarok", kind: "info", icon: "⚔", tone: "var(--accent)", description: "依職業與推出批次查閱二次元武器的精煉、階級與額外效果，附懶人包與推出時間。", keywords: "RO 仙境傳說 二次元 武器 侵蝕武器 自動詠唱 冷卻時間 階級 精煉 twin weapon", page: "./ragnarok-twin-weapons.html" },
   { id: "ragnarok-bmp-parser", title: "對話立繪轉換器", category: "ragnarok", icon: "▧", tone: "var(--accent)", description: "依透明度門檻替換為純洋紅背景，下載原圖尺寸、可套用於 RO 的 BMP 圖片。", keywords: "RO 仙境傳說 圖片 對話 立繪 面板 skin illust PNG BMP 洋紅 透明 背景", page: "./ragnarok-bmp-parser.html" },
   { id: "ragnarok-glacier-weapon", title: "冰晶武器價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依各項素材的單價，比較購買、升級與兌換成本，即時計算冰晶武器價格。", keywords: "RO 仙境傳說 glacier weapon 冰晶 武器 附魔 雪花 魔石 成本 計算" },
   { id: "ragnarok-reform-material", title: "改造素材價格", category: "ragnarok", icon: "◇", tone: "var(--accent)", description: "依影子神秘金屬的單價，換算強化石成本與所需素材數量。", keywords: "RO 仙境傳說 reform 改造 素材 強化石 強化原石 影子神秘金屬 成本 計算" },
@@ -45,8 +49,8 @@ const tools = [
 
   // ChronoStory Tool
   { id: "chronostory-drop-search", title: "魔物掉落道具查詢", category: "chronostory", icon: "⌕", tone: "var(--accent)", description: "依名稱搜尋道具或魔物，查看裝備效果、掉落來源與掉落率，於獨立頁面操作。", keywords: "ChronoStory 魔物 怪物 道具 掉落 裝備 卷軸 查詢 drop item monster", page: "./chronostory-drops.html#regions" },
-  { id: "chronostory-job-info", title: "轉職資訊", category: "chronostory", icon: "◇", tone: "var(--accent)", description: "查詢一至四轉條件、轉職流程與地點，以及三轉考試題庫與四轉道具取得方式。", keywords: "ChronoStory 轉職 職業 一轉 二轉 三轉 四轉 劍士 法師 弓箭手 盜賊 海盜 job advancement" },
-  { id: "chronostory-support-info", title: "共享輔助狀態資訊", category: "chronostory", icon: "◇", tone: "var(--accent)", description: "依職業查閱輔助技能與效果，包含進階強化、持續消耗及骰子各點數效果。", keywords: "ChronoStory 職業 共享 輔助 狀態 技能 buff 隊伍 骰子" },
+  { id: "chronostory-job-info", title: "轉職資訊", category: "chronostory", kind: "info", icon: "◇", tone: "var(--accent)", description: "查詢一至四轉條件、轉職流程與地點，以及三轉考試題庫與四轉道具取得方式。", keywords: "ChronoStory 轉職 職業 一轉 二轉 三轉 四轉 劍士 法師 弓箭手 盜賊 海盜 job advancement" },
+  { id: "chronostory-support-info", title: "共享輔助狀態資訊", category: "chronostory", kind: "info", icon: "◇", tone: "var(--accent)", description: "依職業查閱輔助技能與效果，包含進階強化、持續消耗及骰子各點數效果。", keywords: "ChronoStory 職業 共享 輔助 狀態 技能 buff 隊伍 骰子" },
 
   // ChronoStory Url
   { id: "chronostory-dex", title: "ChronoDEX", category: "chronostory", icon: "↗", tone: "var(--accent)", description: "前往 ChronoDEX 網站。", keywords: "ChronoStory ChronoDEX dex", url: "https://chronostorydex.com/" },
@@ -77,6 +81,7 @@ let pane = "tool";
 let activeIndex = 0;
 
 function kindOf(tool) {
+  if (tool.kind) return tool.kind;
   if (tool.subcategory) return "article";
   return tool.url ? "link" : "tool";
 }
@@ -87,7 +92,7 @@ function actionOf(tool) {
   if (tool.url) return { href: tool.url, label: "獨立頁面", external: false };
   return { href: `#tool=${encodeURIComponent(tool.id)}`, label: "工具視窗", external: false };
 }
-const kindNames = { tool: "工具", article: "酒虎廢文", link: "外部連結" };
+const kindNames = { tool: "工具", info: "資訊", article: "酒虎廢文", link: "外部連結" };
 
 function highlight(text, tokens) {
   const lower = text.toLocaleLowerCase();
@@ -149,10 +154,10 @@ function renderTabs() {
     `<button type="button" role="tab" id="tab-${id}" data-tab="${id}" aria-controls="panel" aria-selected="${tab === id}" tabindex="${tab === id ? 0 : -1}">${name(id)}<span>${count(id)}</span></button>`).join("");
 }
 
-// Each category fits one screen: tools, articles and links sit side by side.
+// Each category fits one screen: tools, info pages, articles and links sit side by side.
 function renderPanel() {
   const items = tools.filter(tool => tab === "favorites" ? favorites.has(tool.id) : tool.category === tab);
-  const groups = ["tool", "article", "link"].map(kind => [kind, items.filter(tool => kindOf(tool) === kind)]).filter(([, entries]) => entries.length);
+  const groups = ["tool", "info", "article", "link"].map(kind => [kind, items.filter(tool => kindOf(tool) === kind)]).filter(([, entries]) => entries.length);
   $("#panel").setAttribute("aria-labelledby", `tab-${tab}`);
   if (!items.length) {
     $("#panel").innerHTML = emptyState(tab === "favorites"
@@ -163,14 +168,14 @@ function renderPanel() {
   if (!groups.some(([kind]) => kind === pane)) pane = groups[0][0];
   const block = ([kind, entries]) => `<section class="block block-${kind}" data-kind="${kind}" ${pane === kind ? "data-current" : ""} aria-label="${kindNames[kind]}">
       <h2>${kindNames[kind]}<span>${entries.length}</span></h2>
-      ${kind === "tool"
+      ${kind === "tool" || kind === "info"
         ? `<ul class="tiles">${entries.map(renderTile).join("")}</ul>`
         : `<ul class="rows">${entries.map(tool => renderRow(tool)).join("")}</ul>`}
     </section>`;
   $("#panel").innerHTML = `
     <div class="panes" role="group" aria-label="切換類型">${groups.map(([kind, entries]) =>
       `<button type="button" data-pane="${kind}" aria-pressed="${pane === kind}">${kindNames[kind]}<span>${entries.length}</span></button>`).join("")}</div>
-    <div class="board board-${groups.length}">${groups.map(block).join("")}</div>`;
+    <div class="board board-${groups.length}${groups.filter(([kind]) => kind === "tool" || kind === "info").length === 2 ? " board-paired" : ""}">${groups.map(block).join("")}</div>`;
 }
 
 function emptyState([title, text]) {
@@ -294,7 +299,6 @@ document.addEventListener("click", event => {
 });
 
 document.querySelectorAll("[data-open-dialog]").forEach(button => button.addEventListener("click", () => $(`#${button.dataset.openDialog}`).showModal()));
-$("#tool-total").textContent = tools.length;
 $("#year").textContent = new Date().getFullYear();
 renderHome();
 

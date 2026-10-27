@@ -3,10 +3,8 @@ main { max-width: 1280px; margin: 0 auto; padding: 0 var(--gutter); }
 
 /* Hero: one line of heading, then the search box */
 .hero { padding: 20px 0 14px; }
-h1 { margin: 0; font-size: clamp(26px, 3.2vw, 40px); line-height: 1.2; font-weight: 900; letter-spacing: -.01em; }
+h1 { margin: 0 0 12px; font-size: clamp(26px, 3.2vw, 40px); line-height: 1.2; font-weight: 900; letter-spacing: -.01em; }
 h1 em { font-style: normal; color: var(--accent-strong); }
-.hero-kicker { display: flex; align-items: center; gap: 8px; margin: 4px 0 12px; font: 12px/1.5 var(--mono); color: var(--ink-3); }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: #2f9e5b; box-shadow: 0 0 0 3px #2f9e5b26; flex-shrink: 0; }
 .omnibox {
   display: flex; align-items: center; gap: 12px; max-width: 760px;
   padding: 0 16px; border: 2px solid var(--rule-strong); border-radius: 14px;
@@ -43,6 +41,10 @@ kbd { padding: 1px 7px; border: 1px solid var(--rule); border-bottom-width: 3px;
 .board { display: grid; gap: 28px; align-items: start; }
 .board-3 { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); }
 .board-2 { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+/* Tools and info pages share the tile style, so they get equal columns. */
+.board-paired.board-4 { grid-template-columns: repeat(2, minmax(0, 1.5fr)) repeat(2, minmax(0, 1fr)); }
+.board-paired.board-3 { grid-template-columns: repeat(2, minmax(0, 1.5fr)) minmax(0, 1fr); }
+.board-paired.board-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .board-1 .tiles, .board-1 .rows { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); column-gap: 28px; }
 .block h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 10px; font-size: 13px; font-weight: 700; letter-spacing: .5px; }
 .block h2 span { font: 600 11px var(--mono); color: var(--ink-3); }
@@ -80,6 +82,8 @@ kbd { padding: 1px 7px; border: 1px solid var(--rule); border-bottom-width: 3px;
 /* In the board, the column heading already says where rows lead. */
 .board .row-meta { display: none; }
 .board .row-link .row-title::before { content: "↗ "; color: var(--ink-3); font-size: 12px; }
+.block-link .row { min-height: 40px; padding-block: 4px; }
+.block-link .row-title { line-height: 1.5; }
 
 /* Search: compact two-column ranked list */
 .results { padding: 4px 0 8px; border-top: 2px solid var(--rule-strong); }
@@ -111,7 +115,10 @@ dialog.about[open] { display: grid; grid-template-columns: 150px minmax(0, 1fr);
 
 @media (max-width: 1100px) {
   .board-3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .board-paired.board-4, .board-paired.board-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .board-3 .block-tool { grid-column: 1 / -1; }
+  .board-paired.board-3 .block-tool { grid-column: auto; }
+  .board-paired.board-3 .block:last-child { grid-column: 1 / -1; }
 }
 /* Phones: one column at a time, picked with the pane switch. */
 @media (max-width: 720px) {
@@ -128,7 +135,7 @@ dialog.about[open] { display: grid; grid-template-columns: 150px minmax(0, 1fr);
   .panes button span { font: 600 11px var(--mono); color: var(--ink-3); }
   .panes button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
   .panes button[aria-pressed="true"] span { color: inherit; opacity: .7; }
-  .board, .board-2, .board-3 { grid-template-columns: minmax(0, 1fr); }
+  .board, .board.board-paired { grid-template-columns: minmax(0, 1fr); }
   .board .block:not([data-current]) { display: none; }
   .block h2 { display: none; }
   .tiles, .board-1 .tiles, .board-1 .rows { grid-template-columns: minmax(0, 1fr); gap: 8px; }
@@ -136,6 +143,14 @@ dialog.about[open] { display: grid; grid-template-columns: 150px minmax(0, 1fr);
   .row-meta { max-width: 14ch; }
   dialog.about[open] { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .about img { max-width: 110px; }
+}
+/* Landscape screens: the page fits the viewport, and only the panel or search results scroll. */
+@media (min-width: 721px) and (min-height: 500px) and (orientation: landscape) {
+  body { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+  main { display: flex; flex-direction: column; flex: 1; min-height: 0; width: 100%; }
+  .browse { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .panel, .results { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .panel { padding-right: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .tile:hover, .omnibox:focus-within { transform: none; }

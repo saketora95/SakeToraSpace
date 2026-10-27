@@ -123,7 +123,7 @@ dialog:has(#timer-form) .timer-display{font-size:50px;line-height:1.2;margin:4px
   .laboratory-clock output{font-size:24px}
   .laboratory-clock-meta{flex-basis:100%}
 }
-.grade-chance{display:block;margin-top:5px;color:var(--muted);font-size:11px}
+.grade-chance,.glacier-count,.reform-note{display:block;margin-top:5px;color:var(--muted);font-size:11px}
 .reform-table.grade-table thead th{text-align:center}
 .reform-table.grade-table thead th:first-child[rowspan]{text-align:left}
 #grade-price[aria-invalid="true"]{border-color:var(--accent)}
@@ -226,7 +226,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
 .secondary-button{background:var(--panel)}
 .secondary-button:hover{border-color:var(--accent)}
 .reform-warning{color:var(--warning)}
-#grade-price[aria-invalid="true"],.reform-table input[aria-invalid="true"],.reform-prices input[aria-invalid="true"]{border-color:var(--danger)}
+#grade-price[aria-invalid="true"],.glacier-prices input[aria-invalid="true"],.reform-table input[aria-invalid="true"],.reform-prices input[aria-invalid="true"]{border-color:var(--danger)}
 select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 .brand-avatar{display:block;width:44px;height:44px;object-fit:contain;flex-shrink:0}
 footer{align-items:center;flex-wrap:wrap;gap:16px}

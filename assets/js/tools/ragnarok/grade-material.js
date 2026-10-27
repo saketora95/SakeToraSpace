@@ -2,7 +2,7 @@
 
 // Conversion rules from gradeMaterialCalc.html and its companion script.
 const gradeMaterials = [
-  { name: "乙太魔石", stones: 0, fee: 100000, grade: "無", quantity: 0, rates: [0, 0, 0] },
+  { name: "乙太魔石", stones: 0, fee: 100000 },
   { name: "乙太天藍寶石", stones: 3, fee: 100000, gem: 6000, grade: "N → D", quantity: 5, rates: [10, 20, 70] },
   { name: "乙太黃寶石", stones: 6, fee: 200000, gem: 6000, grade: "D → C", quantity: 5, rates: [0, 20, 60] },
   { name: "乙太紫寶石", stones: 10, fee: 300000, gem: 6000, grade: "C → B", quantity: 5, rates: [0, 0, 50] },
@@ -40,12 +40,13 @@ function renderGradeMaterial() {
       </label>
       <label class="grade-merchant" for="grade-merchant"><input id="grade-merchant" type="checkbox" ${gradeState.merchant ? "checked" : ""}>以「低價買進」購入寶石素材</label>
       <div class="actions reform-actions"><button id="grade-reset" type="button" class="secondary-button">重設為預設值</button></div>
+      <p id="grade-stone" class="helper reform-help" aria-live="polite"></p>
       <div class="reform-table-scroll" tabindex="0" role="region" aria-label="升階素材價格，可左右捲動">
         <table class="reform-table grade-table" aria-label="升階素材單價與升階花費期望值">
           <thead><tr><th scope="col" rowspan="2">乙太寶石</th><th scope="col" rowspan="2">單價</th><th scope="col" rowspan="2">適用階級</th><th scope="colgroup" colspan="3">升階期望值</th></tr>
             <tr><th scope="col">+9</th><th scope="col">+10</th><th scope="col">+11</th></tr></thead>
-          <tbody>${gradeMaterials.map((material, index) => `<tr>
-            <th scope="row">${material.name}<small class="reform-formula">${index === 0 ? "5 個乙太星塵" : `${material.stones} 個乙太魔石`} ＋ ${format.format(material.fee)} Zeny${index === 0 ? "" : ` ＋ 寶石素材（原價 ${format.format(material.gem)} Zeny）`}</small></th>
+          <tbody>${gradeMaterials.map((material, index) => index === 0 ? "" : `<tr>
+            <th scope="row">${material.name}<small class="reform-formula">${material.stones} 個乙太魔石 ＋ ${format.format(material.fee)} Zeny ＋ 寶石素材（原價 ${format.format(material.gem)} Zeny）</small></th>
             <td><output id="grade-result-${index}"></output></td>
             <td>${material.grade}</td>
             ${material.rates.map((rate, stage) => `<td>${rate ? `<output id="grade-expected-${index}-${stage}"></output><small class="grade-chance">${rate}%・${material.quantity} 顆／次</small>` : '<span aria-label="不適用">—</span>'}</td>`).join("")}
@@ -63,7 +64,9 @@ function renderGradeMaterial() {
     const isValid = valid();
     price.setAttribute("aria-invalid", String(!isValid));
     const results = isValid ? calculateGradeMaterials(Number(price.value), merchant.checked) : null;
+    content.querySelector("#grade-stone").textContent = `${gradeMaterials[0].name}：5 個乙太星塵 ＋ ${format.format(gradeMaterials[0].fee)} Zeny ＝ ${results ? `${format.format(results[0])} Zeny／個` : "無法計算"}`;
     gradeMaterials.forEach((material, index) => {
+      if (index === 0) return;
       content.querySelector(`#grade-result-${index}`).textContent = results ? format.format(results[index]) : "無法計算";
       material.rates.forEach((rate, stage) => {
         if (!rate) return;

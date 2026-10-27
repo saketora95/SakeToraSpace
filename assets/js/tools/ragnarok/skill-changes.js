@@ -102,10 +102,16 @@
     });
   }
 
+  // An undated change is taken as the latest one before the current version, so it outranks older records.
+  function versionRanks(data) {
+    const currentOrder = data.versions.find(version => version.id === data.meta.currentVersionId).order;
+    return new Map(data.versions.map(version => [version.id, version.status === "unknown" ? currentOrder - 0.5 : version.order]));
+  }
+
   function findRecords(data, skillId, versionId = "") {
-    const orders = new Map(data.versions.map(version => [version.id, version.order]));
+    const ranks = versionRanks(data);
     return data.records.filter(record => record.skillId === skillId && (!versionId || record.versionId === versionId))
-      .sort((a, b) => orders.get(b.versionId) - orders.get(a.versionId));
+      .sort((a, b) => ranks.get(b.versionId) - ranks.get(a.versionId));
   }
 
   function formatValue(value, unit = "") {
@@ -118,11 +124,12 @@
   function currentSkillVersions(data) {
     const versions = new Map(data.versions.map(version => [version.id, version]));
     const current = versions.get(data.meta.currentVersionId);
+    const ranks = versionRanks(data);
     const latest = new Map();
     for (const record of data.records) {
       const version = versions.get(record.versionId);
-      if (!["planned", "unknown"].includes(version.status) && version.order <= current.order &&
-          (!latest.has(record.skillId) || version.order > latest.get(record.skillId).order)) {
+      if (version.status !== "planned" && ranks.get(version.id) <= current.order &&
+          (!latest.has(record.skillId) || ranks.get(version.id) > ranks.get(latest.get(record.skillId).id))) {
         latest.set(record.skillId, version);
       }
     }
@@ -209,7 +216,8 @@
     const versions = new Map(data.versions.map(version => [version.id, version]));
     const currentVersions = currentSkillVersions(data);
     const currentVersion = versions.get(data.meta.currentVersionId);
-    const sortedVersions = [...data.versions].sort((a, b) => b.order - a.order);
+    // Undated records still show under every version, but the undated version itself is not offered as a filter.
+    const sortedVersions = [...data.versions].sort((a, b) => b.order - a.order).filter(version => version.status !== "unknown");
     const resultsContainer = $("#skill-results");
     const mergedTableMinWidth = 720;
     let resultsWidth = resultsContainer.getBoundingClientRect().width;
@@ -282,9 +290,9 @@
       $("#skill-show-all").setAttribute("aria-pressed", String(!state.selectedSkillId));
       $("#skill-list").innerHTML = candidates.length ? candidates.map(skill => `<button type="button" class="skill-choice" data-skill="${escape(skill.id)}" aria-pressed="${skill.id === state.selectedSkillId}" aria-controls="skill-results"><span>${escape(skill.names.zhHant)}</span><small>${escape(jobNames(skill))} ‧ ${escape(skillIdLabel(skill))}</small></button>`).join("") : '<p class="muted">找不到符合的技能，請調整職業或搜尋文字。</p>';
       renderResults();
-      $("#skill-announcement-list").innerHTML = sortedVersions.filter(version => version.status !== "unknown" &&
-        (!state.versionId || version.id === state.versionId)).map(version =>
-        `<section class="skill-announcement-version${isCurrent(version) ? " is-current" : ""}"><div class="skill-version-heading"><h3>${escape(version.name)}</h3>${versionDate(version)}${currentBadge(version)}</div>${sourceLinks(data.announcements.filter(entry => entry.versionId === version.id), version.releasedAt || version.announcedAt)}</section>`).join("");
+      const announcementRows = sortedVersions.filter(version => !state.versionId || version.id === state.versionId).map(version =>
+        `<tr${isCurrent(version) ? ' class="is-current"' : ""}><th scope="row"><div class="skill-version-title"><span>${escape(version.name)}</span>${currentBadge(version)}</div></th><td>${versionDate(version) || "—"}</td><td>${sourceLinks(data.announcements.filter(entry => entry.versionId === version.id), version.releasedAt || version.announcedAt)}</td></tr>`).join("");
+      $("#skill-announcement-list").innerHTML = announcementRows && `<div class="skill-table-scroll"><table class="skill-announcement-table"><thead><tr><th scope="col">版本</th><th scope="col">日期</th><th scope="col">官方公告</th></tr></thead><tbody>${announcementRows}</tbody></table></div>`;
     }
     $("#skill-job").innerHTML = '<option value="">所有職業</option>' + data.jobs.map(job => `<option value="${escape(job.id)}">${escape(job.name)}</option>`).join("");
     $("#skill-version").innerHTML = '<option value="">所有版本</option>' + sortedVersions.map(version => `<option value="${escape(version.id)}">${escape(version.name)}${isCurrent(version) ? "（現行版本）" : version.status === "planned" ? "（預告・尚未實裝）" : ""}</option>`).join("");
@@ -353,7 +361,7 @@
       const params = new URLSearchParams(window.location.hash.slice(1));
       state.jobId = jobs.has(params.get("job")) ? params.get("job") : "";
       state.query = params.get("q") || "";
-      state.versionId = versions.has(params.get("version")) ? params.get("version") : "";
+      state.versionId = sortedVersions.some(version => version.id === params.get("version")) ? params.get("version") : "";
       state.selectedSkillId = data.skills.some(skill => skill.id === params.get("skill")) ? params.get("skill") : "";
       $("#skill-job").value = state.jobId;
       $("#skill-query").value = state.query;

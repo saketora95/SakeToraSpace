@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="仙境傳說 kRO 二次元武器整理，依職業與推出批次查閱各武器的精煉、階級與額外效果。">
+  <title>二次元武器 · 仙境傳說 · SakeTora Space</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-twin-weapons.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SakeTora Space">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="二次元武器 · 仙境傳說 · SakeTora Space">
+  <meta property="og:description" content="依職業與推出批次查閱 kRO 二次元武器的精煉、階級與額外效果。">
+  <meta property="og:url" content="https://saketora95.github.io/SakeToraSpace/ragnarok-twin-weapons.html">
+  <meta property="og:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="二次元武器 · 仙境傳說 · SakeTora Space">
+  <meta name="twitter:description" content="依職業與推出批次查閱 kRO 二次元武器的精煉、階級與額外效果。">
+  <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-twin-weapons.css">
+  <script src="./assets/js/theme.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/twin-weapon-data.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/twin-weapons.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
+</head>
+<body class="twin-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header">
+    <div class="crumbs"><a class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="crumb">仙境傳說</span><span class="crumb" aria-current="page">二次元武器</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head">
+      <span class="page-kicker">RAGNAROK ONLINE / TWIN WEAPONS</span>
+      <h1>二次元武器</h1>
+      <p>二次元武器由「侵蝕武器」進化而來，至今分 3 批推出，全職業各有一把。</p>
+      <p class="twin-source">資料為人工整理，可能包含疏漏，實際效果以遊戲內說明為主。</p>
+    </div>
+    <section id="twin-tool" aria-label="二次元武器資訊">
+      <div class="twin-views" role="tablist" aria-label="資訊分類">
+        <button type="button" role="tab" id="twin-tab-weapons" aria-controls="twin-view-weapons" data-view="weapons">武器效果</button>
+        <button type="button" role="tab" id="twin-tab-summary" aria-controls="twin-view-summary" data-view="summary">懶人包</button>
+        <button type="button" role="tab" id="twin-tab-about" aria-controls="twin-view-about" data-view="about">說明與推出時間</button>
+      </div>
+
+      <div id="twin-view-weapons" role="tabpanel" aria-labelledby="twin-tab-weapons">
+        <div class="twin-filters">
+          <label class="field" for="twin-job">職業<select id="twin-job"><option value="">所有職業</option></select></label>
+          <label class="field" for="twin-wave">推出批次<select id="twin-wave"><option value="">所有批次</option></select></label>
+          <label class="field" for="twin-query">搜尋<input id="twin-query" type="search" placeholder="武器、技能或效果，例如：自動詠唱、冷卻時間"></label>
+          <button id="twin-reset" class="secondary-button" type="button">重設篩選</button>
+        </div>
+        <p id="twin-status" class="twin-status" role="status" aria-live="polite"></p>
+        <div id="twin-results"></div>
+      </div>
+
+      <div id="twin-view-summary" role="tabpanel" aria-labelledby="twin-tab-summary" hidden></div>
+      <div id="twin-view-about" role="tabpanel" aria-labelledby="twin-tab-about" hidden></div>
+    </section>
+    <noscript><p class="notice">請啟用 JavaScript 以瀏覽二次元武器資訊。</p></noscript>
+  </main>
+  <footer class="site-footer"><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><span class="footer-links"><button id="back-to-top" type="button">返回頂端 ↑</button></span></footer>
+</body>
+</html>

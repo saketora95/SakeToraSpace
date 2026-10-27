@@ -64,25 +64,28 @@ function renderGlacierWeapon() {
     <form id="glacier-weapon-form" class="tool-form" novalidate>
       <div class="glacier-prices">${glacierWeaponInputOrder.map(index => `
         <label class="field" for="glacier-price-${index}">${glacierWeaponMaterials[index]}
-          <input id="glacier-price-${index}" data-price-index="${index}" type="number" min="0" max="1000000000000" step="1" ${index === 5 ? 'placeholder="未填則不使用兌換"' : "required"} value="${glacierWeaponState.prices[index]}">
+          <input id="glacier-price-${index}" data-price-index="${index}" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="13" ${index === 5 ? 'placeholder="未填則不使用兌換"' : "required"} value="${glacierWeaponState.prices[index]}">
         </label>`).join("")}</div>
       <div class="actions glacier-actions"><button type="button" id="glacier-reset" class="secondary-button">重設為預設值</button></div>
       <div id="glacier-acquisition" class="glacier-acquisition" aria-live="polite"></div>
-      <p id="glacier-base" class="helper glacier-help">基礎費用公式：雪花的花葉單價 × 500 ＋ 150,000 × 0.76</p>
+      <p id="glacier-base" class="helper glacier-help"></p>
       <div class="glacier-table-scroll" tabindex="0" role="region" aria-label="武器價格比較表，可左右捲動">
         <table class="glacier-table">
-          <caption>+ 9 冰晶武器價格</caption>
-          <thead><tr><th scope="col">附魔組合</th><th scope="col">基礎費用</th><th scope="col">雪花魔石</th><th scope="col">閃耀雪花魔石</th><th scope="col">耀眼雪花魔石</th><th scope="col">總價</th></tr></thead>
-          <tbody>${glacierWeaponRecipes.map((recipe, index) => `<tr><th scope="row">${recipe.name}</th><td><span id="glacier-base-${index}"></span></td>${recipe.counts.map(count => `<td>${count}</td>`).join("")}<td><output id="glacier-total-${index}"></output></td></tr>`).join("")}</tbody>
+          <caption>+9 冰晶武器價格</caption>
+          <thead><tr><th scope="col">附魔組合</th>${glacierWeaponMaterials.slice(1, 4).map(material => `<th scope="col">${material}</th>`).join("")}<th scope="col">總價</th></tr></thead>
+          <tbody>${glacierWeaponRecipes.map((recipe, index) => `<tr><th scope="row">${recipe.name}</th>${recipe.counts.map((count, stage) => `<td><span id="glacier-subtotal-${index}-${stage}"></span><small class="glacier-count" id="glacier-count-${index}-${stage}"></small></td>`).join("")}<td><output id="glacier-total-${index}"></output></td></tr>`).join("")}</tbody>
         </table>
       </div>
     </form>`;
   const form = content.querySelector("form");
   const inputs = [...form.querySelectorAll("[data-price-index]")].sort((a, b) => Number(a.dataset.priceIndex) - Number(b.dataset.priceIndex));
+  const readPrice = (input, index) => index === 5 && input.value === "" ? "" : Number(input.value);
+  const validInput = (input, index) => input.validity.valid && validGlacierWeaponPrice(readPrice(input, index), index);
   function update() {
-    const valid = inputs.every(input => input.validity.valid);
-    inputs.forEach(input => input.setAttribute("aria-invalid", String(!input.validity.valid)));
-    const prices = inputs.map((input, index) => index === 5 && input.value === "" ? "" : Number(input.value));
+    const validInputs = inputs.map(validInput);
+    const valid = validInputs.every(Boolean);
+    inputs.forEach((input, index) => input.setAttribute("aria-invalid", String(!validInputs[index])));
+    const prices = inputs.map(readPrice);
     const quote = valid ? calculateGlacierWeaponQuote(prices) : null;
     const totals = quote?.totals;
     content.querySelector("#glacier-acquisition").innerHTML = glacierWeaponMaterials.slice(1, 4).map((material, index) => {
@@ -91,8 +94,13 @@ function renderGlacierWeapon() {
         ? `<div><strong>${material}</strong><span>${stone.methods.join(" ／ ")}${stone.methods.length > 1 ? "（同價）" : ""}</span><b>${format.format(stone.cost)} Zeny／顆</b></div>`
         : `<div><strong>${material}</strong><span>素材單價未填寫或數值不合理，無法計算兌換建議。</span><b>無法計算</b></div>`;
     }).join("");
+    content.querySelector("#glacier-base").textContent = `總價含基礎費用（雪花的花葉單價 × 500 ＋ 150,000 × 0.76）${quote ? `：${format.format(quote.base)} Zeny` : ""}`;
     glacierWeaponRecipes.forEach((recipe, index) => {
-      content.querySelector(`#glacier-base-${index}`).textContent = quote ? format.format(quote.base) : "—";
+      recipe.counts.forEach((count, stage) => {
+        const stone = quote?.stones[stage];
+        content.querySelector(`#glacier-subtotal-${index}-${stage}`).textContent = stone ? format.format(count * stone.cost) : "—";
+        content.querySelector(`#glacier-count-${index}-${stage}`).textContent = stone ? `${count} 顆 × ${format.format(stone.cost)}` : `${count} 顆`;
+      });
       content.querySelector(`#glacier-total-${index}`).textContent = totals ? format.format(totals[index]) : "—";
     });
   }
@@ -111,9 +119,8 @@ function renderGlacierWeapon() {
     update();
   });
   inputs.forEach((input, index) => input.addEventListener("input", () => {
-    const value = index === 5 && input.value === "" ? "" : Number(input.value);
-    if (input.validity.valid && validGlacierWeaponPrice(value, index)) {
-      glacierWeaponState.prices[index] = value;
+    if (validInput(input, index)) {
+      glacierWeaponState.prices[index] = readPrice(input, index);
       savePrices();
     }
     update();
