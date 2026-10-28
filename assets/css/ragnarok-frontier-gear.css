@@ -1,0 +1,67 @@
+.frontier-source{font-size:13px}
+.frontier-views{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.frontier-views [role=tab]{font:inherit;font-size:14px;font-weight:700;padding:8px 18px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);cursor:pointer}
+.frontier-views [role=tab]:hover{color:var(--text)}
+.frontier-views [role=tab][aria-selected=true]{background:var(--selected);border-color:var(--accent);color:var(--accent)}
+.frontier-views [role=tab]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.frontier-filters{display:grid;grid-template-columns:minmax(150px,1fr) minmax(220px,2.4fr) auto;gap:16px;align-items:end;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.frontier-filters select{font:inherit;width:100%;min-width:0;background:var(--panel);color:var(--text);border:1px solid var(--control-line);border-radius:8px;padding:10px}
+.frontier-filters select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.frontier-filters input,.frontier-filters select,.frontier-filters>button{height:42px;line-height:20px}
+.frontier-status{margin:16px 0 4px;color:var(--muted);font-size:13px}
+.frontier-status:empty{display:none}
+.frontier-job,.frontier-block{margin-top:24px}
+.frontier-job h2,.frontier-block h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--rule-strong);font-size:20px;font-weight:800}
+.frontier-skills{font-size:13px;font-weight:600;color:var(--muted)}
+.frontier-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:10px}
+.frontier-item,.frontier-card{display:flex;flex-direction:column;gap:10px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-wrap:anywhere}
+.frontier-item header{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.frontier-item h4{margin:0;font-size:16px;font-weight:800;line-height:1.4}
+.frontier-slots{font:600 12px var(--mono);color:var(--muted)}
+.frontier-kind{flex:none;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;line-height:18px;color:var(--on-primary);background:var(--primary)}
+.frontier-kind.is-weapon{color:var(--info-ink);background:var(--info-wash)}
+.frontier-lines{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:14px}
+.frontier-lines li{padding-left:14px;text-indent:-14px}
+.frontier-lines li::before{content:"・";color:var(--ink-3)}
+.frontier-set{padding:10px 12px;border-left:3px solid var(--accent);background:var(--selected);border-radius:0 8px 8px 0;display:grid;gap:6px}
+.frontier-set-head,.frontier-extra-head{margin:0;font-size:13px;font-weight:700;color:var(--accent)}
+.frontier-extra-head{margin-top:2px}
+.frontier-sub{margin:0;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em}
+.frontier-grades{list-style:none;margin:-4px 0 0;padding:0;display:grid;gap:4px;font-size:14px}
+.frontier-grades li{display:flex;align-items:baseline;gap:8px}
+.frontier-grade{flex:none;display:inline-grid;place-items:center;width:22px;height:20px;border:1px solid var(--line);border-radius:4px;font:600 12px var(--mono);color:var(--accent)}
+.frontier-specs{display:flex;flex-wrap:wrap;gap:4px 14px;margin:auto 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:12px}
+.frontier-specs div{display:flex;gap:6px}
+.frontier-specs dt{color:var(--ink-3)}
+.frontier-specs dd{margin:0;color:var(--ink-2)}
+.frontier-num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.frontier-intro{margin:0 0 8px;color:var(--ink-2)}
+.frontier-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:10px;margin-top:12px}
+.frontier-card h3{margin:0;font-size:16px;font-weight:800}
+.frontier-materials{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:13px}
+.frontier-materials li{display:flex;justify-content:space-between;gap:12px}
+.frontier-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.frontier-chips li{padding:2px 8px;border:1px solid var(--line);border-radius:6px;font-size:13px}
+.frontier-tier{margin-bottom:16px}
+.frontier-tier h4{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 8px;font-size:15px;font-weight:800}
+.frontier-tier h4 span{font-size:12px;font-weight:600;color:var(--warning)}
+.frontier-table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.frontier-table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.frontier-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}
+.frontier-table th,.frontier-table td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.frontier-table tbody tr:last-child td{border-bottom:0}
+.frontier-table thead{background:var(--bg)}
+.frontier-table th{font-weight:700;color:var(--muted);white-space:nowrap}
+.frontier-tier .frontier-table{min-width:520px}
+.frontier-tier .frontier-table td:first-child{white-space:nowrap}
+.frontier-outcomes{list-style:none;margin:0;padding:0;display:grid;gap:2px;white-space:nowrap}
+.frontier-outcomes .is-up{color:var(--success)}
+.frontier-outcomes .is-down{color:var(--danger)}
+/* Fixed width keeps every count in a tier at the same right edge, row after row. */
+.frontier-tier .frontier-materials{width:min(100%,24em)}
+.frontier-tier .frontier-materials .frontier-num::before{content:"×";margin-right:2px;color:var(--ink-3)}
+.frontier-new-enchants{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:10px}
+.frontier-new-enchants>li{display:grid;gap:6px;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.frontier-page mark{background:var(--mark);color:inherit;border-radius:2px}
+@media(max-width:1000px){.frontier-filters{grid-template-columns:1fr 1fr}.frontier-filters .field:nth-child(2){grid-column:1/-1;order:-1}}
+@media(max-width:680px){.frontier-filters{grid-template-columns:1fr;padding:16px;gap:14px}.frontier-filters input,.frontier-filters select{font-size:16px}.frontier-item,.frontier-card{padding:12px}}

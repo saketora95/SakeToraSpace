@@ -1,0 +1,23 @@
+.enchant-same{margin:0 0 12px;padding:10px 14px;border-left:3px solid var(--accent);background:var(--selected);border-radius:0 8px 8px 0;font-size:14px}
+.enchant-same strong{color:var(--accent)}
+.enchant-same a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px}
+.enchant-notes{margin:8px 0 16px;padding:12px 16px 12px 32px;background:var(--panel);border:1px solid var(--line);border-radius:12px;display:grid;gap:6px;font-size:14px;color:var(--ink-2)}
+.enchant-filter{display:flex;flex-wrap:wrap;gap:6px}
+.enchant-filter button{font:inherit;font-size:13px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:var(--panel);cursor:pointer}
+.enchant-filter button:hover{border-color:var(--accent);color:var(--accent)}
+.enchant-filter button[aria-pressed=true]{background:var(--selected);border-color:var(--accent);color:var(--accent);font-weight:700}
+.enchant-filter button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.enchant-block{margin-top:24px}
+.enchant-block-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--rule-strong)}
+.enchant-block-head h2{margin:0;font-size:20px;font-weight:800}
+.enchant-lines-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.enchant-lines-grid h3{margin:0 0 6px;font-size:14px;font-weight:700;color:var(--muted)}
+.enchant-table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.enchant-table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.enchant-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}
+.enchant-table th,.enchant-table td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.enchant-table tbody tr:last-child td{border-bottom:0}
+.enchant-table thead{background:var(--bg)}
+.enchant-table th{font-weight:700;color:var(--muted);white-space:nowrap}
+.enchant-table td:not(:first-child),.enchant-table th:not(:first-child){text-align:right;width:4.5em}
+.enchant-num{font-family:var(--mono);font-variant-numeric:tabular-nums}

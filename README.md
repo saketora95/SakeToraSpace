@@ -11,9 +11,9 @@
   - [獨立分享版](https://saketora95.github.io/SakeToraSpace/ragnarok-replacer.html)：功能相同，不含本站其他連結。
 - **[技能調整記錄](https://saketora95.github.io/SakeToraSpace/ragnarok-skill-changes.html#no=1)**：依職業、技能與版本查閱 kRO 的技能調整與官方公告。
 - **[連鎖自動詠唱裝備](https://saketora95.github.io/SakeToraSpace/ragnarok-autocast-chains.html)**：依職業、道具與技能查詢連鎖自動詠唱效果與實裝日期。
-- **[王卡搭配裝備](https://saketora95.github.io/SakeToraSpace/ragnarok-boss-cards.html)**：依 MVP、裝備名稱與 MVP 類型查詢可與王卡搭配的裝備。
-- **[邊界符文頭冠與邊界武器](https://saketora95.github.io/SakeToraSpace/ragnarok-border-gear.html)**：依職業查閱邊界裝備效果，以及頭飾與武器附魔資訊。
-- **[二次元武器](https://saketora95.github.io/SakeToraSpace/ragnarok-twin-weapons.html)**：依職業與推出批次查閱二次元武器的精煉、階級與額外效果。
+- **[MVP 卡片搭配裝備](https://saketora95.github.io/SakeToraSpace/ragnarok-boss-cards.html)**：依 MVP、裝備名稱與 MVP 類型查詢可與 MVP 卡片搭配的裝備。
+- **[邊界符文頭冠與邊界武器](https://saketora95.github.io/SakeToraSpace/ragnarok-frontier-gear.html)**：依職業查閱邊界裝備效果，以及頭飾與武器附魔資訊。
+- **[二次元武器](https://saketora95.github.io/SakeToraSpace/ragnarok-two-dimension-weapons.html)**：依職業與推出批次查閱二次元武器的精煉、階級與額外效果。
 - **[對話立繪轉換器](https://saketora95.github.io/SakeToraSpace/ragnarok-bmp-parser.html#no=1)**：將透明背景的圖片轉為 RO 可用的洋紅背景 BMP。
 - **[冰晶武器價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-glacier-weapon)**：比較素材購買、升級與兌換成本。
 - **[改造素材價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-reform-material)**：換算強化石成本與所需素材。

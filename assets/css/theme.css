@@ -110,12 +110,21 @@ mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1
 .page-head h1 { margin: 2px 0 8px; font-size: clamp(26px, 3vw, 36px); line-height: 1.2; font-weight: 900; letter-spacing: -.01em; }
 .page-head p { max-width: 80ch; margin: 4px 0; color: var(--ink-2); }
 .page-head a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+/* A source link sits beside the heading, a step smaller. */
+.page-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; margin: 2px 0 8px; }
+.page-title h1 { margin: 0; }
+.page-source { font-size: 14px; font-weight: 600; }
 
 /* Footer */
 .site-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 16px; max-width: 1280px; margin: 0 auto; padding: 12px var(--gutter) 16px; font: 12px var(--mono); color: var(--ink-3); }
-.footer-links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
 .footer-links a, .footer-links button { padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .footer-links a:hover, .footer-links button:hover { color: var(--accent-strong); }
+
+/* Back-to-top: one pill style for the footer and for in-page sections alike. */
+.to-top, .footer-links .to-top { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border: 1px solid var(--rule); border-radius: 999px; background: var(--card); color: var(--ink-2); font: 600 12px var(--mono); line-height: 1.5; text-decoration: none; white-space: nowrap; cursor: pointer; }
+.to-top:hover, .footer-links .to-top:hover { border-color: var(--ink-3); color: var(--ink); }
+.to-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Shared controls (styles.css defines them; this rounds them to match) */
 .primary-button, .secondary-button { border-radius: 999px; }
