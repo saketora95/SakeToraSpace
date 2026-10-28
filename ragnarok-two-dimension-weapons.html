@@ -37,6 +37,7 @@
   <script src="./assets/js/tools/ragnarok/two-dimension-weapon-data.js" defer></script>
   <script src="./assets/js/tools/ragnarok/frontier-weapon-enchant-data.js" defer></script>
   <script src="./assets/js/tools/ragnarok/frontier-weapon-enchant.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/job-order.js" defer></script>
   <script src="./assets/js/tools/ragnarok/two-dimension-weapons.js" defer></script>
   <script src="./assets/js/page-navigation.js" defer></script>
 </head>
@@ -54,12 +55,17 @@
     </div>
     <section id="dimension-tool" aria-label="二次元武器資訊">
       <div class="dimension-views" role="tablist" aria-label="資訊分類">
+        <button type="button" role="tab" id="dimension-tab-summary" aria-controls="dimension-view-summary" data-view="summary">摘要資訊</button>
         <button type="button" role="tab" id="dimension-tab-weapons" aria-controls="dimension-view-weapons" data-view="weapons">武器效果</button>
         <button type="button" role="tab" id="dimension-tab-enchant" aria-controls="dimension-view-enchant" data-view="enchant">武器附魔</button>
         <button type="button" role="tab" id="dimension-tab-about" aria-controls="dimension-view-about" data-view="about">說明與推出時間</button>
       </div>
 
-      <div id="dimension-view-weapons" role="tabpanel" aria-labelledby="dimension-tab-weapons">
+      <div id="dimension-view-summary" role="tabpanel" aria-labelledby="dimension-tab-summary">
+        <div id="dimension-summary-table"></div>
+      </div>
+
+      <div id="dimension-view-weapons" role="tabpanel" aria-labelledby="dimension-tab-weapons" hidden>
         <div class="dimension-filters">
           <label class="field" for="dimension-job">職業<select id="dimension-job"><option value="">所有職業</option></select></label>
           <label class="field" for="dimension-wave">推出批次<select id="dimension-wave"><option value="">所有批次</option></select></label>

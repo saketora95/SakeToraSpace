@@ -26,6 +26,11 @@
 .frontier-set{padding:10px 12px;border-left:3px solid var(--accent);background:var(--selected);border-radius:0 8px 8px 0;display:grid;gap:6px}
 .frontier-set-head,.frontier-extra-head{margin:0;font-size:13px;font-weight:700;color:var(--accent)}
 .frontier-extra-head{margin-top:2px}
+.frontier-extra{display:grid;gap:3px;margin-top:6px;padding:8px 10px;border:1px solid var(--accent);border-radius:8px;background:var(--panel);font-size:13px}
+.frontier-extra-trigger{margin:0 0 3px;font-size:13px;font-weight:700;color:var(--text)}
+.frontier-extra-tag{display:inline-block;margin-right:8px;padding:0 8px;border-radius:4px;font-size:11px;line-height:18px;vertical-align:1px;color:var(--on-primary);background:var(--primary)}
+.frontier-extra-line{margin:0;padding-left:14px;text-indent:-14px}
+.frontier-extra-line::before{content:"・";color:var(--ink-3)}
 .frontier-sub{margin:0;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em}
 .frontier-grades{list-style:none;margin:-4px 0 0;padding:0;display:grid;gap:4px;font-size:14px}
 .frontier-grades li{display:flex;align-items:baseline;gap:8px}
@@ -62,6 +67,14 @@
 .frontier-tier .frontier-materials .frontier-num::before{content:"×";margin-right:2px;color:var(--ink-3)}
 .frontier-new-enchants{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:10px}
 .frontier-new-enchants>li{display:grid;gap:6px;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.frontier-summary .frontier-table{min-width:760px}
+.frontier-summary td:nth-child(-n+2){white-space:nowrap}
+.frontier-summary td:last-child{min-width:300px}
+.frontier-summary a{color:var(--accent);font-weight:700}
+.frontier-job,.frontier-item{scroll-margin-top:16px}
+.frontier-item.is-target{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent);animation:frontier-target 1.2s ease-out}
+@keyframes frontier-target{from{box-shadow:0 0 0 8px var(--selected),0 0 0 2px var(--accent)}}
+@media(prefers-reduced-motion:reduce){.frontier-item.is-target{animation:none}}
 .frontier-page mark{background:var(--mark);color:inherit;border-radius:2px}
 @media(max-width:1000px){.frontier-filters{grid-template-columns:1fr 1fr}.frontier-filters .field:nth-child(2){grid-column:1/-1;order:-1}}
 @media(max-width:680px){.frontier-filters{grid-template-columns:1fr;padding:16px;gap:14px}.frontier-filters input,.frontier-filters select{font-size:16px}.frontier-item,.frontier-card{padding:12px}}

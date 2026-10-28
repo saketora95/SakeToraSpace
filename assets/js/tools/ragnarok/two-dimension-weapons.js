@@ -10,7 +10,10 @@
   const filters = { job: $("#dimension-job"), wave: $("#dimension-wave"), query: $("#dimension-query") };
   const tabs = [...document.querySelectorAll(".dimension-views [role=tab]")];
   const views = tabs.map(tab => tab.dataset.view);
+  const detailView = "weapons";
+  const sorts = ["job", "release"];
   let view = views[0];
+  let sort = sorts[0];
 
   if (!data || !Array.isArray(data.weapons)) {
     $("#dimension-status").textContent = "資料載入失敗，請重新整理頁面。";
@@ -25,9 +28,9 @@
   const weapons = data.weapons.map(weapon => ({
     ...weapon,
     haystack: normalize([
-      weapon.job, weapon.restriction, ...weapon.effects,
+      weapon.job, weapon.restriction, ...weapon.skills, ...weapon.effects,
       ...weapon.names.flatMap(name => [name.id, name.kr, name.zh]),
-      ...weapon.blocks.flatMap(block => [block.condition, ...block.lines, ...(block.extra ?? [])]),
+      ...weapon.blocks.flatMap(block => [block.condition, ...block.lines, block.trigger, ...(block.extra ?? [])]),
       ...Object.values(weapon.grades).flat(), ...weapon.specs.map(spec => spec[1]),
     ].join("\n")),
   }));
@@ -55,13 +58,13 @@
     </div>`).join("");
     const blocks = weapon.blocks.map(block => `<div class="dimension-block">
       <p class="dimension-block-head">${highlight(block.condition, tokens)}</p>
-      ${lineList(block.lines, tokens)}
+      ${lineList(block.extra ? [...block.lines, block.trigger] : block.lines, tokens)}
       ${block.extra ? `<p class="dimension-extra-head">額外效果</p>${lineList(block.extra, tokens)}` : ""}
     </div>`).join("");
     const grades = Object.entries(weapon.grades).map(([grade, lines]) =>
       `<li><span class="dimension-grade">${grade}</span><span>${lines.map(line => highlight(line, tokens)).join("<br>")}</span></li>`).join("");
     const restriction = [["職業限制", weapon.restriction ?? weapon.job.replace(" & ", "、")]];
-    return `<article class="dimension-item">
+    return `<article class="dimension-item" data-item="${escape(weapon.names[0].zh)}">
       <header>
         <div class="dimension-tags"><span class="dimension-wave">${waveLabel(weapon.wave)}</span><span class="dimension-job">${highlight(weapon.job, tokens)}</span></div>
         ${names}
@@ -91,6 +94,81 @@
     }).join("");
   }
 
+  const lineBreaks = lines => lines.map(escape).join("<br>");
+  const refineCondition = "精煉值達 +12 以上時";
+  const withoutRefineCondition = line => line.startsWith(`${refineCondition}，`) ? line.slice(refineCondition.length + 1) : line;
+  // Summary-only box for 額外效果 and set bonuses: a tag and head sentence over the effects.
+  const effectBox = (tag, head, lines) => `<div class="dimension-extra">
+    <p class="dimension-extra-trigger"><span class="dimension-extra-tag">${tag}</span>${escape(head)}</p>
+    ${lines.map(line => `<p class="dimension-extra-line">${escape(line)}</p>`).join("")}
+  </div>`;
+  // The summary trigger keeps the rank and the cast skill but drops the 習得等級 prerequisites.
+  function shortTrigger(trigger) {
+    const [prefix, rest] = trigger.split("並施展");
+    if (rest === undefined) return trigger;
+    const kept = prefix.split("、").filter(part => !part.startsWith("習得等級"));
+    const head = kept.join("、");
+    return head ? `${head}${/[A-Za-z0-9]$/.test(head) ? " " : ""}並施展${rest}` : `施展${rest}`;
+  }
+  const extraBox = block => block.extra ? effectBox("額外效果", shortTrigger(block.trigger), block.extra) : "";
+
+  // Every +12 effect and set bonus; the plain +12 condition is implied, so only stricter conditions are shown.
+  function specialEffects(weapon) {
+    const refine = weapon.effects.filter(line => line.includes("+12")).map(withoutRefineCondition);
+    const plain = weapon.blocks.filter(block => block.condition === refineCondition);
+    const paragraphs = [];
+    if (refine.length || plain.length) {
+      paragraphs.push(`${lineBreaks([...refine, ...plain.flatMap(block => block.lines)])}${plain.map(extraBox).join("")}`);
+    }
+    for (const block of weapon.blocks.filter(block => block.condition !== refineCondition)) {
+      paragraphs.push(block.condition.startsWith("同時裝備")
+        ? `${effectBox("套裝效果", block.condition, block.lines)}${extraBox(block)}`
+        : `<span class="dimension-summary-head">${escape(block.condition)}</span><br>${lineBreaks(block.lines)}${extraBox(block)}`);
+    }
+    for (const [grade, lines] of Object.entries(weapon.grades)) {
+      const graded = lines.filter(line => line.includes("+12")).map(withoutRefineCondition);
+      if (graded.length) paragraphs.push(`<span class="dimension-grade">${grade}</span> ${lineBreaks(graded)}`);
+    }
+    return paragraphs.map(html => `<div class="dimension-summary-block">${html}</div>`).join("");
+  }
+
+  const byJob = (a, b) => window.ragnarokJobRank(a.job) - window.ragnarokJobRank(b.job);
+  const comparators = { job: byJob, release: (a, b) => a.wave - b.wave || byJob(a, b) };
+
+  // The 推出 and 職業 headers double as the sort controls of the summary table.
+  const sortColumns = { 推出: "release", 職業: "job" };
+  const summaryHead = cell => {
+    const key = sortColumns[cell];
+    if (!key) return `<th scope="col">${escape(cell)}</th>`;
+    const active = key === sort;
+    return `<th scope="col" aria-sort="${active ? "ascending" : "none"}"><button type="button" class="dimension-sort${active ? " is-active" : ""}" data-sort="${key}" title="依${key === "job" ? "職業" : "推出時間"}排序">${escape(cell)}<span aria-hidden="true">${active ? "▲" : "↕"}</span></button></th>`;
+  };
+
+  function renderSummary() {
+    const rows = [...data.weapons].sort(comparators[sort]).map(weapon => `<tr>
+      <td>${waveLabel(weapon.wave)}</td>
+      <td><strong>${escape(weapon.job)}</strong></td>
+      <td><a href="#${new URLSearchParams({ view: detailView })}" data-job="${escape(weapon.job)}" data-item="${escape(weapon.names[0].zh)}">${weapon.names.map(name => escape(name.zh)).join(" / ")}</a></td>
+      <td>${lineBreaks(weapon.skills)}</td>
+      <td>${specialEffects(weapon)}</td>
+    </tr>`).join("");
+    $("#dimension-summary-table").innerHTML = `<div class="dimension-table-scroll" tabindex="0"><table class="dimension-table">
+      <thead><tr>${["推出", "職業", "武器", "強化技能", "特殊效果"].map(summaryHead).join("")}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  }
+
+  // Summary links open the unfiltered detail view, scroll to the item and highlight it.
+  function openDetail(job, item) {
+    for (const control of Object.values(filters)) control.value = "";
+    showView(detailView);
+    renderWeapons();
+    syncHash();
+    const cards = [...document.querySelectorAll(`#dimension-results [data-item="${CSS.escape(item)}"]`)];
+    for (const card of cards) card.classList.add("is-target");
+    cards.find(card => card.dataset.item === item)?.scrollIntoView({ block: "start" });
+  }
+
   function renderAbout() {
     const waves = data.waves.map(entry => {
       const jobs = data.weapons.filter(weapon => weapon.wave === entry.wave).map(weapon => weapon.job.replace(" & ", "&"));
@@ -118,6 +196,7 @@
   function syncHash() {
     const params = new URLSearchParams();
     if (view !== views[0]) params.set("view", view);
+    if (sort !== sorts[0]) params.set("sort", sort);
     for (const [key, control] of Object.entries(filters)) if (control.value.trim()) params.set(key, control.value.trim());
     const hash = params.toString();
     const url = new URL(window.location.href);
@@ -130,7 +209,10 @@
       const value = params.get(key) ?? "";
       control.value = control.tagName === "SELECT" && ![...control.options].some(option => option.value === value) ? "" : value;
     }
-    showView(params.get("view"));
+    sort = sorts.includes(params.get("sort")) ? params.get("sort") : sorts[0];
+    // Older bookmarks carry filters without a view; those belong to the detail view.
+    const filtered = Object.keys(filters).some(key => params.has(key));
+    showView(params.get("view") ?? (filtered ? detailView : null));
   }
 
   tabs.forEach((tab, index) => {
@@ -150,10 +232,26 @@
     syncHash();
     filters.query.focus();
   });
-  window.addEventListener("hashchange", () => { readHash(); renderWeapons(); });
+  $("#dimension-view-summary").addEventListener("click", event => {
+    const sortButton = event.target.closest("[data-sort]");
+    if (sortButton) {
+      sort = sortButton.dataset.sort;
+      renderSummary();
+      $(`#dimension-summary-table [data-sort="${sort}"]`).focus();
+      syncHash();
+      return;
+    }
+    const link = event.target.closest("a[data-job]");
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    event.preventDefault();
+    openDetail(link.dataset.job, link.dataset.item);
+  });
+  window.addEventListener("hashchange", () => { readHash(); renderSummary(); renderWeapons(); });
+
 
   renderFrontierWeaponEnchant($("#dimension-view-enchant"), { label: "邊界符文頭冠與邊界武器", href: "./ragnarok-frontier-gear.html#view=weapon" });
   renderAbout();
   readHash();
+  renderSummary();
   renderWeapons();
 })();

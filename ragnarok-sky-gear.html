@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="仙境傳說 kRO 天空符文冠冕與天空武器整理，依職業與推出日期查閱各階級效果、套裝效果、精煉錘與頭飾附魔。">
+  <title>天空符文冠冕與天空武器 · 仙境傳說 · SakeTora Space</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-sky-gear.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SakeTora Space">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="天空符文冠冕與天空武器 · 仙境傳說 · SakeTora Space">
+  <meta property="og:description" content="依職業查閱天空符文冠冕與天空武器的效果、套裝效果與附魔資訊。">
+  <meta property="og:url" content="https://saketora95.github.io/SakeToraSpace/ragnarok-sky-gear.html">
+  <meta property="og:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="天空符文冠冕與天空武器 · 仙境傳說 · SakeTora Space">
+  <meta name="twitter:description" content="依職業查閱天空符文冠冕與天空武器的效果、套裝效果與附魔資訊。">
+  <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-rune-gear.css">
+  <script src="./assets/js/theme.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/sky-gear-data.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/job-order.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/rune-gear.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
+</head>
+<body class="rune-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header">
+    <div class="crumbs"><a class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="crumb">仙境傳說</span><span class="crumb" aria-current="page">天空符文冠冕與天空武器</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head">
+      <span class="page-kicker">RAGNAROK ONLINE / SKY GEAR</span>
+      <div class="page-title"><h1>天空符文冠冕與天空武器</h1><a class="page-source" href="https://forum.gamer.com.tw/C.php?bsn=4212&amp;snA=439379" target="_blank" rel="noopener">巴哈姆特原文</a></div>
+      <div id="rune-intro"></div>
+      <p class="rune-source">資料為人工整理，可能包含疏漏，實際效果以遊戲內說明為主。</p>
+    </div>
+    <section id="rune-tool" aria-label="天空裝備資訊">
+      <div class="rune-views" role="tablist" aria-label="資訊分類">
+        <button type="button" role="tab" id="rune-tab-summary" aria-controls="rune-view-summary" data-view="summary">摘要資訊</button>
+        <button type="button" role="tab" id="rune-tab-gear" aria-controls="rune-view-gear" data-view="gear">裝備效果</button>
+        <button type="button" role="tab" id="rune-tab-items" aria-controls="rune-view-items" data-view="items">精煉與附魔</button>
+      </div>
+
+      <div id="rune-view-summary" role="tabpanel" aria-labelledby="rune-tab-summary">
+        <div id="rune-summary-table" class="rune-summary"></div>
+      </div>
+
+      <div id="rune-view-gear" role="tabpanel" aria-labelledby="rune-tab-gear" hidden>
+        <div class="rune-filters">
+          <label class="field" for="rune-job">職業<select id="rune-job"><option value="">所有職業</option></select></label>
+          <label class="field" for="rune-wave">推出日期<select id="rune-wave"><option value="">所有日期</option></select></label>
+          <label class="field" for="rune-query">搜尋<input id="rune-query" type="search" placeholder="道具、技能或效果，例如：自動詠唱、冷卻時間"></label>
+          <button id="rune-reset" class="secondary-button" type="button">重設篩選</button>
+        </div>
+        <p id="rune-status" class="rune-status" role="status" aria-live="polite"></p>
+        <div id="rune-results"></div>
+      </div>
+
+      <div id="rune-view-items" role="tabpanel" aria-labelledby="rune-tab-items" hidden></div>
+    </section>
+    <noscript><p class="notice">請啟用 JavaScript 以瀏覽天空裝備資訊。</p></noscript>
+  </main>
+  <footer class="site-footer"><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span><span class="footer-links"><button type="button" class="to-top" data-to-top><span aria-hidden="true">↑</span>返回頂端</button></span></footer>
+</body>
+</html>

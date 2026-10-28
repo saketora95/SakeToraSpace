@@ -55,12 +55,15 @@
     </div>
     <section id="frontier-tool" aria-label="邊界裝備資訊">
       <div class="frontier-views" role="tablist" aria-label="資訊分類">
+        <button type="button" role="tab" id="frontier-tab-summary" aria-controls="frontier-view-summary" data-view="summary">摘要資訊</button>
         <button type="button" role="tab" id="frontier-tab-gear" aria-controls="frontier-view-gear" data-view="gear">裝備效果</button>
         <button type="button" role="tab" id="frontier-tab-headgear" aria-controls="frontier-view-headgear" data-view="headgear">頭飾附魔</button>
         <button type="button" role="tab" id="frontier-tab-weapon" aria-controls="frontier-view-weapon" data-view="weapon">武器附魔</button>
       </div>
 
-      <div id="frontier-view-gear" role="tabpanel" aria-labelledby="frontier-tab-gear">
+      <div id="frontier-view-summary" role="tabpanel" aria-labelledby="frontier-tab-summary"></div>
+
+      <div id="frontier-view-gear" role="tabpanel" aria-labelledby="frontier-tab-gear" hidden>
         <div class="frontier-filters">
           <label class="field" for="frontier-job">職業<select id="frontier-job"><option value="">所有職業</option></select></label>
           <label class="field" for="frontier-query">搜尋<input id="frontier-query" type="search" placeholder="道具、技能或效果，例如：謳歌、冷卻時間"></label>

@@ -46,7 +46,7 @@
     <a class="logo" href="./"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a>
     <nav class="header-actions" aria-label="網站">
       <button type="button" class="text-btn" data-open-dialog="about-dialog" aria-haspopup="dialog">關於</button>
-      <button type="button" class="version-pill" data-open-dialog="release-dialog" aria-haspopup="dialog">v0.16 更新內容</button>
+      <button type="button" class="version-pill" data-open-dialog="release-dialog" aria-haspopup="dialog">v0.17 更新內容</button>
       <button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button>
     </nav>
   </header>
@@ -86,21 +86,20 @@
       <h2 id="about-title">我是酒虎，歡迎你來。</h2>
       <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
       <p class="about-note"><strong>使用前請留意：</strong>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-      <p class="dialog-kicker">最後更新 2026-10-28・v0.16</p>
+      <p class="dialog-kicker">最後更新 2026-10-29・v0.17</p>
     </div>
   </dialog>
   <dialog id="release-dialog" aria-labelledby="release-title">
     <form method="dialog" class="dialog-header">
-      <div><p class="dialog-kicker"><time datetime="2026-10-28">2026-10-28</time></p><h2 id="release-title">v0.16 改版資訊</h2></div>
+      <div><p class="dialog-kicker"><time datetime="2026-10-29">2026-10-29</time></p><h2 id="release-title">v0.17 改版資訊</h2></div>
       <button class="icon-btn" type="submit" aria-label="關閉改版資訊" autofocus>×</button>
     </form>
     <ul class="release-list">
-      <li>「王卡搭配裝備」更名為「MVP 卡片搭配裝備」。</li>
-      <li>二次元武器：新增「武器附魔」分頁，移除懶人包。</li>
-      <li>邊界符文頭冠與邊界武器：素材名稱改用 twRO 譯名，Zeny 金額改以完整數字顯示，升級素材的數量對齊排列。</li>
-      <li>武器附魔：邊界武器與二次元武器共用同一份資料；說明改為條列式，分類改為可篩選的按鈕，並依物理、單手、近距離、非暴擊優先排序。</li>
-      <li>邊界與二次元武器頁面的標題旁新增巴哈姆特原文連結，頁面網址也隨英文名稱調整。</li>
-      <li>統一全站「返回頂端」按鈕的樣式。</li>
+      <li>新增「天空符文冠冕與天空武器」與「光輝符文頭冠與光輝武器」資訊頁面。</li>
+      <li>邊界、二次元、天空與光輝頁面新增預設的「摘要資訊」分頁，依職業列出強化技能與特殊效果；點選道具名稱即可跳到詳細效果並標示整組套裝。</li>
+      <li>二次元、天空與光輝的摘要資訊可點選表格標題，依職業或推出時間排序。</li>
+      <li>邊界與二次元武器：統一額外效果的觸發描述，摘要資訊中以獨立框線標示額外效果。</li>
+      <li>酒虎廢文：移除已整理為資訊頁面的文章。</li>
     </ul>
   </dialog>
   <div id="toast" class="toast" role="status" hidden></div>
