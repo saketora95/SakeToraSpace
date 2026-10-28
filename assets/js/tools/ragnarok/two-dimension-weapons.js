@@ -169,19 +169,6 @@
     cards.find(card => card.dataset.item === item)?.scrollIntoView({ block: "start" });
   }
 
-  function renderAbout() {
-    const waves = data.waves.map(entry => {
-      const jobs = data.weapons.filter(weapon => weapon.wave === entry.wave).map(weapon => weapon.job.replace(" & ", "&"));
-      return `<li><strong>${waveLabel(entry.wave)}</strong> <a class="dimension-num" href="${escape(entry.url)}" target="_blank" rel="noopener">${entry.date}</a><span>${escape(jobs.join("、"))}</span></li>`;
-    }).join("");
-    $("#dimension-view-about").innerHTML = `
-      ${data.intro.map(text => `<p class="dimension-intro">${escape(text)}</p>`).join("")}
-      <section class="dimension-card">
-        <h2>推出時間</h2>
-        <ul class="dimension-waves">${waves}</ul>
-      </section>`;
-  }
-
   function showView(next) {
     view = views.includes(next) ? next : views[0];
     for (const tab of tabs) {
@@ -250,7 +237,6 @@
 
 
   renderFrontierWeaponEnchant($("#dimension-view-enchant"), { label: "邊界符文頭冠與邊界武器", href: "./ragnarok-frontier-gear.html#view=weapon" });
-  renderAbout();
   readHash();
   renderSummary();
   renderWeapons();

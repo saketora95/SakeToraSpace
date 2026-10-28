@@ -1,0 +1,45 @@
+.page-sources{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-size:14px;font-weight:600;color:var(--muted)}
+.biosphere-region{padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;line-height:18px;color:var(--accent);background:var(--selected)}
+.biosphere-cards{display:grid;gap:8px;margin-top:-4px}
+.biosphere-card{display:grid;gap:4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.biosphere-card h4{margin:0;font-size:14px;font-weight:800}
+.biosphere-card .dimension-lines{font-size:13px}
+.biosphere-card .dimension-block{margin-top:2px}
+.biosphere-card-meta{margin:0;font-size:12px;color:var(--muted)}
+.dimension-table td.biosphere-skills{white-space:nowrap}
+.biosphere-notes{margin:0 0 12px;padding:12px 16px 12px 32px;background:var(--panel);border:1px solid var(--line);border-radius:12px;display:grid;gap:4px;font-size:13px;color:var(--ink-2)}
+.biosphere-notes a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px}
+.biosphere-monster-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.biosphere-filter{display:flex;flex-wrap:wrap;gap:6px}
+.biosphere-filter button{font:inherit;font-size:13px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:var(--panel);cursor:pointer}
+.biosphere-filter button:hover{border-color:var(--accent);color:var(--accent)}
+.biosphere-filter button[aria-pressed=true]{background:var(--selected);border-color:var(--accent);color:var(--accent);font-weight:700}
+.biosphere-filter button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* Every monster table shares one fixed column layout so the batches line up. */
+.dimension-table.biosphere-monsters{table-layout:fixed;min-width:820px}
+.biosphere-monsters td{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.biosphere-monsters td:last-child{min-width:0}
+.biosphere-monsters td.dimension-num,.biosphere-monsters th:nth-last-child(-n+2){text-align:right}
+.biosphere-monsters tbody tr td{border-bottom-style:dashed}
+.biosphere-monsters tbody tr.biosphere-group td{border-top:1px solid var(--line)}
+.biosphere-col-image{width:110px}
+.biosphere-col-0{width:7%}
+.biosphere-col-1{width:23%}
+.biosphere-col-2{width:7%}
+.biosphere-col-3{width:15%}
+.biosphere-col-4{width:8%}
+.biosphere-col-5{width:9%}
+.biosphere-col-6{width:7%}
+.biosphere-col-7,.biosphere-col-8{width:12%}
+.biosphere-monsters td.biosphere-image{text-align:center;vertical-align:middle}
+.biosphere-image img{display:block;max-width:100%;max-height:96px;margin:0 auto;object-fit:contain}
+.biosphere-max{font-weight:800;color:var(--accent)}
+.dimension-table.biosphere-plain{min-width:520px}
+.dimension-table.biosphere-plain td:last-child{min-width:0}
+.dimension-card .dimension-table-scroll{margin-top:4px}
+.dimension-filters.biosphere-filters{grid-template-columns:minmax(140px,1fr) minmax(140px,1.2fr) minmax(120px,.8fr) minmax(200px,2fr) auto}
+@media(max-width:1000px){.dimension-filters.biosphere-filters{grid-template-columns:1fr 1fr 1fr}.biosphere-filters .field:nth-child(3){grid-column:auto;order:0}.biosphere-filters .field:nth-child(4){grid-column:1/-1;order:-1}.biosphere-filters>button{grid-column:1/-1}}
+@media(max-width:680px){.dimension-filters.biosphere-filters{grid-template-columns:1fr}}
+.dimension-table td.biosphere-gear{white-space:nowrap}
+.biosphere-peak{margin:12px 0 0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--selected);border-radius:0 8px 8px 0;font-size:14px;color:var(--ink-2)}
+.biosphere-peak strong{color:var(--accent);font-size:16px}

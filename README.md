@@ -14,13 +14,14 @@
 - **[MVP 卡片搭配裝備](https://saketora95.github.io/SakeToraSpace/ragnarok-boss-cards.html)**：依 MVP、裝備名稱與 MVP 類型查詢可與 MVP 卡片搭配的裝備。
 - **[邊界符文頭冠與邊界武器](https://saketora95.github.io/SakeToraSpace/ragnarok-frontier-gear.html)**：依職業查閱邊界裝備效果，以及頭飾與武器附魔資訊。
 - **[二次元武器](https://saketora95.github.io/SakeToraSpace/ragnarok-two-dimension-weapons.html)**：依職業與推出批次查閱二次元武器的精煉、階級與額外效果。
+- **[二次元生物圈](https://saketora95.github.io/SakeToraSpace/ragnarok-dimension-biosphere.html)**：依職業與區域查閱二次元武器與搭配卡片，以及披肩、魔物與兌換素材。
 - **[天空符文冠冕與天空武器](https://saketora95.github.io/SakeToraSpace/ragnarok-sky-gear.html)**：依職業與推出日期查閱天空裝備摘要與效果、精煉錘與頭飾附魔。
 - **[光輝符文頭冠與光輝武器](https://saketora95.github.io/SakeToraSpace/ragnarok-radiant-gear.html)**：依職業與推出日期查閱光輝裝備摘要與效果、精煉槌與頭飾附魔。
 - **[對話立繪轉換器](https://saketora95.github.io/SakeToraSpace/ragnarok-bmp-parser.html#no=1)**：將透明背景的圖片轉為 RO 可用的洋紅背景 BMP。
 - **[冰晶武器價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-glacier-weapon)**：比較素材購買、升級與兌換成本。
 - **[改造素材價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-reform-material)**：換算強化石成本與所需素材。
 - **[升階素材價格](https://saketora95.github.io/SakeToraSpace/#tool=ragnarok-grade-material)**：計算階級提升的素材成本。
-- **酒虎廢文**：巴哈姆特上的整理文章，包含 kRO 重點更新、技能獨立延遲／冷卻時間關聯裝備與二次元生物圈資訊。
+- **酒虎廢文**：巴哈姆特上的整理文章，包含 kRO 重點更新與技能獨立延遲／冷卻時間關聯裝備。
 - **參考連結**：各地區官方網站、twRO 露天商店與裝備道具查詢、Divine Pride、ROCalculator。
 
 ## FFXIV

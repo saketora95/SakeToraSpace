@@ -8,7 +8,7 @@
 .boss-group{margin-top:24px}
 .boss-group h2{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--rule-strong);font-size:20px;font-weight:800}
 .boss-group h2 span{font:600 12px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 8px}
-.boss-entries{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.boss-entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .boss-entry{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr;gap:8px 10px;align-content:start;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-wrap:anywhere}
 .boss-entry h3{margin:0;font-size:16px;font-weight:800;line-height:1.4}
 .boss-types{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px}
@@ -24,4 +24,6 @@
 .boss-plain .boss-type+.boss-type{margin-left:0}
 .boss-page mark{background:var(--mark);color:inherit;border-radius:2px}
 @media(max-width:1000px){.boss-filters{grid-template-columns:1fr 1fr}.boss-filters .field:first-child{grid-column:1/-1}}
+.boss-entries>:only-child{grid-column:1/-1}
+@media(max-width:760px){.boss-entries{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:680px){.boss-filters{grid-template-columns:1fr;padding:16px;gap:14px}.boss-filters input,.boss-filters select{font-size:16px}.boss-entry{padding:12px}}

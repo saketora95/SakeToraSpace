@@ -14,7 +14,7 @@
 .dimension-wave-block h2,.dimension-card h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--rule-strong);font-size:20px;font-weight:800}
 .dimension-wave-block h2 span{font-size:13px;font-weight:600;color:var(--muted)}
 .dimension-wave-block h2 a{color:inherit}
-.dimension-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:10px}
+.dimension-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .dimension-item,.dimension-card{display:flex;flex-direction:column;gap:10px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-wrap:anywhere}
 .dimension-item header{display:grid;gap:6px}
 .dimension-tags{display:flex;flex-wrap:wrap;gap:6px}
@@ -75,4 +75,6 @@
 @media(prefers-reduced-motion:reduce){.dimension-item.is-target{animation:none}}
 .dimension-page mark{background:var(--mark);color:inherit;border-radius:2px}
 @media(max-width:1000px){.dimension-filters{grid-template-columns:1fr 1fr}.dimension-filters .field:nth-child(3){grid-column:1/-1;order:-1}}
+.dimension-grid>:only-child{grid-column:1/-1}
+@media(max-width:760px){.dimension-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:680px){.dimension-filters{grid-template-columns:1fr;padding:16px;gap:14px}.dimension-filters input,.dimension-filters select{font-size:16px}.dimension-item,.dimension-card{padding:12px}}

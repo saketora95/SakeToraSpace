@@ -19,7 +19,6 @@ function renderFrontierWeaponEnchant(container, other) {
   const categories = enchant.categories.map((category, index) => `<section class="enchant-block" data-category="${index}">
     <div class="enchant-block-head">
       <h2>${escape(category.name)}</h2>
-      <button type="button" class="to-top" data-to-top><span aria-hidden="true">↑</span>返回頂端</button>
     </div>
     <div class="enchant-lines-grid">
       ${category.lines.map((rows, line) => `<div>

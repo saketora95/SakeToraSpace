@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="仙境傳說 kRO 二次元生物圈整理，依職業與區域查閱二次元武器、搭配卡片、披肩與魔物資訊。">
+  <title>二次元生物圈 · 仙境傳說 · SakeTora Space</title>
+  <link rel="canonical" href="https://saketora95.github.io/SakeToraSpace/ragnarok-dimension-biosphere.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SakeTora Space">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="二次元生物圈 · 仙境傳說 · SakeTora Space">
+  <meta property="og:description" content="依職業與區域查閱 kRO 二次元生物圈的武器、卡片、披肩與魔物資訊。">
+  <meta property="og:url" content="https://saketora95.github.io/SakeToraSpace/ragnarok-dimension-biosphere.html">
+  <meta property="og:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="二次元生物圈 · 仙境傳說 · SakeTora Space">
+  <meta name="twitter:description" content="依職業與區域查閱 kRO 二次元生物圈的武器、卡片、披肩與魔物資訊。">
+  <meta name="twitter:image" content="https://saketora95.github.io/SakeToraSpace/assets/welcome.png">
+  <meta name="twitter:image:alt" content="酒虎舉杯歡迎你來到 SakeTora Space">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  <script>try { const t = localStorage.getItem("saketora.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/theme.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-two-dimension-weapons.css">
+  <link rel="stylesheet" href="./assets/css/ragnarok-dimension-biosphere.css">
+  <script src="./assets/js/theme.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/dimension-biosphere-data.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/job-order.js" defer></script>
+  <script src="./assets/js/tools/ragnarok/dimension-biosphere.js" defer></script>
+  <script src="./assets/js/page-navigation.js" defer></script>
+</head>
+<body class="dimension-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header">
+    <div class="crumbs"><a class="logo" href="./" aria-label="SakeTora Space 工具箱首頁"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a><span class="crumb">仙境傳說</span><span class="crumb" aria-current="page">二次元生物圈</span></div>
+    <nav class="header-actions" aria-label="網站"><button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button></nav>
+  </header>
+  <main id="main" class="page">
+    <div class="page-head">
+      <span class="page-kicker">RAGNAROK ONLINE / DIMENSIONAL BIOSPHERE</span>
+      <div class="page-title"><h1>二次元生物圈</h1></div>
+      <p class="page-sources"><span>巴哈姆特原文</span><a href="https://forum.gamer.com.tw/C.php?bsn=4212&amp;snA=439873" target="_blank" rel="noopener">火山與大地</a><a href="https://forum.gamer.com.tw/C.php?bsn=4212&amp;snA=440019" target="_blank" rel="noopener">劇毒與冰凍</a><a href="https://forum.gamer.com.tw/C.php?bsn=4212&amp;snA=440202" target="_blank" rel="noopener">靈魂、聖殿與死靈</a><a href="https://forum.gamer.com.tw/C.php?bsn=4212&amp;snA=440488" target="_blank" rel="noopener">工廠、叢林與山谷</a></p>
+      <p class="dimension-source">資料為人工整理，可能包含疏漏，實際效果以遊戲內說明為主。</p>
+    </div>
+    <section id="biosphere-tool" aria-label="二次元生物圈資訊">
+      <div class="dimension-views" role="tablist" aria-label="資訊分類">
+        <button type="button" role="tab" id="biosphere-tab-summary" aria-controls="biosphere-view-summary" data-view="summary">摘要資訊</button>
+        <button type="button" role="tab" id="biosphere-tab-weapons" aria-controls="biosphere-view-weapons" data-view="weapons">武器與卡片</button>
+        <button type="button" role="tab" id="biosphere-tab-capes" aria-controls="biosphere-view-capes" data-view="capes">披肩</button>
+        <button type="button" role="tab" id="biosphere-tab-monsters" aria-controls="biosphere-view-monsters" data-view="monsters">魔物</button>
+        <button type="button" role="tab" id="biosphere-tab-about" aria-controls="biosphere-view-about" data-view="about">說明與素材</button>
+      </div>
+
+      <div id="biosphere-view-summary" role="tabpanel" aria-labelledby="biosphere-tab-summary">
+        <div id="biosphere-summary-table"></div>
+      </div>
+
+      <div id="biosphere-view-weapons" role="tabpanel" aria-labelledby="biosphere-tab-weapons" hidden>
+        <div class="dimension-filters biosphere-filters">
+          <label class="field" for="biosphere-job">職業<select id="biosphere-job"><option value="">所有職業</option></select></label>
+          <label class="field" for="biosphere-batch">推出批次<select id="biosphere-batch"><option value="">所有批次</option></select></label>
+          <label class="field" for="biosphere-region">區域<select id="biosphere-region"><option value="">所有區域</option></select></label>
+          <label class="field" for="biosphere-query">搜尋<input id="biosphere-query" type="search" placeholder="裝備、卡片、技能或效果，例如：自動詠唱、冷卻時間"></label>
+          <button id="biosphere-reset" class="secondary-button" type="button">重設篩選</button>
+        </div>
+        <p id="biosphere-status" class="dimension-status" role="status" aria-live="polite"></p>
+        <div id="biosphere-results"></div>
+      </div>
+
+      <div id="biosphere-view-capes" role="tabpanel" aria-labelledby="biosphere-tab-capes" hidden></div>
+      <div id="biosphere-view-monsters" role="tabpanel" aria-labelledby="biosphere-tab-monsters" hidden></div>
+      <div id="biosphere-view-about" role="tabpanel" aria-labelledby="biosphere-tab-about" hidden></div>
+    </section>
+    <noscript><p class="notice">請啟用 JavaScript 以瀏覽二次元生物圈資訊。</p></noscript>
+  </main>
+  <footer class="site-footer"><span>仙境傳說 Ragnarok Online © GRAVITY CO., Ltd.</span></footer>
+</body>
+</html>

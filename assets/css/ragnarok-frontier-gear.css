@@ -13,7 +13,7 @@
 .frontier-job,.frontier-block{margin-top:24px}
 .frontier-job h2,.frontier-block h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--rule-strong);font-size:20px;font-weight:800}
 .frontier-skills{font-size:13px;font-weight:600;color:var(--muted)}
-.frontier-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:10px}
+.frontier-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .frontier-item,.frontier-card{display:flex;flex-direction:column;gap:10px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-wrap:anywhere}
 .frontier-item header{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
 .frontier-item h4{margin:0;font-size:16px;font-weight:800;line-height:1.4}
@@ -41,7 +41,7 @@
 .frontier-specs dd{margin:0;color:var(--ink-2)}
 .frontier-num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .frontier-intro{margin:0 0 8px;color:var(--ink-2)}
-.frontier-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:10px;margin-top:12px}
+.frontier-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
 .frontier-card h3{margin:0;font-size:16px;font-weight:800}
 .frontier-materials{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:13px}
 .frontier-materials li{display:flex;justify-content:space-between;gap:12px}
@@ -65,7 +65,7 @@
 /* Fixed width keeps every count in a tier at the same right edge, row after row. */
 .frontier-tier .frontier-materials{width:min(100%,24em)}
 .frontier-tier .frontier-materials .frontier-num::before{content:"×";margin-right:2px;color:var(--ink-3)}
-.frontier-new-enchants{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:10px}
+.frontier-new-enchants{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .frontier-new-enchants>li{display:grid;gap:6px;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
 .frontier-summary .frontier-table{min-width:760px}
 .frontier-summary td:nth-child(-n+2){white-space:nowrap}
@@ -77,4 +77,6 @@
 @media(prefers-reduced-motion:reduce){.frontier-item.is-target{animation:none}}
 .frontier-page mark{background:var(--mark);color:inherit;border-radius:2px}
 @media(max-width:1000px){.frontier-filters{grid-template-columns:1fr 1fr}.frontier-filters .field:nth-child(2){grid-column:1/-1;order:-1}}
+.frontier-pair>:only-child,.frontier-cards>:only-child,.frontier-new-enchants>:only-child{grid-column:1/-1}
+@media(max-width:760px){.frontier-cards,.frontier-new-enchants,.frontier-pair{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:680px){.frontier-filters{grid-template-columns:1fr;padding:16px;gap:14px}.frontier-filters input,.frontier-filters select{font-size:16px}.frontier-item,.frontier-card{padding:12px}}

@@ -17,7 +17,7 @@
 .rune-job{margin-bottom:18px}
 .rune-job h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 10px;font-size:17px;font-weight:800}
 .rune-skills{font-size:13px;font-weight:600;color:var(--muted)}
-.rune-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:10px}
+.rune-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .rune-item,.rune-card{display:flex;flex-direction:column;gap:10px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-wrap:anywhere}
 .rune-item header{display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 10px}
 .rune-name h4{margin:0;font-size:16px;font-weight:800;line-height:1.4}
@@ -42,7 +42,7 @@
 .rune-num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .rune-intro{margin:0 0 8px;color:var(--ink-2)}
 .rune-footnote{margin:8px 0 0;font-size:13px;color:var(--muted)}
-.rune-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:10px}
+.rune-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .rune-card h3{margin:0;font-size:16px;font-weight:800}
 .rune-table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
 .rune-table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -74,4 +74,6 @@
 .rune-chips li{padding:2px 8px;border:1px solid var(--line);border-radius:6px;font-size:13px}
 .rune-page mark{background:var(--mark);color:inherit;border-radius:2px}
 @media(max-width:1000px){.rune-filters{grid-template-columns:1fr 1fr}.rune-filters .field:nth-child(3){grid-column:1/-1;order:-1}}
+.rune-pair>:only-child,.rune-cards>:only-child{grid-column:1/-1}
+@media(max-width:760px){.rune-cards,.rune-pair{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:680px){.rune-filters{grid-template-columns:1fr;padding:16px;gap:14px}.rune-filters input,.rune-filters select{font-size:16px}.rune-item,.rune-card{padding:12px}}

@@ -12,11 +12,6 @@
       url: "https://forum.gamer.com.tw/C.php?bsn=4212&snA=439592",
       updatedAt: "2026-05-21",
     },
-    intro: [
-      "二次元武器系列是與邊界套裝無關（但產地是同一處）的武器，現階段總共分批推出過 3 批武器，全職業各有一把，不確定後續是否還會再推出。",
-      "二次元武器與邊界武器都是經由同一個產地掉落的「侵蝕武器」進行升級，你可以準備對應的素材然後將武器進化成二次元武器或邊界武器。",
-      "二次元武器多數有一些技能習得限制與觸發效果，建議自己看過實際效果。",
-    ],
     waves: [
       { wave: 1, date: "2025-09-17", url: changelog("10439-kro-main-changelog-september-17-2025/") },
       { wave: 2, date: "2025-11-05", url: changelog("10542-kro-main-changelog-november-05-2025/") },
