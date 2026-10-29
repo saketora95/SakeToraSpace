@@ -1,5 +1,5 @@
 {
-  "interval_seconds": 60,
+  "interval_seconds": 10,
   "timeout_seconds": 20,
   "beep": true,
   "targets": [
@@ -18,8 +18,8 @@
     {
       "name": "公告",
       "url": "https://ro.gnjoy.com/news/notice/list.asp",
-      "must_contain": ["8247"],
-      "must_not_contain": ["8248"]
+      "must_contain": [],
+      "must_not_contain": ["8249"]
     }
   ]
 }
