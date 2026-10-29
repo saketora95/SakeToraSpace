@@ -21,7 +21,6 @@
     return;
   }
 
-  $("#rune-intro").innerHTML = data.intro.map(text => `<p>${escape(text)}</p>`).join("");
   filters.job.insertAdjacentHTML("beforeend", data.jobs.map(job => `<option value="${escape(job.job)}">${escape(job.job)}</option>`).join(""));
   filters.wave.insertAdjacentHTML("beforeend", data.waves.map(wave => `<option value="${wave}">${wave}</option>`).join(""));
 

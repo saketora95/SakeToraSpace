@@ -43,3 +43,14 @@
 .dimension-table td.biosphere-gear{white-space:nowrap}
 .biosphere-peak{margin:12px 0 0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--selected);border-radius:0 8px 8px 0;font-size:14px;color:var(--ink-2)}
 .biosphere-peak strong{color:var(--accent);font-size:16px}
+.biosphere-subhead{margin:8px 0 0;font-size:14px;font-weight:800;color:var(--muted)}
+.biosphere-plain td:first-child{white-space:nowrap}
+.biosphere-plain a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px}
+.biosphere-materials{list-style:none;margin:0;padding:0;display:grid;gap:3px;width:min(100%,22em)}
+.biosphere-materials li{display:flex;justify-content:space-between;gap:12px}
+.biosphere-count::before{content:"×";margin-right:2px;color:var(--ink-3)}
+.biosphere-plain td:first-child{width:12em}
+#biosphere-tool{scroll-margin-top:72px}
+.dimension-table.biosphere-leaves{table-layout:fixed}
+.biosphere-leaves th:nth-child(1){width:16%}
+.biosphere-leaves th:nth-child(2){width:38%}

@@ -47,7 +47,7 @@
     <a class="logo" href="./"><img src="./assets/favicon.png" alt="" width="32" height="32"><span>SakeTora <b>Space</b></span></a>
     <nav class="header-actions" aria-label="網站">
       <button type="button" class="text-btn" data-open-dialog="about-dialog" aria-haspopup="dialog">關於</button>
-      <button type="button" class="version-pill" data-open-dialog="release-dialog" aria-haspopup="dialog">v0.18 更新內容</button>
+      <button type="button" class="version-pill" data-open-dialog="release-dialog" aria-haspopup="dialog">v0.19 更新內容</button>
       <button type="button" id="theme-toggle" class="icon-btn" aria-label="切換主題">☾</button>
     </nav>
   </header>
@@ -87,21 +87,20 @@
       <h2 id="about-title">我是酒虎，歡迎你來。</h2>
       <p>此處整理了我生活或遊戲當中，經常使用的一些小工具或實用網站連結。</p>
       <p class="about-note"><strong>使用前請留意：</strong>有些資料是經由我手動整理，也有些資料是經由 AI 整理，而網頁整體是透過 AI 生成；因此，可能在某些部分隱含了錯誤或 Bug 尚未發現。使用時，請務必確認資訊的正確性，以避免造成困擾。</p>
-      <p class="dialog-kicker">最後更新 2026-10-29・v0.18</p>
+      <p class="dialog-kicker">最後更新 2026-10-29・v0.19</p>
     </div>
   </dialog>
   <dialog id="release-dialog" aria-labelledby="release-title">
     <form method="dialog" class="dialog-header">
-      <div><p class="dialog-kicker"><time datetime="2026-10-29">2026-10-29</time></p><h2 id="release-title">v0.18 改版資訊</h2></div>
+      <div><p class="dialog-kicker"><time datetime="2026-10-29">2026-10-29</time></p><h2 id="release-title">v0.19 改版資訊</h2></div>
       <button class="icon-btn" type="submit" aria-label="關閉改版資訊" autofocus>×</button>
     </form>
     <ul class="release-list">
-      <li>新增「二次元生物圈」資訊頁面，整理四篇二次元生物圈文章的武器與搭配卡片、披肩、魔物、生態之葉與兌換素材。</li>
-      <li>二次元生物圈：武器可依職業、推出批次或區域篩選；魔物可依區域篩選、手動載入魔物外觀，並顯示篩選結果的最高 HIT 與 CRI 需求。</li>
-      <li>資訊頁面的詳細資料改為每列 2 筆，篩選後僅剩 1 筆時佔滿整列。</li>
-      <li>全站返回頂端改為右下角的半透明浮動按鈕，向下捲動後才會出現。</li>
-      <li>二次元武器：移除「說明與推出時間」分頁。</li>
-      <li>酒虎廢文：移除已整理為資訊頁面的二次元生物圈文章。</li>
+      <li>二次元生物圈：補齊所有區域的二次元生態之葉（武器）與二次元生態葉片（披肩、盾牌），並補上第 4 批披肩的所屬區域。</li>
+      <li>二次元生物圈：「說明與素材」改為表格呈現；點選推出時間、區域、職業或適用裝備即可跳到對應的詳細資料。</li>
+      <li>二次元生物圈：兌換素材改以火山區域為例，素材數量統一對齊。</li>
+      <li>邊界符文頭冠與邊界武器：頭飾附魔的附魔重置與各洞附魔整合為一張表，第 2 洞附魔升級整合為一張表，僅特殊升級另外列出。</li>
+      <li>天空與光輝：移除頁首的介紹文字。</li>
     </ul>
   </dialog>
   <div id="toast" class="toast" role="status" hidden></div>

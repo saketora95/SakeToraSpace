@@ -1,5 +1,4 @@
 .rune-source{font-size:13px}
-#rune-intro p{margin:0 0 6px}
 .rune-views{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
 .rune-views [role=tab]{font:inherit;font-size:14px;font-weight:700;padding:8px 18px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);cursor:pointer}
 .rune-views [role=tab]:hover{color:var(--text)}

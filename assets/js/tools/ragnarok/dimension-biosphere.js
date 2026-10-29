@@ -189,14 +189,27 @@
   }
 
   // Summary links open the unfiltered detail view, scroll to the item and highlight it.
+  // Capes live in their own view; everything else opens the unfiltered weapon view.
   function openDetail(item) {
+    const isCape = data.capes.some(cape => cape.names.some(name => name.zh === item));
     for (const control of Object.values(filters)) control.value = "";
+    showView(isCape ? "capes" : detailView);
+    renderWeapons();
+    syncHash();
+    for (const card of document.querySelectorAll(".dimension-item.is-target")) card.classList.remove("is-target");
+    const card = document.querySelector(`#biosphere-view-${isCape ? "capes" : "weapons"} [data-item="${CSS.escape(item)}"]`);
+    card?.classList.add("is-target");
+    card?.scrollIntoView({ block: "start" });
+  }
+
+  // Links from the about view open the weapon view filtered to one job, batch or region.
+  function openFiltered(key, value) {
+    for (const control of Object.values(filters)) control.value = "";
+    filters[key].value = value;
     showView(detailView);
     renderWeapons();
     syncHash();
-    const card = document.querySelector(`#biosphere-results [data-item="${CSS.escape(item)}"]`);
-    card?.classList.add("is-target");
-    card?.scrollIntoView({ block: "start" });
+    $("#biosphere-tool").scrollIntoView({ block: "start" });
   }
 
   // Monster images come from other sites, so they load only after the viewer asks, on every visit.
@@ -272,38 +285,49 @@
     }).join("");
   }
 
+  const plainTable = (head, rows, extra = "") => `<div class="dimension-table-scroll" tabindex="0"><table class="dimension-table biosphere-plain${extra}">
+    <thead><tr>${head.map(cell => `<th scope="col">${cell}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody>
+  </table></div>`;
+
+  const filterLink = (key, value, label) => `<a href="#${new URLSearchParams({ view: detailView, [key]: value })}" data-filter="${key}" data-value="${escape(value)}">${escape(label)}</a>`;
+  const itemLink = item => `<a href="#${new URLSearchParams({ view: detailView })}" data-item="${escape(item)}">${escape(item)}</a>`;
+  // Exchange materials read "名稱 × 數量" or "數量 Zeny"; splitting them lines every count up on the right.
+  const materialPair = text => text.includes(" × ") ? text.split(" × ") : ["Zeny", text.replace(/ Zeny$/, "")];
+  const materialList = materials => `<ul class="biosphere-materials">${materials.map(materialPair).map(([name, count]) =>
+    `<li><span>${escape(name)}</span><span class="dimension-num${name === "Zeny" ? "" : " biosphere-count"}">${escape(count)}</span></li>`).join("")}</ul>`;
+
   function renderAbout() {
-    const batches = data.batches.map(entry => {
-      const jobs = weapons.filter(weapon => weapon.batch === entry.batch).map(weapon => weapon.job.replace(" & ", "&"));
-      return `<li><strong>${escape(entry.title)}</strong> <a class="dimension-num" href="${escape(entry.url)}" target="_blank" rel="noopener">${entry.date}</a><span>${escape(jobs.join("、"))}</span></li>`;
-    }).join("");
-    const leaves = data.leaves.map(leaf => `<tr>
-      <td>${escape(batchOf(leaf.batch).title)}</td>
-      <td><strong>${escape(leaf.name)}</strong><br><span class="biosphere-card-meta" lang="ko">${escape(leaf.kr)}</span></td>
-      <td>${lineBreaks(leaf.items)}</td>
-    </tr>`).join("");
-    const exchanges = data.exchanges.map(entry => `<tr><td><strong>${escape(entry.item)}</strong></td><td>${lineBreaks(entry.materials)}</td></tr>`).join("");
+    const batches = plainTable(["推出時間", "區域", "關聯職業"], data.batches.map(entry => [
+      filterLink("batch", String(entry.batch), entry.date),
+      entry.regions.map(region => filterLink("region", region, region)).join("、"),
+      weapons.filter(weapon => weapon.batch === entry.batch).sort(byJob).map(weapon => filterLink("job", weapon.job, weapon.job.replace(" & ", "&"))).join("、"),
+    ]));
+    // Weapon leaves (之葉) and cape / shield leaves (葉片) get their own tables, keyed by the region in the name.
+    const leafTable = kind => plainTable(["區域", "道具名稱", "適用裝備"], data.leaves.filter(leaf => leaf.name.startsWith(kind)).map(leaf => [
+      `<strong>${escape(leaf.name.match(/\((.+)\)/)[1])}</strong>`,
+      `${escape(leaf.name)}<br><span class="biosphere-card-meta" lang="ko">${escape(leaf.kr)}</span>`,
+      leaf.items.map(itemLink).join("、"),
+    ]), " biosphere-leaves");
+    const exchanges = plainTable(["兌換道具", "所需素材"], data.exchanges.map(entry => [`<strong>${escape(entry.item)}</strong>`, materialList(entry.materials)]));
     $("#biosphere-view-about").innerHTML = `
       ${data.intro.map(text => `<p class="dimension-intro">${escape(text)}</p>`).join("")}
       <section class="dimension-card">
         <h2>推出時間</h2>
-        <ul class="dimension-waves">${batches}</ul>
+        ${batches}
       </section>
       <section class="dimension-card">
-        <h2>二次元生態之葉</h2>
+        <h2>二次元生態之葉與葉片</h2>
         <p>可以使用於精煉值 +9 ~ +11 的對應二次元裝備，使精煉值提升 1。</p>
-        <div class="dimension-table-scroll" tabindex="0"><table class="dimension-table biosphere-plain">
-          <thead><tr><th scope="col">推出</th><th scope="col">道具</th><th scope="col">可使用裝備</th></tr></thead>
-          <tbody>${leaves}</tbody>
-        </table></div>
+        <h3 class="biosphere-subhead">二次元生態之葉（武器）</h3>
+        ${leafTable("二次元生態之葉")}
+        <h3 class="biosphere-subhead">二次元生態葉片（披肩、盾牌）</h3>
+        ${leafTable("二次元生態葉片")}
       </section>
       <section class="dimension-card">
         <h2>兌換所需素材</h2>
-        <p>原文只列出火山與大地的兌換素材；其他區域推測相同，只是換成對應區域的素材。</p>
-        <div class="dimension-table-scroll" tabindex="0"><table class="dimension-table biosphere-plain">
-          <thead><tr><th scope="col">兌換道具</th><th scope="col">所需素材</th></tr></thead>
-          <tbody>${exchanges}</tbody>
-        </table></div>
+        <p>其他區域推測相同，僅是需要替換為對應區域的素材，此處以火山區域舉例。</p>
+        ${exchanges}
       </section>`;
   }
 
@@ -373,6 +397,13 @@
     if (!link || event.ctrlKey || event.metaKey || event.shiftKey) return;
     event.preventDefault();
     openDetail(link.dataset.item);
+  });
+  $("#biosphere-view-about").addEventListener("click", event => {
+    const link = event.target.closest("a[data-filter], a[data-item]");
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    event.preventDefault();
+    if (link.dataset.filter) openFiltered(link.dataset.filter, link.dataset.value);
+    else openDetail(link.dataset.item);
   });
   window.addEventListener("hashchange", () => { readHash(); renderSummary(); renderWeapons(); });
 

@@ -135,36 +135,53 @@
   const materialRows = materials => materials.map(([name, count]) => [escape(name), `<span class="frontier-num">${escape(count)}</span>`]);
   const materialList = materials => `<ul class="frontier-materials">${materials.map(([name, count]) => `<li><span>${escape(name)}</span><span class="frontier-num">${escape(count)}</span></li>`).join("")}</ul>`;
 
+  // Random slots list each result with its range; when every result shares one range it is stated once, in the slot's own wording if it has one.
+  function slotResults(slot) {
+    if (slot.picks) return `<ul class="frontier-chips">${slot.picks.map(pick => `<li>${escape(pick)}</li>`).join("")}</ul>`;
+    const ranges = new Set(slot.ranges.map(([, min, max]) => `${min} ~ ${max}`));
+    if (ranges.size > 1) return `<ul class="frontier-chips">${slot.ranges.map(([name, min, max]) => `<li>${escape(name)} <span class="frontier-num">${min} ~ ${max}</span></li>`).join("")}</ul>`;
+    return `<ul class="frontier-chips">${slot.ranges.map(([name]) => `<li>${escape(name)}</li>`).join("")}</ul>
+      <p class="frontier-range">${slot.rangeNote ? escape(slot.rangeNote) : `隨機數值 <span class="frontier-num">${[...ranges][0]}</span>`}</p>`;
+  }
+
+  const outcomeList = row => `<ul class="frontier-outcomes">${row.outcomes.map(([rate, result]) =>
+    `<li class="${result > row.level ? "is-up" : result < row.level ? "is-down" : ""}"><span class="frontier-num">${escape(rate)}</span> → Lv ${result}</li>`).join("")}</ul>`;
+
+  // One table for the regular upgrade path; 特殊升級 stays separate with the same columns.
+  function upgradeTable(tiers) {
+    const rows = tiers.flatMap(tier => tier.rows.map(row => `<tr>
+      <td><span class="frontier-num">Lv ${row.level}</span></td>
+      <td>${outcomeList(row)}</td>
+      <td>${materialList(row.materials)}</td>
+    </tr>`)).join("");
+    return `<div class="frontier-table-scroll" tabindex="0"><table class="frontier-table frontier-upgrade">
+      <thead><tr>${["目前等級", "結果", "所需素材"].map(cell => `<th scope="col">${cell}</th>`).join("")}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  }
+
   function renderHeadgearEnchant() {
     const enchant = data.headgearEnchant;
-    const slots = enchant.slots.map(slot => `<section class="frontier-card">
-      <h3>${escape(slot.title)}</h3>
-      <p class="frontier-sub">所需素材</p>
-      ${materialList(slot.materials)}
-      <p class="frontier-sub">附魔結果</p>
-      ${slot.ranges
-        ? table(["附魔", "最小值", "最大值"], slot.ranges.map(([name, min, max]) => [escape(name), `<span class="frontier-num">${min}</span>`, `<span class="frontier-num">${max}</span>`]))
-        : `<ul class="frontier-chips">${slot.picks.map(pick => `<li>${escape(pick)}</li>`).join("")}</ul>`}
-    </section>`).join("");
-    const tiers = enchant.upgradeTiers.map(tier => `<section class="frontier-tier">
-      <h4>${escape(tier.title ?? "基本升級")}<span>${escape(tier.note)}</span></h4>
-      ${table(["目前等級", "結果", "所需素材"], tier.rows.map(row => [
-        `<span class="frontier-num">Lv ${row.level}</span>`,
-        `<ul class="frontier-outcomes">${row.outcomes.map(([rate, result]) =>
-          `<li class="${result > row.level ? "is-up" : result < row.level ? "is-down" : ""}"><span class="frontier-num">${escape(rate)}</span> → Lv ${result}</li>`).join("")}</ul>`,
-        materialList(row.materials),
-      ]))}
-    </section>`).join("");
+    const enchantRows = [
+      `<tr><th scope="row">附魔重置</th><td>${materialList(enchant.reset)}</td><td>—</td></tr>`,
+      ...enchant.slots.map(slot => `<tr><th scope="row">${escape(slot.title)}</th><td>${materialList(slot.materials)}</td><td>${slotResults(slot)}</td></tr>`),
+    ].join("");
+    const regular = enchant.upgradeTiers.filter(tier => !tier.title);
+    const special = enchant.upgradeTiers.filter(tier => tier.title);
     const newEnchants = data.newEnchants.map(item => `<li><strong>${escape(item.name)}</strong>${lineList(item.lines, [])}</li>`).join("");
     $("#frontier-view-headgear").innerHTML = `
       <p class="frontier-intro">可附魔對象：${enchant.targets.map(escape).join("、")}</p>
-      <div class="frontier-cards">
-        <section class="frontier-card"><h3>附魔重置</h3>${materialList(enchant.reset)}</section>
-        ${slots}
-      </div>
+      <div class="frontier-table-scroll" tabindex="0"><table class="frontier-table frontier-enchant">
+        <thead><tr><th scope="col">項目</th><th scope="col">所需素材</th><th scope="col">附魔結果</th></tr></thead>
+        <tbody>${enchantRows}</tbody>
+      </table></div>
       <section class="frontier-block">
         <h2>第 2 洞附魔升級</h2>
-        ${tiers}
+        ${upgradeTable(regular)}
+        ${special.map(tier => `<section class="frontier-tier">
+          <h4>${escape(tier.title)}</h4>
+          ${upgradeTable([tier])}
+        </section>`).join("")}
       </section>
       <section class="frontier-block">
         <h2>追加附魔道具</h2>
